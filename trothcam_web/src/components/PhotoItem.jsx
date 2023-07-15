@@ -23,12 +23,13 @@ const TextDiv =  styled.div`
     border: 1px solid yellow;
     margin-left: auto;
     margin-right: auto;
+    font-family: Inter;
 `;
 const NameDiv = styled.div`
     font-weight: 700;
     font-size: 20px;
     height: 27px;
-    //폰트 바꿔야함
+    font-family: Inter;
     font-family: inter;
     color: #222222;
 `
@@ -41,20 +42,24 @@ const LineDiv1 = styled.div`
     margin-top: 13px;
     display: flex;
     justify-content: space-between;
+    font-family: Inter;
 `
 const LineDiv2 = styled.div`
     display: flex;
     justify-content: space-between;
+    font-family: Inter;
 `
 const GrayDiv = styled.div`
     font-weight: 400px;
     font-size: 15px;
     color: #9FA0A3;
+    font-family: Inter;
 `
 const PriceDiv = styled.div`
     font-weight: 400px;
     font-size: 15px;
     color: #22222;
+    font-family: Inter;
 `
 const PhotoItem = (props) =>{
     return(<PhotoItemDiv>

@@ -11,13 +11,15 @@ const ItemDiv = styled.div`
     font-color: "black";
     font-weight:500;
     width: 582px;
-    
+    font-family: Inter;
 `; 
 const ImgDiv = styled.div`
   margin-left: 10px;
+  
 `;
 const NameText = styled.text`
   margin-left: 35px;
+
 `;
 const PriceText = styled.text`
   margin-left: 80px;
