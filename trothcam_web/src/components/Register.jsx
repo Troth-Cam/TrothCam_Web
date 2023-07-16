@@ -1,8 +1,8 @@
-
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Footer from './Footer';
-import Header from './header/SearchBox';
+import Header from './SearchBox';
+
 
 
 // 페이지의 크기를 지정하는 스타일드 컴포넌트를 만듭니다.
@@ -10,9 +10,7 @@ const PageContainer = styled.div`
     position:relative;
     width: 1440px;
     height: 1288px;
-    background-color: #F6F6F6;
-    
-
+    background-color: #ffffff;
 
 `;
 
@@ -31,8 +29,8 @@ const RegisterText = styled.h1`
     position: absolute;
     width: 295px;
     height: 97px;
-    top: 172px;
-    left: 555px;
+    top: 174px;
+    left: 571px;
     font-family: Inter;
     font-size: 80px;
     font-weight: 400;
@@ -53,7 +51,7 @@ const RegisterText1 = styled.h1`
     font-weight: 400;
     line-height: 42px;
     letter-spacing: 0em;
-    text-align: left;
+    text-align: center;
 
     color: #000000;
 `;
@@ -69,7 +67,7 @@ const RegisterText2 = styled.h1`
     font-weight: 400;
     line-height: 34px;
     letter-spacing: 0em;
-    text-align: left;
+    text-align: center;
 
 
     color: #000000;
@@ -82,6 +80,7 @@ const Checkbox = styled.input.attrs({ type: 'checkbox' })`
   top: 501px;
   left: 691px;
   border: 2px solid #000000;
+  
 `;
 
 const Button = styled.button`
@@ -164,8 +163,11 @@ const Register=()=>{
             <Checkbox checked={checked} onChange={handleCheckboxChange} />
             <Button checked={checked} onClick={handleButtonClick}>다음</Button>
             <Line></Line>
-            <Download><span>Troth Cam이 설치되어 있지 않습니까?</span><span style={{color:'blue'}}>  지금 다운로드</span></Download>
-            <FooterContainer>
+            <Download>
+                <span>Troth Cam이 설치되어 있지 않습니까?</span>
+                <a href="https://your-download-url.com" target="_blank" rel="noopener noreferrer" style={{color:'#5980EF', textDecoration: 'none'}}> 지금 다운로드</a>
+            </Download>
+              <FooterContainer>
             <Footer />
             </FooterContainer>
         </PageContainer>

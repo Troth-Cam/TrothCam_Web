@@ -2,19 +2,17 @@ import React, { useState,useEffect } from 'react';
 
 import styled from 'styled-components';
 import Footer from './Footer';
-import Header from './header/SearchBox';
+import Header from './SearchBox';
 import agreepic1 from './img/agreepic1.png'; 
 import agreepic2 from './img/agreepic2.png'; 
 import agreepic3 from './img/agreepic3.png'; 
 
 // 페이지의 크기를 지정하는 스타일드 컴포넌트를 만듭니다.
 const PageContainer = styled.div`
-
     position:relative;
-
     width: 1440px;
     height: 2243px;
-    background-color: #F6F6F6;
+    background-color: #ffffff;
 `;
 
 const FooterContainer = styled.footer`
@@ -75,7 +73,7 @@ const Image1 = styled.img`
     width: 1112px;
     max-height: 304px;
     top: 290px;
-    left: 139px;
+    left: 144px;
     overflow-y: auto; // 세로 스크롤
     display: block; // 필요한 경우
 
@@ -87,11 +85,11 @@ const Check1 = styled.div`
     width: 286px;
     height: 24px;
     top: 612px;
-    left: 927px;
+    left: 940px;
     font-family: Inter;
     font-size: 20px;
     font-weight: 400;
-    line-height: 24px;
+    line-height: 24.2px;
     letter-spacing: 0em;
     text-align: left;
 
@@ -105,7 +103,7 @@ const Checkbox1 = styled.input.attrs({ type: 'checkbox' })`
     width: 29px;
     height: 29px;
     top: 609px;
-    left: 1228px;
+    left: 1220px;
     border: 1px solid #000000;
 `;
 
@@ -145,11 +143,11 @@ const Check2 = styled.div`
     width: 286px;
     height: 24px;
     top: 1112px;
-    left: 927px;
+    left: 940px;
     font-family: Inter;
     font-size: 20px;
     font-weight: 400;
-    line-height: 24px;
+    line-height: 24.2px;
     letter-spacing: 0em;
     text-align: left;
 
@@ -163,7 +161,7 @@ const Checkbox2 = styled.input.attrs({ type: 'checkbox' })`
     width: 29px;
     height: 29px;
     top: 1109px;
-    left: 1228px;
+    left: 1220px;
     border: 1px solid #000000;
 `;
 
@@ -201,8 +199,8 @@ const Check3 = styled.div`
     position: absolute;
     width: 286px;
     height: 24px;
-    top: 1604px;
-    left: 928px;
+    top: 1640px;
+    left: 940px;
     font-family: Inter;
     font-size: 20px;
     font-weight: 400;
@@ -219,8 +217,8 @@ const Checkbox3 = styled.input.attrs({ type: 'checkbox' })`
     position: absolute;
     width: 29px;
     height: 29px;
-    top: 1604px;
-    left: 1228px;
+    top: 1637px;
+    left: 1220px;
     border: 1px solid #000000;
 `;
 
@@ -246,7 +244,7 @@ const Checkbox4 = styled.input.attrs({ type: 'checkbox' })`
     width: 29px;
     height: 29px;
     top: 1705px;
-    left: 1229px;
+    left: 1220px;
     border: 1px solid #000000;
 `;
 
