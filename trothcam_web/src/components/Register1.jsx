@@ -7,7 +7,7 @@ import agreepic1 from './img/agreepic1.png';
 import agreepic2 from './img/agreepic2.png'; 
 import agreepic3 from './img/agreepic3.png'; 
 
-// 페이지의 크기를 지정하는 스타일드 컴포넌트를 만듭니다.
+
 const PageContainer = styled.div`
     position:relative;
     width: 1440px;
@@ -19,7 +19,7 @@ const FooterContainer = styled.footer`
     position: absolute;
     width: 1440px;
     height: 237px;
-    bottom: 0; // 'top' 대신 'bottom'을 사용하여 컨테이너의 하단에 위치하도록 합니다.
+    bottom: 0; 
     display: flex;
     align-items: center;
     background-color: #E8EAEF;
@@ -294,15 +294,21 @@ const Register1 = () => {
     }
 
     useEffect(() => {
-        // 체크1, 체크2 또는 체크1, 체크2, 체크3이 체크되었는지 확인합니다.
+        // 체크1, 체크2 또는 체크1, 체크2, 체크3이 체크되었는지 확인
         if ((checked1 && checked2) || (checked1 && checked2 && checked3)) {
-            setButtonEnabled(true); // 조건을 만족한다면 버튼을 활성화합니다.
+            setButtonEnabled(true); // 조건을 만족한다면 버튼을 활성화
         } else {
-            setButtonEnabled(false); // 아니라면 버튼을 비활성화합니다.
+            setButtonEnabled(false); // 아니라면 버튼을 비활성화
         }
-    }, [checked1, checked2, checked3]); // 이 배열 안의 변수들이 변할 때마다 useEffect 내부의 함수를 호출합니다.
+        // 체크1, 체크2, 체크3가 모두 체크되어 있는지 확인
+        if (checked1 && checked2 && checked3) {
+            setChecked4(true); // 모두 체크되어 있다면 '전체 동의하기'도 체크
+        } else {
+            setChecked4(false); // 하나라도 체크되어 있지 않다면 '전체 동의하기'를 해제
+        }
+    }, [checked1, checked2, checked3]); //  배열 안의 변수들이 변할 때마다 useEffect 내부의 함수를 호출
 
-
+    
     const handleSubmit = () => {
         if (!checked1 || !checked2) {
             alert('필수 항목을 체크해주세요!');
