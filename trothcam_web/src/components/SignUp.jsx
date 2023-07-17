@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import SearchBox from "./header/SearchBox";
 
 const SignUp = () => {
   const handleCheckValidate = () => {};
@@ -8,6 +9,7 @@ const SignUp = () => {
 
   return (
     <SignUpContainer>
+      <SearchBox />
       <SignUpTitle>회원 가입</SignUpTitle>
       <Divider />
       <FormContainer>
@@ -17,6 +19,7 @@ const SignUp = () => {
             <InfoIcon>i</InfoIcon>
           </InfoButton>
         </TokenText>
+
         <InputBox placeholder="Token" type="text" />
         <ValidationButton onClick={handleCheckValidate}>
           유효성 확인
@@ -61,48 +64,43 @@ const SignUp = () => {
 export default SignUp;
 
 const SignUpContainer = styled.div`
-  margin-top: 3rem;
   display: flex;
   flex-direction: column;
-  padding-left: 10px;
-  background-color: #f6f6f6;
+  margin-left: 10px;
 `;
 const SignUpTitle = styled.div`
-  width: 205px;
-  height: 71px;
-  flex-shrink: 0;
+  width: 12.8125rem;
+  height: 4.4375rem;
   color: #000;
   font-family: Inter;
   font-size: 40px;
-  font-style: normal;
   font-weight: 600;
-  line-height: normal;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-top: 2rem;
+  margin-left: 3rem;
 `;
 const Divider = styled.div`
-  width: 1250px;
-  height: 3px;
+  width: 80rem;
+  height: 0.18rem;
   background-color: #000;
   box-sizing: border-box;
-  margin-left: 25px;
+  margin-left: 3rem;
   margin-bottom: 80px;
 `;
 const TokenText = styled.div`
-  color: #000;
+  color: #222;
   font-family: Inter;
-  font-size: 28px;
+  font-size: 1.75rem;
   font-style: normal;
   font-weight: 400;
-  line-height: normal;
   display: flex;
   align-items: center;
-  padding-top: 40px;
-  padding-left: 180px;
-  padding-bottom: 10px;
+  padding-top: 4rem;
+  padding-left: 15rem;
+  padding-bottom: 1rem;
   span {
     color: #ff0000;
     padding-left: 4px;
@@ -132,12 +130,11 @@ const FormContainer = styled.div`
   gap: 10px;
 `;
 const InputBox = styled.input`
-  width: 45rem;
+  width: 53rem;
   height: 4rem;
-  border: 1px solid #000;
-  border-radius: 5px;
-  margin-left: 180px;
-  background-color: #f6f6f6;
+  border-radius: 0.3125rem;
+  border: 1px solid #d2d7e1;
+  margin-left: 15rem;
   padding-right: 8rem;
 
   &::placeholder {
@@ -155,8 +152,8 @@ const ValidationButton = styled.button`
   width: 8rem;
   height: 3.6rem;
   position: absolute;
-  right: 16%;
-  top: 8.3%;
+  right: 11rem;
+  top: 8rem;
 `;
 const SignUpButtonContainer = styled.div`
   display: flex;
@@ -181,6 +178,6 @@ const DuplicationButton = styled.button`
   width: 8rem;
   height: 3.6rem;
   position: absolute;
-  right: 16%;
-  top: 22.7%;
+  right: 11rem;
+  top: 20.6rem;
 `;
