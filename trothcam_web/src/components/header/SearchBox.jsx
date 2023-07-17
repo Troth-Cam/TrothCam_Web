@@ -1,50 +1,92 @@
+import React, { useState } from "react";
 import styled from "styled-components";
-//import { ReactComponent as SearchIcon } from "assets";
 import { useNavigate, useLocation } from "react-router-dom";
-import React from "react";
-import searchSvg from "../../assets/search.svg";
+import { ReactComponent as Logo } from "../../assets/logo.svg";
+import { ReactComponent as SearchIcon } from "../../assets/search.svg";
 
 const SearchBox = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+  const [isInputFocused, setIsInputFocused] = useState(false);
+
+  const handleInputFocus = () => {
+    setIsInputFocused(true);
+  };
 
   return (
-    <header>
-      <img src={searchSvg} />
-    </header>
+    <SearchBoxContainer>
+      <LogoLayout>
+        <Logo />
+      </LogoLayout>
+      <SearchBoxLayout>
+        <SearchIcon />
+        <SearchBoxInput
+          placeholder="어떤 사진을 찾으시나요?"
+          onFocus={handleInputFocus}
+          isInputFocused={isInputFocused}
+        />
+      </SearchBoxLayout>
+      <LoginButton>Login</LoginButton>
+      <SignUpButton>Sign up</SignUpButton>
+    </SearchBoxContainer>
   );
 };
 
 export default SearchBox;
 
+const SearchBoxContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+  background-color: #ffffff;
+`;
+const LogoLayout = styled.div`
+  margin-left: 1rem;
+`;
 const SearchBoxLayout = styled.div`
   display: flex;
   align-items: center;
   justify-content: stretch;
 
-  border: 1px solid ${({ theme }) => theme.colors.gray300};
-  width: 50rem;
-  height: 5rem;
-  border-radius: 4rem;
-  padding: 5px;
+  width: 33rem;
+  height: 2rem;
+  border-radius: 1.3rem;
+  border: 1px solid #a8a8a8;
+  padding: 0.3rem;
+  margin-left: 1rem;
 `;
 const SearchBoxInput = styled.input`
-  ${({ theme }) => theme.fonts.body1};
   border: none;
   width: 100%;
-  &::placeholder {
-    ${({ theme }) => theme.fonts.body1};
-    color: ${({ theme }) => theme.colors.gray300};
-  }
   padding-left: 1.2rem;
+  outline: none;
+  &::placeholder {
+    color: ${({ isInputFocused }) =>
+      isInputFocused ? "transparent" : "#bcbdc1"};
+    font-size: 0.875rem;
+    font-family: Inter;
+  }
 `;
-const SearchBoxButton = styled.button`
-  width: 4rem;
-  height: 4rem;
-  border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.mainDark};
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const LoginButton = styled.button`
+  margin-left: 42rem;
+  width: 9.3rem;
+  height: 3rem;
+  border-radius: 0.5rem;
+  border: 1.5px solid #5980ef;
+  background-color: #ffffff;
+  color: #5980ef;
+  font-family: Inter;
+  font-size: 1.375rem;
+  font-weight: 600;
 `;
-// const SearchIcon = styled.img``;
+const SignUpButton = styled.button`
+  margin-left: 1rem;
+  width: 9.3rem;
+  height: 3rem;
+  border-radius: 0.5rem;
+  border: none;
+  background-color: #5980ef;
+  color: #ffffff;
+  font-family: Inter;
+  font-size: 1.25rem;
+  font-weight: 600;
+`;
