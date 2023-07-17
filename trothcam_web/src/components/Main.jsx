@@ -13,7 +13,8 @@ import Banner from "./img/banner.png";
 import CoinIcon from "./img/coin_icon.png";
 import ColorIcon from "./img/color_icon.png";
 import CalendarIcon from "./img/calendar_icon.png";
-
+import Footer from "./Footer";
+import SearchBar from "./header/SearchBox";
 
 SwiperCore.use([Navigation, Pagination, Autoplay])
 
@@ -134,7 +135,7 @@ const ViewAllButton = styled.div`
 `;
 
 const BannerBgDiv = styled.div`
-  height: 740px;
+  height: 670px;
   width: 100%;
   position: flex;
   text-align: center;
@@ -186,6 +187,7 @@ const OptionIconImg = styled.img`
 `;
 
 const Main = () => {
+
   const [isAllButtonClicked, setIsAllButtonClicked] = useState(false);
   const [isNewButtonClicked, setIsNewButtonClicked] = useState(true);
   const [isTopButtonClick, setIsTopButtonClicked] = useState(true);
@@ -272,6 +274,7 @@ const Main = () => {
 
   return (
     <div>
+      <SearchBar/>
       <SwiperContainer
         className="banner"
         spaceBetween={50}
@@ -341,7 +344,9 @@ const Main = () => {
           />
         </SelectContainer>
       </FilterButtonDiv>
-      <PhotoBoard photoList={photoList} />
+      <PhotoBoard photoList={photoList}/>
+      <div style={{marginTop:"483px"}}/>
+      <Footer/>
     </div>
   );
 };
