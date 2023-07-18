@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react';
 
 import styled from 'styled-components';
 import Footer from './Footer';
-import Header from './SearchBox';
+
 import agreepic1 from './img/agreepic1.png'; 
 import agreepic2 from './img/agreepic2.png'; 
 import agreepic3 from './img/agreepic3.png'; 
@@ -321,7 +321,7 @@ const Register1 = () => {
 
     return (
         <PageContainer>
-            <Header></Header>
+          
             <Title>약관 동의</Title>
             <Line></Line>
             <Agree1>| 이용약관 동의(필수)</Agree1>

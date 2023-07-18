@@ -1,11 +1,17 @@
-import { Outlet } from "react-router-dom";
 
-function App() {
+import Register from './components/Register';
+import React from 'react';
+import { Router, Route } from 'react-router-dom';
+import Register1 from './components/Register1';
+
+const App = () => {
   return (
-    <div>
-        <Outlet/>
-    </div>
+    
+  <div>
+      <Register/>
+   </div>
+   
   );
-}
+};
 
 export default App;
