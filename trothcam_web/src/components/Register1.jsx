@@ -1,8 +1,9 @@
 import React, { useState,useEffect } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Footer from './Footer';
-import Header from './SearchBox';
+import SignUp from './SignUp';
+import SearchBar from "./header/SearchBox";
 import agreepic1 from './img/agreepic1.png'; 
 import agreepic2 from './img/agreepic2.png'; 
 import agreepic3 from './img/agreepic3.png'; 
@@ -308,20 +309,23 @@ const Register1 = () => {
         }
     }, [checked1, checked2, checked3]); //  배열 안의 변수들이 변할 때마다 useEffect 내부의 함수를 호출
 
-    
+    const navigate = useNavigate();
     const handleSubmit = () => {
         if (!checked1 || !checked2) {
             alert('필수 항목을 체크해주세요!');
             return;
         }
-        // 다음 페이지로 이동하는 로직
+        else{
+            navigate('/SignUp'); // 다음 페이지로 이동하는 로직
+        }
+        
     }
 
     
 
     return (
         <PageContainer>
-            <Header></Header>
+            <SearchBar></SearchBar>
             <Title>약관 동의</Title>
             <Line></Line>
             <Agree1>| 이용약관 동의(필수)</Agree1>
@@ -353,8 +357,3 @@ const Register1 = () => {
 
 
 export default Register1;
-
-
-
-
-

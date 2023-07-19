@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Footer from './Footer';
-import Header from './SearchBox';
+import Register1 from './Register1';
+import SearchBar from "./header/SearchBox";
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -145,23 +147,30 @@ const Register=()=>{
     setChecked(event.target.checked);
     };
 
+    const navigate = useNavigate();
 
     const handleButtonClick = () => {
         if(!checked) {
             alert("체크를 해주세요");
             return;
         }
+        else{
+            navigate('/Register1');
+        }
 
     };
 
     return(
         <PageContainer>
-            <Header></Header>
+            <SearchBar></SearchBar>
             <RegisterText>회원가입</RegisterText>
             <RegisterText1>Trothly는 iOS 어플리케이션 Troth Cam에 가입해야 가입이 가능합니다.</RegisterText1>
             <RegisterText2>Troth Cam 회원가입이 되어있나요?</RegisterText2>
             <Checkbox checked={checked} onChange={handleCheckboxChange} />
             <Button checked={checked} onClick={handleButtonClick}>다음</Button>
+            
+            
+            
             <Line></Line>
             <Download>
                 <span>Troth Cam이 설치되어 있지 않습니까?</span>
