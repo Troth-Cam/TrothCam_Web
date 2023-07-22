@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { Link } from 'react-router-dom';
 import { useNavigate, useLocation } from "react-router-dom";
 import { ReactComponent as Logo } from "../../assets/logo.svg";
 import { ReactComponent as SearchIcon } from "../../assets/search.svg";
@@ -26,7 +27,9 @@ const SearchBox = () => {
         />
       </SearchBoxLayout>
       <LoginButton>Login</LoginButton>
+      <Link to="/Register">
       <SignUpButton>Sign up</SignUpButton>
+      </Link>
     </SearchBoxContainer>
   );
 };
