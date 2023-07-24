@@ -49,18 +49,19 @@ const StyledComponent = styled.span`
 
     @media (max-width: 768px) {
         font-size: 7px;
+  
         
     }
 
     @media (max-width: 576px) {
         font-size: 5px;
+
     }
 `;
 
 
 const AboutTeam = styled(StyledComponent)`
-   
-
+ 
 `;
 
 const Inquiry = styled(StyledComponent)`
@@ -87,8 +88,30 @@ const CircleButton = styled.button`
     border-radius: 50%;
     border:none;
 
-    
+    @media (max-width: 768px) {
+      width: 30px;
+      height: 30px;
+   }
 
+    @media (max-width: 576px) {
+      width: 18px;
+      height: 18px;
+
+    }
+
+`;
+
+const ResponsiveImage = styled.img`
+  @media (max-width: 768px) {
+    width: 18px;
+    height: 18px;
+  }
+
+  @media (max-width: 576px) {
+    margin-left:-2px;
+    width: 10px;
+    height: 10px;
+  }
 `;
 
 
@@ -106,6 +129,17 @@ const Paragraph = styled.p`
     line-height: 10px;
     letter-spacing: 0em;
     text-align: left;
+
+    @media (max-width: 768px) {
+      font-size: 7px;
+      
+      
+  }
+
+  @media (max-width: 576px) {
+      font-size: 5px;
+    
+  }
  
     
 `;
@@ -160,16 +194,16 @@ const Footer = () => {
             <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%'}}>
 
             <CircleButton  onClick={() => window.location.href='https://twitter.com'}>
-                <img src={TwitterIcon} style={{width: '23px', height: '20px'}} alt="Twitter" /> 
+                <ResponsiveImage src={TwitterIcon}  alt="Twitter" /> 
             </CircleButton>
             <CircleButton  onClick={() => window.location.href='https://instagram.com'}>
-                <img src={InstaIcon} style={{width: '32px', height: '32px'}} alt="Instagram" /> 
+                <ResponsiveImage src={InstaIcon} alt="Instagram" /> 
             </CircleButton>
             <CircleButton  onClick={() => window.location.href='mailto:info@yourwebsite.com'}>
-                <img src={EmailIcon} style={{width: '23px', height: '20px'}} alt="Email" /> 
+                <ResponsiveImage src={EmailIcon} alt="Email" /> 
             </CircleButton>
             <CircleButton  onClick={() => window.location.href='tel:+1234567890'}>
-                <img src={PhoneIcon} style={{width: '18px', height: '28px'}} alt="Phone" /> 
+                <ResponsiveImage src={PhoneIcon}  alt="Phone" /> 
             </CircleButton>
           </div>
         </Contact>

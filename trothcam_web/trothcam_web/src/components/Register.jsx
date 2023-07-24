@@ -5,9 +5,7 @@ import Register1 from './Register1';
 import SearchBar from "./header/SearchBox";
 import { useNavigate } from 'react-router-dom';
 
-
-
-// 페이지의 크기를 지정하는 스타일드 컴포넌트를 만듭니다.
+//ddd
 const PageContainer = styled.div`
     display: flex;
     flex-direction: column;
