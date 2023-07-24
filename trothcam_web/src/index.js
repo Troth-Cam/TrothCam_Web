@@ -4,6 +4,8 @@ import "./index.css";
 import App from "./App";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Main from "./components/Main";
+import Register from "./components/Register";
+import Register1 from "./components/Register1";
 import SignUp from "./components/SignUp";
 import reportWebVitals from "./reportWebVitals";
 import Loading from "./components/Loading";
@@ -16,6 +18,8 @@ const router = createBrowserRouter([
     errorElement: <h1>Error</h1>,
     children: [
       { index: true, path: "/", element: <Main /> },
+      { path: "/register", element: <Register /> },
+      { path: "/register1", element: <Register1 /> },
       { path: "/signup", element: <SignUp /> },
       { path: "/loading", element: <Loading /> },
       { path: "/registerfinish", element: <RegisterFinish /> },

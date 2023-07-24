@@ -5,8 +5,10 @@ import PhotoItem from './PhotoItem';
 const Container = styled.div`
 
 width: 100%;
-overflow: auto;
+overflow-x: scroll;
 white-space: nowrap;
+margin-left: auto;
+margin-right: auto;
 
 /* 스크롤바 스타일 */
 &::-webkit-scrollbar {

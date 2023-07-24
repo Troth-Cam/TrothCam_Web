@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { Link } from 'react-router-dom';
+import { useNavigate, useLocation } from "react-router-dom";
 import { ReactComponent as Logo } from "../../assets/logo.svg";
 import { ReactComponent as SearchIcon } from "../../assets/search.svg";
 
@@ -33,8 +34,11 @@ const SearchBox = () => {
           isInputFocused={isInputFocused}
         />
       </SearchBoxLayout>
+
       <LoginButton onClick={handleLoginClick}>Login</LoginButton>
+      <Link to="/Register">
       <SignUpButton onClick={handleSignUpClick}>Sign up</SignUpButton>
+      </Link>
     </SearchBoxContainer>
   );
 };
