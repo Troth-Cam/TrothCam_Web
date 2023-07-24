@@ -13,6 +13,14 @@ const SearchBox = () => {
     setIsInputFocused(true);
   };
 
+  const handleLoginClick = () => {
+    //로그인 화면으로 이동
+  };
+
+  const handleSignUpClick = () => {
+    //navigate("/"); //register1-b로 이동
+  };
+
   return (
     <SearchBoxContainer>
       <LogoLayout>
@@ -26,9 +34,10 @@ const SearchBox = () => {
           isInputFocused={isInputFocused}
         />
       </SearchBoxLayout>
-      <LoginButton>Login</LoginButton>
+
+      <LoginButton onClick={handleLoginClick}>Login</LoginButton>
       <Link to="/Register">
-      <SignUpButton>Sign up</SignUpButton>
+      <SignUpButton onClick={handleSignUpClick}>Sign up</SignUpButton>
       </Link>
     </SearchBoxContainer>
   );
