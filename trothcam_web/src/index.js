@@ -10,7 +10,8 @@ import SignUp from "./components/SignUp";
 import reportWebVitals from "./reportWebVitals";
 import Loading from "./components/Loading";
 import RegisterFinish from "./components/RegsterFinish";
-
+import DetailOthers from "./components/Detail_others";
+import DetailMe from "./components/Detail_me";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -22,7 +23,9 @@ const router = createBrowserRouter([
       { path: "/register1", element: <Register1 /> },
       { path: "/signup", element: <SignUp /> },
       { path: "/loading", element: <Loading /> },
-      { path: "/registerfinish", element: <RegisterFinish /> },
+      { path: "/registerfinish", element: <RegisterFinish />},
+      { path: "/detail_others", element: <DetailOthers/> },
+      { path: "/detail_me", element: <DetailMe/> },
     ],
   },
 ]);
