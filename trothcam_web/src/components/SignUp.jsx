@@ -205,15 +205,15 @@ const SignUp = () => {
             tokenConfirmed={tokenConfirmed}
             tokenError={!!tokenError} // 에러 메시지가 있을 때만 true로 설정
           />
-          {tokenError && <ErrorMessage>{tokenError}</ErrorMessage>}
+          <ValidationButton
+            onClick={handleCheckValidate}
+            disabled={tokenConfirmed} // tokenConfirmed 값에 따라 버튼 비활성화 설정
+            tokenConfirmed={tokenConfirmed} // tokenConfirmed 값을 prop으로 전달
+          >
+            {tokenConfirmed ? "확인 완료" : "유효성 확인"}
+          </ValidationButton>
         </InputContainer>
-        <ValidationButton
-          onClick={handleCheckValidate}
-          disabled={tokenConfirmed} // tokenConfirmed 값에 따라 버튼 비활성화 설정
-          tokenConfirmed={tokenConfirmed} // tokenConfirmed 값을 prop으로 전달
-        >
-          {tokenConfirmed ? "확인 완료" : "유효성 확인"}
-        </ValidationButton>
+        <ErrorMessage>{tokenError}</ErrorMessage>
 
         <TokenText>
           | 아이디 <span>*</span>{" "}
@@ -228,14 +228,14 @@ const SignUp = () => {
             idConfirmed={idConfirmed}
             idError={idError}
           />
-          {idError && <ErrorMessage>{idError}</ErrorMessage>}
+          <DuplicationButton
+            onClick={handleCheckDuplicate}
+            disabled={idConfirmed} // idConfirmed 값에 따라 버튼 비활성화 설정
+            idConfirmed={idConfirmed}>
+            중복 확인
+          </DuplicationButton>
         </InputContainer>
-        <DuplicationButton
-          onClick={handleCheckDuplicate}
-          disabled={idConfirmed} // idConfirmed 값에 따라 버튼 비활성화 설정
-          idConfirmed={idConfirmed}>
-          중복 확인
-        </DuplicationButton>
+        {idError && <ErrorMessage>{idError}</ErrorMessage>}
 
         <TokenText>
           | 비밀번호 <span>*</span>
@@ -249,8 +249,8 @@ const SignUp = () => {
             passwordError={!!passwordError}
             passwordConfirmed={passwordConfirmed}
           />
-          {passwordError && <ErrorMessage>{passwordError}</ErrorMessage>}
         </InputContainer>
+        {passwordError && <ErrorMessage>{passwordError}</ErrorMessage>}
 
         <TokenText>
           | 비밀번호 확인 <span>*</span>
@@ -361,7 +361,7 @@ const FormContainer = styled.div`
   position: relative;
 `;
 const InputBox = styled.input`
-  width: 53rem;
+  width: 55rem;
   height: 4rem;
   border-radius: 0.3125rem;
   border: ${({
@@ -380,7 +380,6 @@ const InputBox = styled.input`
       : "1px solid #d2d7e1"};
   background-color: #ffffff;
   margin-left: 15rem;
-  padding-right: 8rem;
   text-indent: 1.2rem;
   font-size: 1.7rem;
   color: ${({ tokenConfirmed, idConfirmed }) =>
@@ -406,8 +405,7 @@ const ValidationButton = styled.button`
   width: 8rem;
   height: 3.6rem;
   position: absolute;
-  right: 11rem;
-  top: 8rem;
+  right: 1rem;
 `;
 const SignUpButtonContainer = styled.div`
   display: flex;
@@ -432,8 +430,7 @@ const DuplicationButton = styled.button`
   width: 8rem;
   height: 3.6rem;
   position: absolute;
-  right: 11rem;
-  top: 20.6rem;
+  right: 1rem;
 `;
 const ErrorMessage = styled.span`
   color: #e86056;
@@ -445,4 +442,7 @@ const ErrorMessage = styled.span`
 `;
 const InputContainer = styled.div`
   position: relative;
+  display: flex;
+  align-items: center;
+  max-width: 70rem;
 `;
