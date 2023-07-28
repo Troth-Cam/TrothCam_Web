@@ -210,7 +210,7 @@ const Main = () => {
   const [isAllButtonClicked, setIsAllButtonClicked] = useState(false);
   const [isNewButtonClicked, setIsNewButtonClicked] = useState(true);
   const [isTopButtonClick, setIsTopButtonClicked] = useState(true);
-
+  const [isLatestButtonClick, setIsButtonClicked] = useState(true);
   const rankList = [
     {"Name": "이름1", "price": "17000", "owner": "시니"},
     {"Name": "이름2", "price": "17000", "owner": "시니현"},
@@ -234,13 +234,13 @@ const Main = () => {
   ];
 
   const clickAllBtn = () => {
-    setIsAllButtonClicked(!isAllButtonClicked);
-    setIsNewButtonClicked(!isNewButtonClicked);
+    setIsAllButtonClicked(!true);
+    setIsNewButtonClicked(!false);
   };
 
   const clickNewBtn = () => {
-    setIsNewButtonClicked(!isNewButtonClicked);
-    setIsAllButtonClicked(!isAllButtonClicked);
+    setIsNewButtonClicked(!true);
+    setIsAllButtonClicked(!false);
   };
 
   const clickTopButton = () => {
@@ -319,7 +319,7 @@ const Main = () => {
           <RankButton clicked={isTopButtonClick} />
           <TextDiv>
             <TopDiv clicked={isTopButtonClick}>Top</TopDiv>
-            <LatestDiv clicked={!isTopButtonClick}>Latest</LatestDiv>
+            <LatestDiv clicked={isLatestButtonClick}>Latest</LatestDiv>
           </TextDiv>
         </RankButtonDiv>
         <div>
