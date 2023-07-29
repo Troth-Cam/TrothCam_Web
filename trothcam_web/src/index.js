@@ -10,6 +10,7 @@ import SignUp from "./components/SignUp";
 import reportWebVitals from "./reportWebVitals";
 import Loading from "./components/Loading";
 import RegisterFinish from "./components/RegsterFinish";
+import Login from "./components/Login";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
       { path: "/signup", element: <SignUp /> },
       { path: "/loading", element: <Loading /> },
       { path: "/registerfinish", element: <RegisterFinish /> },
+      { path: "/login", element: <Login /> },
     ],
   },
 ]);
