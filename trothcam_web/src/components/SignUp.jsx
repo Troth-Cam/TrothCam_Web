@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import SearchBox from "./header/SearchBox";
-import Axios from "axios";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
@@ -19,23 +19,35 @@ const SignUp = () => {
   const [passwordCheckError, setPasswordCheckError] = useState("");
   const [name, setName] = useState("");
   const [nameError, setNameError] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleCheckValidate = () => {
+  const handleCheckValidate = async (token) => {
     //유효성 확인 로직
     if (token.length >= 1) {
-      Axios.post("/api/validateToken", { token })
-        .then((response) => {
-          // 토큰이 유효한 경우
+      const url = "/auth/validate-token";
+
+      const requestBody = {
+        webToken: token,
+      };
+
+      try {
+        const response = await axios.post(url, requestBody);
+
+        const responseData = response.data;
+        if (responseData.isSuccess) {
           setTokenConfirmed(true);
           setTokenError("");
-        })
-        .catch((error) => {
-          // 토큰이 유효하지 않거나 에러가 발생한 경우
+          console.log("이메일: ", responseData.result.email);
+        } else {
           setTokenConfirmed(false);
-          setTokenError("유효하지 않은 token입니다."); // 에러 메시지를 설정합니다.
-        });
+          setTokenError("유효하지 않은 token입니다.");
+        }
+      } catch (error) {
+        console.log("요청에 실패하였습니다.", error);
+      }
     }
   };
 
@@ -55,16 +67,26 @@ const SignUp = () => {
         return;
       }
 
-      Axios.post("/api/checkDuplicateId", { id })
+      const url = "/auth/check-id";
+      const requestBody = { id };
+
+      axios
+        .post(url, requestBody)
         .then((response) => {
-          // 중복된 아이디인 경우
-          setIdConfirmed(false);
-          setIdError("중복된 아이디입니다.");
+          const responseData = response.data;
+          if (responseData.isSuccess && responseData.result.duplicated) {
+            // 중복된 아이디인 경우
+            setIdConfirmed(false);
+            setIdError("중복된 아이디입니다.");
+          } else {
+            // 중복되지 않은 아이디인 경우
+            setIdConfirmed(true);
+            setIdError("");
+          }
         })
         .catch((error) => {
-          // 중복되지 않은 아이디인 경우
-          setIdConfirmed(true);
-          setIdError("");
+          // 요청 실패
+          console.log("요청에 실패하였습니다.", error);
         });
     }
   };
@@ -119,6 +141,14 @@ const SignUp = () => {
     setName(event.target.value);
   };
 
+  const handlePhoneChange = (event) => {
+    setPhone(event.target.value);
+  };
+
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
+
   const handleNextButtonClick = () => {
     //각 필드 검사
     if (!tokenConfirmed) {
@@ -160,15 +190,28 @@ const SignUp = () => {
     ) {
       setLoading(true);
 
-      Axios.post("/api/signup", {
-        token,
-        id,
-        password,
+      const url = "/auth/signup";
+      const requestBody = {
+        webToken: token,
+        webId: id,
+        webPassword: password,
         name,
-      })
+        phone,
+        email,
+      };
+
+      axios
+        .post(url, requestBody)
         .then((response) => {
           setLoading(false);
-          navigate("/registerfinish");
+          const responseData = response.data;
+          if (responseData.isSuccess) {
+            // 회원 가입 성공 시 registerfinish 페이지로 이동
+            navigate("/registerfinish");
+          } else {
+            // 요청은 성공하였지만, 서버 측에서 에러 메시지를 전달한 경우
+            alert(responseData.message);
+          }
         })
         .catch((error) => {
           setLoading(false);
@@ -176,7 +219,6 @@ const SignUp = () => {
         });
     }
   };
-
   useEffect(() => {
     if (loading) {
       navigate("/loading");
@@ -279,10 +321,19 @@ const SignUp = () => {
         {nameError && <ErrorMessage>{nameError}</ErrorMessage>}
 
         <TokenText>| 전화번호</TokenText>
-        <InputBox placeholder="010-0000-0000" type="text" />
+        <InputBox
+          placeholder="010-0000-0000"
+          type="text"
+          value={phone}
+          onChange={handlePhoneChange}
+        />
 
         <TokenText>| 이메일</TokenText>
-        <InputBox placeholder="email@example.com" type="email"></InputBox>
+        <InputBox
+          placeholder="email@example.com"
+          type="email"
+          value={email}
+          onChange={handleEmailChange}></InputBox>
       </FormContainer>
       <SignUpButtonContainer>
         <SignUpButton onClick={handleNextButtonClick}>다음</SignUpButton>

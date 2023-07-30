@@ -1,13 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as Logo } from "../assets/logo2.svg";
 import SearchBox from "./header/SearchBox";
 import Footer from "./Footer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
+  const [id, setId] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
   const handleLogin = () => {
-    console.log("Login button clicked!");
+    const url = "/auth/login";
+    const requestBody = {
+      id,
+      password,
+    };
+
+    axios
+      .post(url, requestBody)
+      .then((response) => {
+        const responseData = response.data;
+        if (responseData.isSuccess) {
+          // 로그인 성공 시 토큰을 저장하고 다음 페이지로 이동
+          const accessToken = responseData.result.accessToken;
+          localStorage.setItem("accessToken", accessToken);
+          navigate("/main");
+        } else {
+          alert("잘못된 아이디 혹은 비밀번호입니다.");
+        }
+      })
+      .catch((error) => {
+        alert("서버와 통신 중 오류가 발생했습니다.");
+      });
   };
 
   return (
@@ -20,8 +46,18 @@ const Login = () => {
         </LogoContainer>
       </LoginContent>
       <InputContainer>
-        <Input type="text" placeholder="ID" />
-        <Input type="password" placeholder="Password" />
+        <Input
+          type="text"
+          placeholder="ID"
+          value={id}
+          onChange={(e) => setId(e.target.value)}
+        />
+        <Input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
         <LoginButton onClick={handleLogin}>로그인</LoginButton>
         <FindCredentialsText>아이디 | 비밀번호 찾기</FindCredentialsText>
       </InputContainer>
