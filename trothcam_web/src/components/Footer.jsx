@@ -8,21 +8,30 @@ import PhoneIcon from './img/icon_phone.svg';
 
 
 const FooterContainer=styled.footer`
-    position:relative;
+   
+
     width: 1440px;
     height: 237px;
     
     display: flex;
-  
-    align-items:center;
+    align-items: flex-start;
+    flex-direction: column;
+    
+    
+
     background-color:#E8EAEF;
+
 
 `;
 
-const LineContainer = styled.div`
+const LineContainer = styled.div` 
+    position:relative;
+    display: flex;
+    justify-content: space-around;
+    align-items:center;
     
-    justify-content: space-between; // 아이템 사이에 공간 분배
-    width: 125px; 
+    width: 100%;
+
     height:140px;
     font-family: Inter;
     font-size: 15px;
@@ -32,77 +41,114 @@ const LineContainer = styled.div`
   
     color: #777777DD;
 
-
-`;
-
-const AboutTeam = styled.span`
-    position:absolute;
-    width: 125px;
-    height: 15px;
-   
-    left: 68px;
-
-
-`;
-
-const Inquiry = styled.span`
-    position:absolute;
     
-    left: 440px;
 `;
 
-const Info = styled.span`
-    position:absolute;
+const StyledComponent = styled.span`
+    margin: 0 vw;
+    font-size: 15px;
 
+    @media (max-width: 768px) {
+        font-size: 7px;
   
-    left:711px;
+        
+    }
+
+    @media (max-width: 576px) {
+        font-size: 5px;
+
+    }
 `;
 
-const Contact = styled.span`
-    position:absolute;
 
-    left:1035px;
+const AboutTeam = styled(StyledComponent)`
+ 
+`;
+
+const Inquiry = styled(StyledComponent)`
+ 
+`;
+
+const Info = styled(StyledComponent)`
+
+ 
+`;
+
+const Contact = styled(StyledComponent)`
+  
 `;
 
 const CircleButton = styled.button`
-    position:absolute;
  
-    left:0px;
+    margin-top:12px;
+    margin-left:4px;
     width: 45px;
     height: 45px;
-    top:11px;
+    
     background: #BCBDC1;
     border-radius: 50%;
     border:none;
-    
 
+    @media (max-width: 768px) {
+      width: 30px;
+      height: 30px;
+   }
+
+    @media (max-width: 576px) {
+      width: 18px;
+      height: 18px;
+
+    }
+
+`;
+
+const ResponsiveImage = styled.img`
+  @media (max-width: 768px) {
+    width: 18px;
+    height: 18px;
+  }
+
+  @media (max-width: 576px) {
+    margin-left:-2px;
+    width: 10px;
+    height: 10px;
+  }
 `;
 
 
 
 const Paragraph = styled.p`
-    position: absolute;
-    /* 위치를 다르게 설정 */
-   
+    //position: absolute;
     
+   
+
     white-space: nowrap;
     color:black;
     font-family: Inter;
     font-size: 13px;
     font-weight: 400;
-    line-height: 22px;
+    line-height: 10px;
     letter-spacing: 0em;
     text-align: left;
 
-  
+    @media (max-width: 768px) {
+      font-size: 7px;
+      
+      
+  }
+
+  @media (max-width: 576px) {
+      font-size: 5px;
+    
+  }
+ 
+    
 `;
 
 
 const Address = styled.span`
-    position:absolute;
-    top: 145px;
-    left: 68px;
-
+    
+  
     font-family: Inter;
     font-size: 15px;
     font-weight: 400;
@@ -111,6 +157,7 @@ const Address = styled.span`
     text-align: left;
     color: #777777DD;
 
+    
 
 `;
 
@@ -144,23 +191,30 @@ const Footer = () => {
        
         </Info>
         <Contact>
-          CONTACT WITH US
-          <CircleButton style={{top: '30px', left:'0px'}} onClick={() => window.location.href='https://twitter.com'}>
-              <img src={TwitterIcon} style={{width: '23px', height: '20px'}} alt="Twitter" /> 
-          </CircleButton>
-          <CircleButton style={{top: '30px', left:'55px'}} onClick={() => window.location.href='https://instagram.com'}>
-              <img src={InstaIcon} style={{width: '32px', height: '32px'}} alt="Instagram" /> 
-          </CircleButton>
-          <CircleButton style={{top: '30px', left:'110px'}} onClick={() => window.location.href='mailto:info@yourwebsite.com'}>
-              <img src={EmailIcon} style={{width: '23px', height: '20px'}} alt="Email" /> 
-          </CircleButton>
-          <CircleButton style={{top: '30px', left:'165px'}} onClick={() => window.location.href='tel:+1234567890'}>
-              <img src={PhoneIcon} style={{width: '18px', height: '28px'}} alt="Phone" /> 
-          </CircleButton>
-      </Contact>
+            CONTACT WITH US
+            <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%'}}>
+
+            <CircleButton  onClick={() => window.location.href='https://twitter.com'}>
+                <ResponsiveImage src={TwitterIcon}  alt="Twitter" /> 
+            </CircleButton>
+            <CircleButton  onClick={() => window.location.href='https://instagram.com'}>
+                <ResponsiveImage src={InstaIcon} alt="Instagram" /> 
+            </CircleButton>
+            <CircleButton  onClick={() => window.location.href='mailto:info@yourwebsite.com'}>
+                <ResponsiveImage src={EmailIcon} alt="Email" /> 
+            </CircleButton>
+            <CircleButton  onClick={() => window.location.href='tel:+1234567890'}>
+                <ResponsiveImage src={PhoneIcon}  alt="Phone" /> 
+            </CircleButton>
+          </div>
+        </Contact>
 
       </LineContainer>
-      <Address>ADDRESS</Address>
+
+      <LineContainer>
+        <Address>ADDRESS</Address>
+      </LineContainer>
+      
     </FooterContainer>
   );
 };

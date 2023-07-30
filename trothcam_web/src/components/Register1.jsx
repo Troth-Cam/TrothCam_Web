@@ -10,102 +10,164 @@ import agreepic3 from './img/agreepic3.png';
 
 
 const PageContainer = styled.div`
-    position:relative;
-    width: 1440px;
-    height: 2243px;
-    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+   
 `;
 
 const FooterContainer = styled.footer`
-    position: absolute;
-    width: 1440px;
-    height: 237px;
-    bottom: 0; 
     display: flex;
+    justify-content: center;
+    margin-top:10%;
+    height: 237px;
     align-items: center;
     background-color: #E8EAEF;
 `;
 
+
+
+
 const Title = styled.h1`
-    position: absolute;
-    width: 205px;
-    height: 71px;
-    top: 101px;
-    left: 85px;
+    
     font-family: Inter;
     font-size: 40px;
     font-weight: 600;
     line-height: 48px;
     letter-spacing: 0em;
-    text-align: left;
-
+    padding-left: 8%;
+    
+    
+    @media (max-width: 1439px) { 
+        font-size: 30px;
+        padding-left: 10%;
+    }
+    
+    @media (max-width: 950px) {
+        font-size: 20px;
+        padding-left: 10%;
+    }
+   
+   
 `;
 
 const Line = styled.div`
-    position: absolute;
+   
     width: 1250px;
-    top: 192px;
-    left: 85px;
-    border: 3px;
-    angle: -0 deg;
+    margin:auto;
     border: 3px solid #000000;
+
+    @media (max-width: 1439px) {
+        width:80%;
+        border: 2px solid #000000;
+        margin-top:-10px;
+    }
+    
+    @media (max-width: 950px) {
+        width:80%;
+        border: 1px solid #000000;
+        margin-top:-20px;
+    }
 
 `;
 
 const Agree1 = styled.div`
-    position: absolute;
-    width: 252px;
-    height: 34px;
-    top: 240px;
-    left: 139px;
+    
     font-family: Inter;
     font-size: 28px;
     font-weight: 400;
     line-height: 34px;
     letter-spacing: 0em;
     text-align: left;
+    padding-left: 10%;
+    margin-top:2%;
 
-
+    @media (max-width: 1439px) { 
+        font-size: 22px;
+        padding-left: 12%;
+    }
+    
+    @media (max-width: 950px) {
+        font-size: 15px;
+    }
 `;
 
 
 const Image1 = styled.img`
-    position: absolute;
+
     width: 1112px;
     max-height: 304px;
-    top: 290px;
-    left: 144px;
+    margin: auto; 
     overflow-y: auto; // 세로 스크롤
     display: block; // 필요한 경우
-
-
+    
+    @media (max-width: 1439px) {
+        width: 80%;
+    }
+    
 `;
 
+
 const Check1 = styled.div`
-    position: absolute;
+    
     width: 286px;
     height: 24px;
-    top: 612px;
-    left: 940px;
     font-family: Inter;
     font-size: 20px;
     font-weight: 400;
     line-height: 24.2px;
     letter-spacing: 0em;
-    text-align: left;
+    padding-top:2%;
+    margin-left: 66%;
 
+    @media (max-width: 1439px) { 
+        font-size: 16px;
+        margin-left: 66%;
+    }
+    
+    @media (max-width: 965px) {
+        font-size: 12px;
+        margin-left: 65%;
+    }
+    @media (max-width: 700px) {
+        font-size: 8px;
+        margin-left: 60%;
+    }
 
 `;
 
 
 
 const Checkbox1 = styled.input.attrs({ type: 'checkbox' })`
-    position: absolute;
+    
     width: 29px;
     height: 29px;
-    top: 609px;
-    left: 1220px;
+    margin-left: 86%;
+    margin-top:-24px;
     border: 1px solid #000000;
+
+    @media (max-width: 1439px) { 
+        width: 24px;
+        height: 24px;
+        margin-left: 88%;
+       
+    }
+    
+    @media (max-width: 950px) {
+        width: 18px;
+        height: 18px;
+        margin-left: 88%;
+        margin-top:-22px;
+    
+    }
+    @media (max-width: 700px) {
+        width: 15px;
+        height: 15px;
+        margin-left: 88%;
+        margin-top:-20px;
+    
+    }
+
 `;
 
 
@@ -113,151 +175,264 @@ const Checkbox1 = styled.input.attrs({ type: 'checkbox' })`
 
 
 const Agree2 = styled.div`
-    position: absolute;
-    width: 489px;
-    height: 34px;
-    top: 717px;
-    left: 141px;
     font-family: Inter;
     font-size: 28px;
     font-weight: 400;
     line-height: 34px;
     letter-spacing: 0em;
     text-align: left;
+    padding-left: 10%;
+    margin-top:2%;
 
+    @media (max-width: 1439px) { 
+        font-size: 22px;
+        padding-left: 12%;
+    }
+
+    @media (max-width: 950px) {
+        font-size: 15px;
+    }
 
 `;
 
 
 const Image2 = styled.img`
-    position: absolute;
-    width: 1107px;
-    height: 304px;
-    top: 772px;
-    left: 149px;
+    width: 1112px;
+    max-height: 304px;
+    margin: auto; 
+    overflow-y: auto; // 세로 스크롤
+    display: block; // 필요한 경우
 
-
+    @media (max-width: 1439px) {
+        width: 80%;
+    }
+    
 `;
 
 const Check2 = styled.div`
-    position: absolute;
+
     width: 286px;
     height: 24px;
-    top: 1112px;
-    left: 940px;
     font-family: Inter;
     font-size: 20px;
     font-weight: 400;
     line-height: 24.2px;
     letter-spacing: 0em;
-    text-align: left;
+    padding-top:2%;
+    margin-left: 66%;
 
+    @media (max-width: 1439px) { 
+        font-size: 16px;
+        margin-left: 66%;
+    }
+
+    @media (max-width: 965px) {
+        font-size: 12px;
+        margin-left: 65%;
+    }
+    @media (max-width: 700px) {
+        font-size: 8px;
+        margin-left: 60%;
+    }
 
 `;
+
+
 
 
 
 const Checkbox2 = styled.input.attrs({ type: 'checkbox' })`
-    position: absolute;
     width: 29px;
     height: 29px;
-    top: 1109px;
-    left: 1220px;
+    margin-left: 86%;
+    margin-top:-24px;
     border: 1px solid #000000;
+
+    @media (max-width: 1439px) { 
+        width: 24px;
+        height: 24px;
+        margin-left: 88%;
+    
+    }
+
+    @media (max-width: 950px) {
+        width: 18px;
+        height: 18px;
+        margin-left: 88%;
+        margin-top:-22px;
+
+    }
+    @media (max-width: 700px) {
+        width: 15px;
+        height: 15px;
+        margin-left: 88%;
+        margin-top:-20px;
+
+    }
 `;
+
 
 
 
 
 const Agree3 = styled.div`
-    position: absolute;
-    width: 443px;
-    height: 34px;
-    top: 1196px;
-    left: 141px;
     font-family: Inter;
     font-size: 28px;
     font-weight: 400;
     line-height: 34px;
     letter-spacing: 0em;
     text-align: left;
+    padding-left: 10%;
+    margin-top:2%;
 
+    @media (max-width: 1439px) { 
+        font-size: 22px;
+        padding-left: 12%;
+    }
+
+    @media (max-width: 950px) {
+        font-size: 15px;
+    }
 
 `;
 
 
 const Image3 = styled.img`
-    position: absolute;
+    
     width: 1112px;
-    height: 320px;
-    top: 1253px;
-    left: 154px;
+    max-height: 304px;
+    margin: auto; 
+    overflow-y: auto; // 세로 스크롤
+    display: block; // 필요한 경우
 
-
+    @media (max-width: 1439px) {
+        width: 80%;
+    }
 `;
 
 const Check3 = styled.div`
-    position: absolute;
+    
     width: 286px;
     height: 24px;
-    top: 1640px;
-    left: 940px;
     font-family: Inter;
     font-size: 20px;
     font-weight: 400;
-    line-height: 24px;
+    line-height: 24.2px;
     letter-spacing: 0em;
-    text-align: left;
+    padding-top:2%;
+    margin-left: 66%;
 
+    @media (max-width: 1439px) { 
+        font-size: 16px;
+        margin-left: 66%;
+    }
 
+    @media (max-width: 965px) {
+        font-size: 12px;
+        margin-left: 65%;
+    }
+    @media (max-width: 700px) {
+        font-size: 8px;
+        margin-left: 60%;
+    }
 `;
 
 
 
 const Checkbox3 = styled.input.attrs({ type: 'checkbox' })`
-    position: absolute;
     width: 29px;
     height: 29px;
-    top: 1637px;
-    left: 1220px;
+    margin-left: 86%;
+    margin-top:-24px;
     border: 1px solid #000000;
+
+    @media (max-width: 1439px) { 
+        width: 24px;
+        height: 24px;
+        margin-left: 88%;
+    }
+
+    @media (max-width: 950px) {
+        width: 18px;
+        height: 18px;
+        margin-left: 88%;
+        margin-top:-22px;
+    }
+    @media (max-width: 700px) {
+        width: 15px;
+        height: 15px;
+        margin-left: 88%;
+        margin-top:-20px;
+    }
 `;
 
 const Allagree = styled.div`
-    position: absolute;
-    width: 117px;
+    
+    width: 286px;
     height: 24px;
-    top: 1708px;
-    left: 1097px;
     font-family: Inter;
     font-size: 20px;
     font-weight: 400;
-    line-height: 24px;
+    line-height: 24.2px;
     letter-spacing: 0em;
-    text-align: right;
+    padding-top:2%;
+    margin-left: 77%;
+
+    @media (max-width: 1439px) { 
+        font-size: 16px;
+        margin-left: 77%;
+    }
+
+    @media (max-width: 965px) {
+        font-size: 12px;
+        margin-left: 77%;
+    }
+    @media (max-width: 700px) {
+        font-size: 8px;
+        margin-left: 75%;
+    }
 
 `;
 
 
 
 const Checkbox4 = styled.input.attrs({ type: 'checkbox' })`
-    position: absolute;
     width: 29px;
     height: 29px;
-    top: 1705px;
-    left: 1220px;
+    margin-left: 86%;
+    margin-top:-24px;
     border: 1px solid #000000;
+
+    @media (max-width: 1439px) { 
+        width: 24px;
+        height: 24px;
+        margin-left: 88%;
+    }
+
+    @media (max-width: 950px) {
+        width: 18px;
+        height: 18px;
+        margin-left: 88%;
+        margin-top:-22px;
+
+    }
+    @media (max-width: 700px) {
+        width: 15px;
+        height: 15px;
+        margin-left: 88%;
+        margin-top:-20px;
+    }
 `;
 
 const Button = styled.button`
-    position: absolute;
-    width: 107px;
-    height: 64px;
-    top: 1792px;
-    left: 680px;
+  
+    width: clamp(50px, 10vw, 107px);
+    height: clamp(30px, 6vh, 64px);
+    font-size: clamp(12px, 1.5vw, 28px);
+    
+    margin:auto;
     border-radius: 18px;
     font-family: Inter;
-    font-size: 28px;
     font-weight: 400;
     line-height: 34px;
     letter-spacing: 0em;
@@ -265,13 +440,8 @@ const Button = styled.button`
     color: #FFFFFF;
     border:none;
 
-    background: #5980EF;
-
     color: ${props => (props.enabled ? '#000000' : '#ffffff')};
     background-color: ${props => (props.enabled ? '#5980EF': '#D9D9D9')};
-    
-
-  
 
 `;
 
@@ -328,11 +498,12 @@ const Register1 = () => {
             <SearchBar></SearchBar>
             <Title>약관 동의</Title>
             <Line></Line>
+       
             <Agree1>| 이용약관 동의(필수)</Agree1>
             <Image1 src={agreepic1} alt="agreepic1" />
             <Check1>위 내용을 확인했으며, 동의합니다.</Check1>
             <Checkbox1 checked={checked1} onChange={() => setChecked1(!checked1)} />
-
+     
             <Agree2>| 개인정보 수집 및 이용에 관한 동의(필수)</Agree2>
             <Image2 src={agreepic2} alt="agreepic2" />
             <Check2>위 내용을 확인했으며, 동의합니다.</Check2>
@@ -347,10 +518,11 @@ const Register1 = () => {
             <Checkbox4 checked={checked4} onChange={() => handleCheckAll(!checked4)} />
             
             <Button enabled={isButtonEnabled} onClick={handleSubmit}>다음</Button>
+            
             <FooterContainer>
               <Footer />
             </FooterContainer>
-        </PageContainer>
+        </PageContainer> 
     );
 }
 

@@ -11,7 +11,9 @@ import reportWebVitals from "./reportWebVitals";
 import Loading from "./components/Loading";
 import RegisterFinish from "./components/RegsterFinish";
 import Login from "./components/Login";
-
+import ProductDetail from "./components/ProductDetail";
+import DetailOthers from "./components/Detail_others";
+import DetailMe from "./components/Detail_me";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -23,8 +25,11 @@ const router = createBrowserRouter([
       { path: "/register1", element: <Register1 /> },
       { path: "/signup", element: <SignUp /> },
       { path: "/loading", element: <Loading /> },
-      { path: "/registerfinish", element: <RegisterFinish /> },
       { path: "/login", element: <Login /> },
+      { path: "/registerfinish", element: <RegisterFinish />},
+      { path: "/productdetail", element: <ProductDetail/>},
+      { path: "/detail_others", element: <DetailOthers/> },
+      { path: "/detail_me", element: <DetailMe/> },
     ],
   },
 ]);
