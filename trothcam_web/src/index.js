@@ -11,6 +11,7 @@ import reportWebVitals from "./reportWebVitals";
 import Loading from "./components/Loading";
 import RegisterFinish from "./components/RegsterFinish";
 import Login from "./components/Login";
+import Validation from "./components/Validation";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,7 @@ const router = createBrowserRouter([
       { path: "/loading", element: <Loading /> },
       { path: "/registerfinish", element: <RegisterFinish /> },
       { path: "/login", element: <Login /> },
+      { path: "/validation", element: <Validation /> },
     ],
   },
 ]);
