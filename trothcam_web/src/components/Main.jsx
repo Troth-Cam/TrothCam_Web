@@ -185,13 +185,32 @@ const OptionIconImg = styled.img`
   height: 20px;
   margin-right: 10px;
 `;
+const Container = styled.div`
+
+width: 100%;
+overflow-x: scroll;
+white-space: nowrap;
+margin-left: auto;
+margin-right: auto;
+
+/* 스크롤바 스타일 */
+&::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+/* 스크롤바 thumb 스타일 */
+&::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+`;
 
 const Main = () => {
 
   const [isAllButtonClicked, setIsAllButtonClicked] = useState(false);
   const [isNewButtonClicked, setIsNewButtonClicked] = useState(true);
   const [isTopButtonClick, setIsTopButtonClicked] = useState(true);
-
+  const [isLatestButtonClick, setIsButtonClicked] = useState(true);
   const rankList = [
     {"Name": "이름1", "price": "17000", "owner": "시니"},
     {"Name": "이름2", "price": "17000", "owner": "시니현"},
@@ -215,13 +234,13 @@ const Main = () => {
   ];
 
   const clickAllBtn = () => {
-    setIsAllButtonClicked(!isAllButtonClicked);
-    setIsNewButtonClicked(!isNewButtonClicked);
+    setIsAllButtonClicked(!true);
+    setIsNewButtonClicked(!false);
   };
 
   const clickNewBtn = () => {
-    setIsNewButtonClicked(!isNewButtonClicked);
-    setIsAllButtonClicked(!isAllButtonClicked);
+    setIsNewButtonClicked(!true);
+    setIsAllButtonClicked(!false);
   };
 
   const clickTopButton = () => {
@@ -230,6 +249,7 @@ const Main = () => {
 
   const SwiperContainer = styled(Swiper)`
     height: 750px;
+    width: 100%
     & .swiper-pagination-bullet {
         background: #2B2B2B !important;
     }
@@ -277,7 +297,6 @@ const Main = () => {
       <SearchBar/>
       <SwiperContainer
         className="banner"
-        spaceBetween={50}
         slidesPerView={1}
         pagination={{ clickable: true }}
         autoplay={{ delay: 5000 }}
@@ -300,7 +319,7 @@ const Main = () => {
           <RankButton clicked={isTopButtonClick} />
           <TextDiv>
             <TopDiv clicked={isTopButtonClick}>Top</TopDiv>
-            <LatestDiv clicked={!isTopButtonClick}>Latest</LatestDiv>
+            <LatestDiv clicked={isLatestButtonClick}>Latest</LatestDiv>
           </TextDiv>
         </RankButtonDiv>
         <div>
@@ -309,7 +328,9 @@ const Main = () => {
       </ButtonContainer>
       <RankBoard rankList={rankList} />
       <RecentDiv>최근 거래 목록</RecentDiv>
-      <PhotoBoard photoList={photoList} />
+      <Container>
+        <PhotoBoard photoList={photoList} />
+      </Container>
       <FilterButtonDiv>
         <FilterImg src={FilterIcon} />
         <FilterButton clicked={isAllButtonClicked} onClick={clickAllBtn}>ALL</FilterButton>
@@ -344,7 +365,9 @@ const Main = () => {
           />
         </SelectContainer>
       </FilterButtonDiv>
-      <PhotoBoard photoList={photoList}/>
+      <Container>
+        <PhotoBoard photoList={photoList}/>
+      </Container>
       <div style={{marginTop:"483px"}}/>
       <Footer/>
     </div>
