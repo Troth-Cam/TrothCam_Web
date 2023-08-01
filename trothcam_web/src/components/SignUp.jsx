@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import SearchBox from "./header/SearchBox";
+import Validation from "./Validation";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -27,27 +28,28 @@ const SignUp = () => {
   const handleCheckValidate = async (token) => {
     //유효성 확인 로직
     if (token.length >= 1) {
-      const url = "/auth/validate-token";
+      navigate("/validation");
+      //   const url = "/auth/validate-token";
 
-      const requestBody = {
-        webToken: token,
-      };
+      //   const requestBody = {
+      //     webToken: token,
+      //   };
 
-      try {
-        const response = await axios.post(url, requestBody);
-
-        const responseData = response.data;
-        if (responseData.isSuccess) {
-          setTokenConfirmed(true);
-          setTokenError("");
-          console.log("이메일: ", responseData.result.email);
-        } else {
-          setTokenConfirmed(false);
-          setTokenError("유효하지 않은 token입니다.");
-        }
-      } catch (error) {
-        console.log("요청에 실패하였습니다.", error);
-      }
+      //   try {
+      //     const response = await axios.post(url, requestBody);
+      //     const responseData = response.data;
+      //     if (responseData.isSuccess) {
+      //       setTokenConfirmed(true);
+      //       setTokenError("");
+      //       console.log("이메일: ", responseData.result.email);
+      //       navigate("/validation");
+      //     } else {
+      //       setTokenConfirmed(false);
+      //       setTokenError("유효하지 않은 token입니다.");
+      //     }
+      //   } catch (error) {
+      //     console.log("요청에 실패하였습니다.", error);
+      //   }
     }
   };
 
