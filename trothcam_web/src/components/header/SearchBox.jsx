@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ReactComponent as Logo } from "../../assets/logo.svg";
 import { ReactComponent as SearchIcon } from "../../assets/search.svg";
@@ -37,7 +37,7 @@ const SearchBox = () => {
 
       <LoginButton onClick={handleLoginClick}>Login</LoginButton>
       <Link to="/Register">
-      <SignUpButton onClick={handleSignUpClick}>Sign up</SignUpButton>
+        <SignUpButton onClick={handleSignUpClick}>Sign up</SignUpButton>
       </Link>
     </SearchBoxContainer>
   );
@@ -70,6 +70,7 @@ const SearchBoxInput = styled.input`
   border: none;
   width: 100%;
   padding-left: 1.2rem;
+  min-width: 15rem;
   outline: none;
   &::placeholder {
     color: ${({ isInputFocused }) =>
@@ -79,8 +80,9 @@ const SearchBoxInput = styled.input`
   }
 `;
 const LoginButton = styled.button`
-  margin-left: 42rem;
+  margin-left: 30rem;
   width: 9.3rem;
+  min-width: 9.3rem;
   height: 3rem;
   border-radius: 0.5rem;
   border: 1.5px solid #5980ef;
