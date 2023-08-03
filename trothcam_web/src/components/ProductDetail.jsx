@@ -1,7 +1,13 @@
 import styled from "styled-components";
+import React, { useState } from 'react';
 import SearchBox from "./header/SearchBox";
 import Footer from './Footer';
 import smileImg from './img/smileImg.svg';
+import heartIcon from './img/icon_heart.png';
+import PersonIcon from './img/person_icon.png';
+import DownloadIcon from './img/download_icon.png';
+import blackheartIcon from './img/blackheart_icon.png';
+import eyeIcon from './img/eye_icon.png';
 import chertImg from './img/chert.png';
 import pd1 from './img/pd1.png';
 import pd2 from './img/pd2.png';
@@ -13,18 +19,35 @@ import pd6 from './img/pd6.png';
 
 const ProductDetail = () => {
 
-    
+    const [showModal, setShowModal] = useState(false);
+
+    const openModal = () => {
+        setShowModal(true);
+    };
+
+    const closeModal = () => {
+        setShowModal(false);
+    };
+
+    const Modal = ({ image, onClose }) => (
+        <ModalBackdrop onClick={onClose}>
+          <ModalContent src={image} onClick={(e) => e.stopPropagation()} />
+        </ModalBackdrop>
+      );
+
+
     return (
         <Container>
             <SearchBox></SearchBox>
             <SubContainer>
                 <Col1>
                     <ImgDiv>
-                        <StyledImage src={smileImg} alt="smileImg" />
+                        <StyledImage src={smileImg} alt="smileImg" onClick={openModal}  />
+                        {showModal && <Modal image={smileImg} onClose={closeModal} />}
                         <Text1>현재 소유자</Text1>
                         <Text2>원작자</Text2>
                     </ImgDiv>
-
+                   
                     <Detail1>
                         <Pd1 src={pd1} alt="pd1" />
                         <Pd1Text>상세정보</Pd1Text>
@@ -48,14 +71,23 @@ const ProductDetail = () => {
 
 
 
-                <Col1>
+                <Col2>
                     <Product>Product Detail</Product>
                     <TextContainer>
                         <Title1>Smile</Title1>
                         <Title2>#12345</Title2>
+                        <HeartImg src={heartIcon} alt="heartIcon" />
                     </TextContainer>
                     <InfoContainer>
-                     <Info>downloads</Info>
+                        <DownloadImg src={DownloadIcon} alt="DownloadIcon"/>
+                        <Info1> 13 downloads</Info1>
+                        <EyeImg src={eyeIcon} alt="eyeIcon"/>
+                        <Info2> 39 views</Info2>
+                        <BlackheartImg src={blackheartIcon} alt="blackheartIcon"/>
+                        <Info3> 5 likes</Info3>
+                        <PersonImg src={PersonIcon} alt="PersonIcon"/>
+                        <Info4>  3 followers</Info4>
+
                     </InfoContainer>
                   
                     <Detail2>
@@ -76,7 +108,7 @@ const ProductDetail = () => {
 
 
                     </Detail3>
-                </Col1>
+                </Col2>
             </SubContainer>
 
             <FooterContainer>
@@ -94,6 +126,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+
   
 `;
 
@@ -101,7 +134,13 @@ const SubContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items:flex-start;
+  //align-items:flex-start;
+
+  @media (max-width: 900px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+   
+  }
   
 `;
 
@@ -121,6 +160,20 @@ const Col1 = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+
+`;
+
+const Col2 = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+
+  @media (max-width: 900px) {
+    justify-content: center;
+    align-items: center;
+    margin-left:-10%
+  }
 `;
 
 const ImgDiv = styled.div`
@@ -144,6 +197,23 @@ const StyledImage = styled.img`
 
 `;
 
+const ModalBackdrop = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+
+const ModalContent = styled.img`
+  max-width: 90%;
+  max-height: 90%;
+`;
 
 const Text1 = styled.div`
     width: 123px;
@@ -369,15 +439,12 @@ const Pd6Text = styled.div`
 
 
 
-
-
-
 const Product = styled.div`
-  
     width: 234px;
     height: 40px;
     margin-top:10%;
     margin-left:10%;
+   
     font-family: Inria Sans;
     font-size: 30px;
     font-weight: 400;
@@ -385,7 +452,6 @@ const Product = styled.div`
     letter-spacing: 0em;
     text-align: left;
     color: #5980EF;
-
 
 `;
 
@@ -431,19 +497,29 @@ const Title2 = styled.div`
     color: #222222;
 
 `;
+const HeartImg = styled.img`
+    width: 41.63045120239258px;
+    height: 49.58951950073242px;
+    margin-left: 370px;
+`;
+
+
 
 const InfoContainer = styled.div`
     display: flex;
-    flex-direction: column;
-    //justify-content: center;
-    //align-items: center;
-   
+    flex-direction: row;
+    align-items:center;
 
 `;
-
-const Info = styled.div`
-    margin-top:0px;
+const DownloadImg= styled.img`
+    width:30px;
+    height:30px;
     margin-left:70px;
+`;
+
+const Info1= styled.div`
+    margin-top:0px;
+    margin-left:10px;
     font-family: Inter;
     font-size: 20px;
     font-weight: 400;
@@ -451,10 +527,61 @@ const Info = styled.div`
     letter-spacing: 0em;
     text-align: left;
     color:#000000;
-
 `;
 
+const EyeImg= styled.img`
+    width:30px;
+    height:28px;
+    margin-left:40px;
+`;
 
+const Info2= styled.div`
+    margin-top:0px;
+    margin-left:10px;
+    font-family: Inter;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: left;
+    color:#000000;
+`;
+
+const BlackheartImg= styled.img`
+    width:30px;
+    height:30px;
+    margin-left:40px;
+`;
+
+const Info3= styled.div`
+    margin-top:0px;
+    margin-left:10px;
+    font-family: Inter;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: left;
+    color:#000000;
+`;
+
+const PersonImg= styled.img`
+    width:30px;
+    height:30px;
+    margin-left:40px;
+`;
+
+const Info4= styled.div`
+    margin-top:0px;
+    margin-left:10px;
+    font-family: Inter;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: left;
+    color:#000000;
+`;
 
 const Detail2 = styled.div`
     display: flex;
