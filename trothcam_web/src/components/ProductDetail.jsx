@@ -102,9 +102,35 @@ const ProductDetail = () => {
                     <Detail3>
                         <ChertImage src={chertImg} alt="chertImg"/>
                         <BuyChert>거래내역</BuyChert>
-                        <LastBuy>마지막으로 30,000KRW에 거래되었어요.</LastBuy>
+                        <LastBuy>마지막으로 <span style={{color: '#5980EF'}}>30,000KRW</span>에 거래되었어요.</LastBuy>
                         <LastBuyDate>2023년 07월 27일 01:10:33 기준</LastBuyDate>
-
+                        <BuydetailContainer>
+                            <BuyDetail>판매자</BuyDetail>
+                            <BuyDetail>구매자</BuyDetail>
+                            <BuyDetail>가격</BuyDetail>
+                            <BuyDetail marginLeft="80px">시간</BuyDetail>
+                        </BuydetailContainer>
+                        <Line />
+                        <BuydetailContainer>
+                            <BuyerDetail>온브</BuyerDetail>
+                            <BuyerDetail>블루</BuyerDetail>
+                            <BuyerDetail marginLeft="0px">30,000KRW</BuyerDetail>
+                            <BuyerDetail marginLeft="0px">2시간전</BuyerDetail>
+                        </BuydetailContainer>
+                        <Line />
+                        <BuydetailContainer>
+                            <BuyerDetail>온브</BuyerDetail>
+                            <BuyerDetail>블루</BuyerDetail>
+                            <BuyerDetail marginLeft="0px">30,000KRW</BuyerDetail>
+                            <BuyerDetail marginLeft="0px">10시간전</BuyerDetail>
+                        </BuydetailContainer>
+                        <Line />
+                        <BuydetailContainer>
+                            <BuyerDetail>온브</BuyerDetail>
+                            <BuyerDetail>블루</BuyerDetail>
+                            <BuyerDetail marginLeft="0px">30,000KRW</BuyerDetail>
+                            <BuyerDetail marginLeft="0px">1일전</BuyerDetail>
+                        </BuydetailContainer>
 
 
                     </Detail3>
@@ -532,7 +558,7 @@ const Info1= styled.div`
 const EyeImg= styled.img`
     width:30px;
     height:28px;
-    margin-left:40px;
+    margin-left:45px;
 `;
 
 const Info2= styled.div`
@@ -550,7 +576,7 @@ const Info2= styled.div`
 const BlackheartImg= styled.img`
     width:30px;
     height:30px;
-    margin-left:40px;
+    margin-left:45px;
 `;
 
 const Info3= styled.div`
@@ -568,7 +594,7 @@ const Info3= styled.div`
 const PersonImg= styled.img`
     width:30px;
     height:30px;
-    margin-left:40px;
+    margin-left:45px;
 `;
 
 const Info4= styled.div`
@@ -597,7 +623,8 @@ const Detail2 = styled.div`
 
     linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5));
     border: 1px solid #222222;
-    
+
+  
 `;
 
 const Day = styled.div`
@@ -663,8 +690,8 @@ const BuyButton = styled.button`
     letter-spacing: 0em;
     text-align: center;
     color:#ffffff;
-    
 
+    
 `;
 
 
@@ -731,3 +758,46 @@ const LastBuyDate=styled.div`
     letter-spacing: 0em;
     text-align: left;
 `;
+
+const BuydetailContainer=styled.div`
+    display: flex;
+    flex-direction: row;
+    align-text:center;
+   
+`;
+
+const BuyDetail=styled.div`
+    margin-top:40px;
+    margin-left:95px;
+    font-family: Inter;
+    font-size: 25px;
+    font-weight: 500;
+    line-height: 30px;
+    letter-spacing: 0em;
+    color: #777777;
+`;
+
+const Line = styled.hr`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 600.0000114792729px;
+    angle: -0.05 deg;
+    margin-top:40px;
+    border: 1px solid #BCBDC1;
+
+`;
+
+const BuyerDetail=styled.div`
+    margin-top:40px;
+    margin-left: ${(props) => props.marginLeft || '40px'};
+    padding-left:65px;
+    font-family: Inter;
+    font-size: 25px;
+    font-weight: 500;
+    line-height: 30px;
+    letter-spacing: 0em;
+    text-align: left;
+
+`;
+
