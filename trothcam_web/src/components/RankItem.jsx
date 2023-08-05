@@ -3,30 +3,40 @@ import styled from "styled-components";
 
 const ItemDiv = styled.div`
     border-bottom: solid 1px #BCBDC1;
-    font-size: 25px;
-    height: 104px;
+    font-size: 15px;
+    height: 70px;
     display: flex;
     flex-direction: row;
     align-items: center;
-    font-color: "black";
+    font-color: #000000;
     font-weight:500;
-    width: 582px;
+    width: 379.9px;
     font-family: Inter;
 `; 
 const ImgDiv = styled.div`
   margin-left: 10px;
+  width: 52px;
+  background-color: red;
+  height: 50px;
+  border-radius: 10px;
+`;
+const NameText = styled.div`
+  display:inline-block;
+  font-size: 15px;
+  padding-left: 14px;
+  width: 52px;
+`;
+const PriceText = styled.div`
+display:inline-block;
+  font-size: 15px;
+  padding-left: 20px;
   
 `;
-const NameText = styled.text`
-  margin-left: 35px;
-
-`;
-const PriceText = styled.text`
-  margin-left: 80px;
-  
-`;
-const OwnerText = styled.text`
-  margin-left: 30px;
+const OwnerText = styled.div`
+display:inline-block;
+  padding-left: 20px;
+  font-size: 15px;
+  width: 45px;
 `
 
 const RankItem = (props) => {
@@ -41,9 +51,8 @@ const RankItem = (props) => {
           {props.index+ 1}
         </div>
         <ImgDiv>
-          사진
         </ImgDiv>
-        <div style={{width: "420px"}}>
+        <div style={{width: "243px"}}>
           <NameText> {props.item.Name}</NameText>
           <PriceText>{props.item.price}KRW</PriceText>
           <OwnerText>{props.item.owner}</OwnerText>
