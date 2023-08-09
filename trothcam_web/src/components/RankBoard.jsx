@@ -11,22 +11,22 @@ const Container = styled.div`
 const BoardDiv = styled.div`
 `;
 const RankText = styled.text`
-    font-size: 25px;
+    font-size: 15px;
     color: #777777;
     font-weight: 500;
-    margin-left: 30px;
+    margin-left: 30.88px;
 `
 const OwnerText = styled.text`
-    font-size: 25px;
+    font-size: 15px;
     color: #777777;
     font-weight: 500;
-    margin-left: 63px;
+    margin-left: 36px;
 `
 const PriceText = styled.text`
-    font-size: 25px;
+    font-size: 15px;
     color: #777777;
     font-weight: 500;
-    margin-left: 270px;
+    margin-left: 196px;
 `
 const RankBoard = (props) => {
   const limitedRankList1 = props.rankList.slice(0, 5); // 처음 5개의 요소만 잘라내기
@@ -35,13 +35,13 @@ const RankBoard = (props) => {
   return (
     <Container>
       <BoardDiv>
-        <div style={ {borderBottom: "solid 1px #BCBDC1", width: "582px", paddingBottom:"17px"}}><RankText>Rank</RankText><PriceText>Price</PriceText><OwnerText>Owner</OwnerText></div>
+        <div style={ {borderBottom: "solid 1px #BCBDC1", width: "379.9px", paddingBottom:"17px"}}><RankText>Rank</RankText><PriceText>Price</PriceText><OwnerText>Owner</OwnerText></div>
         {limitedRankList1.map((item, index) => (
           <RankItem item={item} index={index} />
         ))}
       </BoardDiv>
       <BoardDiv style={{marginLeft:"82px"}}>
-      <div style={ {borderBottom: "solid 1px #BCBDC1", width: "582px", paddingBottom:"17px"}}> <RankText>Rank</RankText><PriceText>Price</PriceText><OwnerText>Owner</OwnerText></div>
+      <div style={ {borderBottom: "solid 1px #BCBDC1", width: "379.9px", paddingBottom:"17px"}}> <RankText>Rank</RankText><PriceText>Price</PriceText><OwnerText>Owner</OwnerText></div>
         {limitedRankList2.map((item, index) => (
           <RankItem item={item} index={index +5} />
         ))}

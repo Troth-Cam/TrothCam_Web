@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Footer from './Footer';
 import Register1 from './Register1';
 import SearchBar from "./header/SearchBox";
+import checkedIcon from './img/checked.png';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -88,6 +89,7 @@ const RegisterText2 = styled.h1`
 `;
 
 const CheckboxContainer = styled.div`
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -97,11 +99,11 @@ const CheckboxContainer = styled.div`
 
 
 const Checkbox = styled.input.attrs({ type: 'checkbox' })`
-
+    appearance: none;
     width: 58px;
     height: 58px;
-    
     border: 2px solid #000000;
+    
 
     @media (max-width:1100px) {
         width: 29px;
@@ -109,6 +111,23 @@ const Checkbox = styled.input.attrs({ type: 'checkbox' })`
        
     }
   
+`;
+
+const CheckedIcon = styled.img`
+  position: absolute;
+    width: 62.57276153564453px;
+    height: 50.287498474121094px;
+    margin-top: -20px; 
+    margin-left: 20px; 
+    pointer-events: none; 
+
+   @media (max-width:1100px) {
+    margin-top: -15px; 
+    margin-left: 10px; 
+    width: 31px;
+    height: 25px;
+   
+}
 `;
 
 const ButtonContainer = styled.div`
@@ -218,6 +237,7 @@ const Register=()=>{
             <RegisterText2>Troth Cam 회원가입이 되어있나요?</RegisterText2>
             <CheckboxContainer>
                 <Checkbox checked={checked} onChange={handleCheckboxChange} />
+                {checked && <CheckedIcon src={checkedIcon} alt="Checked Icon" />}
             </CheckboxContainer>
             <ButtonContainer>
                 <Button checked={checked} onClick={handleButtonClick}>다음</Button>
