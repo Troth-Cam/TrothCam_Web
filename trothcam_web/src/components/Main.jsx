@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
 import styled from "styled-components";
-import SwiperCore, { Navigation, Pagination, Autoplay } from "swiper";	// 추가
-import Select from 'react-select';
+import SwiperCore, { Navigation, Pagination, Autoplay } from "swiper"; // 추가
+import Select from "react-select";
 import "swiper/swiper.scss";
 import "swiper/components/navigation/navigation.scss";
 import "swiper/components/pagination/pagination.scss";
-import RankBoard from "./RankBoard"
-import PhotoBoard from './PhotoBoard';
+import RankBoard from "./RankBoard";
+import PhotoBoard from "./PhotoBoard";
 import FilterIcon from "./img/filter_icon.png";
 import Banner from "./img/banner.png";
 import CoinIcon from "./img/coin_icon.png";
@@ -16,13 +17,13 @@ import CalendarIcon from "./img/calendar_icon.png";
 import Footer from "./Footer";
 import SearchBar from "./header/SearchBox";
 
-SwiperCore.use([Navigation, Pagination, Autoplay])
+SwiperCore.use([Navigation, Pagination, Autoplay]);
 
 const RecentDiv = styled.div`
   margin-top: 96px;
   font-weight: 600;
   font-size: 45px;
-  color: #222222;  
+  color: #222222;
   margin-left: 3.5%; //46px
   font-family: Inter;
 `;
@@ -30,10 +31,10 @@ const RecentDiv = styled.div`
 const FilterButton = styled.button`
   width: 65px;
   height: 47px;
-  background-color: ${props => (props.clicked ? '#FFFFFFE5' : '#222222')};
-  color: ${props => (props.clicked ? '#222222' : '#D9D9D9')};
+  background-color: ${(props) => (props.clicked ? "#FFFFFFE5" : "#222222")};
+  color: ${(props) => (props.clicked ? "#222222" : "#D9D9D9")};
   border: solid 1px;
-  border-color:${props => (props.clicked ? '#9FA0A3' : '#D9D9D9')};
+  border-color: ${(props) => (props.clicked ? "#9FA0A3" : "#D9D9D9")};
   border-radius: 10px;
   font-weight: 600;
   font-size: 20px;
@@ -46,15 +47,13 @@ const FilterButtonDiv = styled.div`
   margin-left: 48.38px;
   display: flex;
   align-items: center;
-  color: 
+  color: ;
 `;
 
 const SelectContainer = styled.div`
   width: 140px;
   margin-left: 19px;
-
 `;
-
 
 const FilterImg = styled.img`
   width: 23.72px;
@@ -62,23 +61,23 @@ const FilterImg = styled.img`
 `;
 
 const RankButtonDiv = styled.div`
-  background-color: #E8EAEF;
+  background-color: #e8eaef;
   width: 335px;
   height: 67px;
   position: flex;
   border-radius: 10px;
-  align-items: center; 
+  align-items: center;
   display: flex;
 `;
 
 const RankButton = styled.div`
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   width: 168px;
   height: 59px;
   position: absolute;
   border-radius: 10px;
   transition: all 1s ease;
-  transform: translateX(${props => (props.clicked ? "0%" : "100%")});
+  transform: translateX(${(props) => (props.clicked ? "0%" : "100%")});
 `;
 
 const ButtonContainer = styled.div`
@@ -100,7 +99,7 @@ const TopDiv = styled.div`
   font-size: 25px;
   font-weight: 600;
   font-family: Inter;
-  color: ${props => (props.clicked ? '##222222' : '#22222296')};
+  color: ${(props) => (props.clicked ? "##222222" : "#22222296")};
 `;
 
 const LatestDiv = styled.div`
@@ -113,7 +112,7 @@ const LatestDiv = styled.div`
   font-size: 25px;
   font-weight: 600;
   font-family: Inter;
-  color: ${props => (props.clicked ? '##222222' : '#22222296')};
+  color: ${(props) => (props.clicked ? "##222222" : "#22222296")};
 `;
 
 const TextDiv = styled.div`
@@ -123,7 +122,7 @@ const TextDiv = styled.div`
 const ViewAllButton = styled.div`
   width: 168px;
   height: 65px;
-  background-color: #E8EAEF;
+  background-color: #e8eaef;
   font-family: Inter;
   color: #222222;
   border-radius: 10px;
@@ -139,7 +138,7 @@ const BannerBgDiv = styled.div`
   width: 100%;
   position: flex;
   text-align: center;
-  background-image: linear-gradient(to bottom, #88A0E5 10%, #FFFFFF00 53%);
+  background-image: linear-gradient(to bottom, #88a0e5 10%, #ffffff00 53%);
 `;
 
 const BannerTextDiv = styled.div`
@@ -164,7 +163,7 @@ const BannerTextDiv3 = styled.div`
   display: inline-block;
   font-weight: 400;
   font-size: 50px;
-  color: #5980EF;
+  color: #5980ef;
   margin-left: 20px;
   font-family: Inter;
 `;
@@ -186,51 +185,50 @@ const OptionIconImg = styled.img`
   margin-right: 10px;
 `;
 const Container = styled.div`
+  width: 100%;
+  overflow-x: scroll;
+  white-space: nowrap;
+  margin-left: auto;
+  margin-right: auto;
 
-width: 100%;
-overflow-x: scroll;
-white-space: nowrap;
-margin-left: auto;
-margin-right: auto;
+  /* 스크롤바 스타일 */
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
 
-/* 스크롤바 스타일 */
-&::-webkit-scrollbar {
-  width: 0.5rem;
-  height: 0.5rem;
-}
-
-/* 스크롤바 thumb 스타일 */
-&::-webkit-scrollbar-thumb {
-  background-color: transparent;
-}
+  /* 스크롤바 thumb 스타일 */
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
 `;
 
 const Main = () => {
-
   const [isAllButtonClicked, setIsAllButtonClicked] = useState(false);
   const [isNewButtonClicked, setIsNewButtonClicked] = useState(true);
   const [isTopButtonClick, setIsTopButtonClicked] = useState(true);
   const [isLatestButtonClick, setIsButtonClicked] = useState(true);
+  const navigate = useNavigate();
   const rankList = [
-    {"Name": "이름1", "price": "17000", "owner": "시니"},
-    {"Name": "이름2", "price": "17000", "owner": "시니현"},
-    {"Name": "이름3", "price": "17000", "owner": "시니현"},
-    {"Name": "이름4", "price": "17000", "owner": "시니현"},
-    {"Name": "이름5", "price": "17000", "owner": "시니"},
-    {"Name": "이름6", "price": "17000", "owner": "시니"},
-    {"Name": "이름7", "price": "17000", "owner": "시니현"},
-    {"Name": "이름8", "price": "17000", "owner": "시니현"}
+    { Name: "이름1", price: "17000", owner: "시니" },
+    { Name: "이름2", price: "17000", owner: "시니현" },
+    { Name: "이름3", price: "17000", owner: "시니현" },
+    { Name: "이름4", price: "17000", owner: "시니현" },
+    { Name: "이름5", price: "17000", owner: "시니" },
+    { Name: "이름6", price: "17000", owner: "시니" },
+    { Name: "이름7", price: "17000", owner: "시니현" },
+    { Name: "이름8", price: "17000", owner: "시니현" },
   ];
 
   const photoList = [
-    {"Name": "이름", "price": "17000", "owner": "시니"},
-    {"Name": "이름2", "price": "17000", "owner": "시니현"},
-    {"Name": "이름", "price": "17000", "owner": "시니현"},
-    {"Name": "이름4", "price": "17000", "owner": "시니현"},
-    {"Name": "이름", "price": "17000", "owner": "시니현"},
-    {"Name": "이름", "price": "17000", "owner": "시니현"},
-    {"Name": "이름", "price": "17000", "owner": "시니현"},
-    {"Name": "이름", "price": "17000", "owner": "시니현"}
+    { Name: "이름", price: "17000", owner: "시니" },
+    { Name: "이름2", price: "17000", owner: "시니현" },
+    { Name: "이름", price: "17000", owner: "시니현" },
+    { Name: "이름4", price: "17000", owner: "시니현" },
+    { Name: "이름", price: "17000", owner: "시니현" },
+    { Name: "이름", price: "17000", owner: "시니현" },
+    { Name: "이름", price: "17000", owner: "시니현" },
+    { Name: "이름", price: "17000", owner: "시니현" },
   ];
 
   const clickAllBtn = () => {
@@ -247,60 +245,62 @@ const Main = () => {
     setIsTopButtonClicked(!isTopButtonClick);
   };
 
+  const handleRankClick = () => {
+    navigate("/rank");
+  };
+
   const SwiperContainer = styled(Swiper)`
     height: 750px;
-    width: 100%
-    & .swiper-pagination-bullet {
-        background: #2B2B2B !important;
+    width: 100% & .swiper-pagination-bullet {
+      background: #2b2b2b !important;
     }
   `;
 
   const customSelectStyles = {
     container: (provided) => ({
       ...provided,
-      width: '140px',
-      marginLeft: '19px'
+      width: "140px",
+      marginLeft: "19px",
     }),
     control: (provided) => ({
       ...provided,
-      height: '47px',
-      fontSize: '20px',
-      fontWeight: '600',
-      borderRadius: '10px',
-      backgroundColor: '#fff',
-      border: '1px solid #d9d9d9',
-      outline: 'none',
-      fontFamily: 'Inter'
+      height: "47px",
+      fontSize: "20px",
+      fontWeight: "600",
+      borderRadius: "10px",
+      backgroundColor: "#fff",
+      border: "1px solid #d9d9d9",
+      outline: "none",
+      fontFamily: "Inter",
     }),
     option: (provided) => ({
       ...provided,
-      display: 'flex',
-      alignItems: 'center',
-      paddingLeft: '30px'
+      display: "flex",
+      alignItems: "center",
+      paddingLeft: "30px",
     }),
     singleValue: (provided) => ({
       ...provided,
-      display: 'flex',
-      alignItems: 'center'
+      display: "flex",
+      alignItems: "center",
     }),
-    indicatorSeparator: () => ({ display: 'none' }),
+    indicatorSeparator: () => ({ display: "none" }),
     dropdownIndicator: (provided) => ({
       ...provided,
-      paddingRight: '2',
+      paddingRight: "2",
       color: "black",
-      fontSize: '17px'
-    })
+      fontSize: "17px",
+    }),
   };
 
   return (
     <div>
-      <SearchBar/>
+      <SearchBar />
       <SwiperContainer
         className="banner"
         slidesPerView={1}
         pagination={{ clickable: true }}
-        autoplay={{ delay: 5000 }}
-      >
+        autoplay={{ delay: 5000 }}>
         <SwiperSlide>
           <BannerBgDiv>
             <BannerTextDiv>간단하게 찍고, 간단하게 판매하세요.</BannerTextDiv>
@@ -311,9 +311,9 @@ const Main = () => {
         </SwiperSlide>
         <SwiperSlide>Slide 2</SwiperSlide>
         <SwiperSlide>Slide 3</SwiperSlide>
-        <SwiperSlide>Slide 4</SwiperSlide> 
+        <SwiperSlide>Slide 4</SwiperSlide>
       </SwiperContainer>
-            
+
       <ButtonContainer>
         <RankButtonDiv onClick={clickTopButton}>
           <RankButton clicked={isTopButtonClick} />
@@ -323,7 +323,7 @@ const Main = () => {
           </TextDiv>
         </RankButtonDiv>
         <div>
-          <ViewAllButton>View all</ViewAllButton>
+          <ViewAllButton onClick={handleRankClick}>View all</ViewAllButton>
         </div>
       </ButtonContainer>
       <RankBoard rankList={rankList} />
@@ -333,43 +333,93 @@ const Main = () => {
       </Container>
       <FilterButtonDiv>
         <FilterImg src={FilterIcon} />
-        <FilterButton clicked={isAllButtonClicked} onClick={clickAllBtn}>ALL</FilterButton>
-        <FilterButton clicked={isNewButtonClicked} onClick={clickNewBtn}>New</FilterButton>
+        <FilterButton clicked={isAllButtonClicked} onClick={clickAllBtn}>
+          ALL
+        </FilterButton>
+        <FilterButton clicked={isNewButtonClicked} onClick={clickNewBtn}>
+          New
+        </FilterButton>
         <SelectContainer>
           <Select
             styles={customSelectStyles}
             options={[
-              { value: 'price', label: <><OptionIconImg src={CoinIcon} alt="Coin Icon" />가격</> },
-              
+              {
+                value: "price",
+                label: (
+                  <>
+                    <OptionIconImg src={CoinIcon} alt="Coin Icon" />
+                    가격
+                  </>
+                ),
+              },
             ]}
-            defaultValue={{ value: 'price', label: <><OptionIconImg src={CoinIcon} alt="Coin Icon" />가격</> }}
+            defaultValue={{
+              value: "price",
+              label: (
+                <>
+                  <OptionIconImg src={CoinIcon} alt="Coin Icon" />
+                  가격
+                </>
+              ),
+            }}
           />
         </SelectContainer>
         <SelectContainer>
           <Select
             styles={customSelectStyles}
             options={[
-              { value: 'color', label: <><OptionIconImg src={ColorIcon} alt="Color Icon" />색상</> },
-
+              {
+                value: "color",
+                label: (
+                  <>
+                    <OptionIconImg src={ColorIcon} alt="Color Icon" />
+                    색상
+                  </>
+                ),
+              },
             ]}
-            defaultValue={{ value: 'color', label: <><OptionIconImg src={ColorIcon} alt="Color Icon" />색상</> }}
+            defaultValue={{
+              value: "color",
+              label: (
+                <>
+                  <OptionIconImg src={ColorIcon} alt="Color Icon" />
+                  색상
+                </>
+              ),
+            }}
           />
         </SelectContainer>
         <SelectContainer>
           <Select
             styles={customSelectStyles}
             options={[
-              { value: 'calendar', label: <><OptionIconImg src={CalendarIcon} alt="Calendar Icon" />날짜</> },
+              {
+                value: "calendar",
+                label: (
+                  <>
+                    <OptionIconImg src={CalendarIcon} alt="Calendar Icon" />
+                    날짜
+                  </>
+                ),
+              },
             ]}
-            defaultValue={{ value: 'calendar', label: <><OptionIconImg src={CalendarIcon} alt="Calendar Icon" />날짜</> }}
+            defaultValue={{
+              value: "calendar",
+              label: (
+                <>
+                  <OptionIconImg src={CalendarIcon} alt="Calendar Icon" />
+                  날짜
+                </>
+              ),
+            }}
           />
         </SelectContainer>
       </FilterButtonDiv>
       <Container>
-        <PhotoBoard photoList={photoList}/>
+        <PhotoBoard photoList={photoList} />
       </Container>
-      <div style={{marginTop:"483px"}}/>
-      <Footer/>
+      <div style={{ marginTop: "483px" }} />
+      <Footer />
     </div>
   );
 };

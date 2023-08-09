@@ -8,17 +8,22 @@ import { ReactComponent as SearchIcon } from "../../assets/search.svg";
 const SearchBox = () => {
   const navigate = useNavigate();
   const [isInputFocused, setIsInputFocused] = useState(false);
+  const isLoggedIn = localStorage.getItem("accessToken") !== null;
 
   const handleInputFocus = () => {
     setIsInputFocused(true);
   };
 
   const handleLoginClick = () => {
-    //로그인 화면으로 이동
+    navigate("/login");
   };
 
   const handleSignUpClick = () => {
     //navigate("/"); //register1-b로 이동
+  };
+
+  const handleMyPageClick = () => {
+    // MyPage로 이동
   };
 
   return (
@@ -35,10 +40,18 @@ const SearchBox = () => {
         />
       </SearchBoxLayout>
 
-      <LoginButton onClick={handleLoginClick}>Login</LoginButton>
-      <Link to="/Register">
-        <SignUpButton onClick={handleSignUpClick}>Sign up</SignUpButton>
-      </Link>
+      {isLoggedIn ? (
+        <>
+          <MyPageButton onClick={handleMyPageClick}>My Page</MyPageButton>
+        </>
+      ) : (
+        <>
+          <LoginButton onClick={handleLoginClick}>Login</LoginButton>
+          <Link to="/Register">
+            <SignUpButton onClick={handleSignUpClick}>Sign up</SignUpButton>
+          </Link>
+        </>
+      )}
     </SearchBoxContainer>
   );
 };
@@ -84,7 +97,7 @@ const LoginButton = styled.button`
   width: 9.3rem;
   min-width: 9.3rem;
   height: 3rem;
-  border-radius: 0.5rem;
+  border-radius: 0.8rem;
   border: 1.5px solid #5980ef;
   background-color: #ffffff;
   color: #5980ef;
@@ -96,7 +109,19 @@ const SignUpButton = styled.button`
   margin-left: 1rem;
   width: 9.3rem;
   height: 3rem;
-  border-radius: 0.5rem;
+  border-radius: 0.8rem;
+  border: none;
+  background-color: #5980ef;
+  color: #ffffff;
+  font-family: Inter;
+  font-size: 1.25rem;
+  font-weight: 600;
+`;
+const MyPageButton = styled.button`
+  margin-left: 35rem;
+  width: 9.3rem;
+  height: 3rem;
+  border-radius: 0.8rem;
   border: none;
   background-color: #5980ef;
   color: #ffffff;

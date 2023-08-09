@@ -28,28 +28,28 @@ const SignUp = () => {
   const handleCheckValidate = async (token) => {
     //유효성 확인 로직
     if (token.length >= 1) {
-      navigate("/validation");
-      //   const url = "/auth/validate-token";
+      const url = "https://trothly.com/auth/validate-token";
 
-      //   const requestBody = {
-      //     webToken: token,
-      //   };
+      const requestBody = {
+        webToken: token,
+      };
 
-      //   try {
-      //     const response = await axios.post(url, requestBody);
-      //     const responseData = response.data;
-      //     if (responseData.isSuccess) {
-      //       setTokenConfirmed(true);
-      //       setTokenError("");
-      //       console.log("이메일: ", responseData.result.email);
-      //       navigate("/validation");
-      //     } else {
-      //       setTokenConfirmed(false);
-      //       setTokenError("유효하지 않은 token입니다.");
-      //     }
-      //   } catch (error) {
-      //     console.log("요청에 실패하였습니다.", error);
-      //   }
+      try {
+        const response = await axios.post(url, requestBody);
+        const responseData = response.data;
+        console.log(requestBody, responseData);
+        if (responseData.isSuccess) {
+          setTokenConfirmed(true);
+          setTokenError("");
+          console.log("이메일: ", responseData.result.email);
+          navigate("/validation");
+        } else {
+          setTokenConfirmed(false);
+          setTokenError("유효하지 않은 token입니다.");
+        }
+      } catch (error) {
+        console.log("요청에 실패하였습니다.", error);
+      }
     }
   };
 
@@ -69,7 +69,7 @@ const SignUp = () => {
         return;
       }
 
-      const url = "/auth/check-id";
+      const url = "https://trothly.com/auth/check-id";
       const requestBody = { id };
 
       axios
@@ -250,7 +250,7 @@ const SignUp = () => {
             tokenError={!!tokenError} // 에러 메시지가 있을 때만 true로 설정
           />
           <ValidationButton
-            onClick={handleCheckValidate}
+            onClick={() => handleCheckValidate(token)}
             disabled={tokenConfirmed} // tokenConfirmed 값에 따라 버튼 비활성화 설정
             tokenConfirmed={tokenConfirmed} // tokenConfirmed 값을 prop으로 전달
           >
