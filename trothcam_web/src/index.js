@@ -13,9 +13,13 @@ import RegisterFinish from "./components/RegsterFinish";
 import Login from "./components/Login";
 import Validation from "./components/Validation";
 import ProductDetail from "./components/ProductDetail";
+import Certification from "./components/Certification";
 import DetailOthers from "./components/Detail_others";
 import DetailMe from "./components/Detail_me";
+<<<<<<< HEAD
 import SearchView from "./components/SearchView";
+=======
+>>>>>>> seongeun
 
 const router = createBrowserRouter([
   {
@@ -31,6 +35,7 @@ const router = createBrowserRouter([
       { path: "/login", element: <Login /> },
       { path: "/registerfinish", element: <RegisterFinish />},
       { path: "/productdetail", element: <ProductDetail/>},
+      { path: "/Certification", element: <Certification/> },
       { path: "/detail_others", element: <DetailOthers/> },
       { path: "/detail_me", element: <DetailMe/> },
       { path: "/search_view", element: <SearchView/> }
