@@ -4,11 +4,11 @@ import Footer from './Footer';
 import Register1 from './Register1';
 import SearchBar from "./header/SearchBox";
 import checkedIcon from './img/checked.png';
+import TrothCamLogo from './img/TrothCamLogo.png';
 import { useNavigate } from 'react-router-dom';
 
 
 
-// 페이지의 크기를 지정하는 스타일드 컴포넌트를 만듭니다.
 const PageContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -93,72 +93,47 @@ const CheckboxContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top:35px;
+    //margin-top:35px;
     
 `;
 
-
-const Checkbox = styled.input.attrs({ type: 'checkbox' })`
-    appearance: none;
-    width: 58px;
-    height: 58px;
-    border: 2px solid #000000;
-    
-
-    @media (max-width:1100px) {
-        width: 29px;
-        height: 29px;
-       
-    }
-  
+const TrothCamImg = styled.img`
+    width: 309px;
+    height: 309px;
 `;
 
-const CheckedIcon = styled.img`
-  position: absolute;
-    width: 62.57276153564453px;
-    height: 50.287498474121094px;
-    margin-top: -20px; 
-    margin-left: 20px; 
-    pointer-events: none; 
 
-   @media (max-width:1100px) {
-    margin-top: -15px; 
-    margin-left: 10px; 
-    width: 31px;
-    height: 25px;
-   
-}
-`;
+
 
 const ButtonContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top:35px;
  
 `;
 
 const Button = styled.button`
    
-    width: 107px;
-    height: 64px;
+    width: 445px;
+    height: 56px;
    
-    border-radius: 18px;
+    border-radius: 10px;
     font-family: Inter;
-    font-size: 28px;
+    font-size: 20px;
     font-weight: 400;
-    line-height: 34px;
+    line-height: 24px;
     letter-spacing: 0em;
     border: none; 
     
-    color: ${props => (props.checked ? '#000000' : '#ffffff')};
-    background-color: ${props => (props.checked ? '#5980EF': '#D9D9D9')};
-    
+    color: #ffffff;
+    background: #6A8DF1;
+
     @media (max-width: 1100px) {
-        width: 53px;
-        height: 32px;
+        width: 220px;
+        height: 28px;
         font-size: 14px;
         line-height: 22px;
+       
       }
 
 `;
@@ -168,7 +143,7 @@ const Line = styled.hr`
     justify-content: center;
     align-items: center;
     width: 1123.0111083984375px;
-    margin-top:250px;
+    margin-top:100px;
     
     transform: rotate(0deg);
     border: 1px solid #9FA0A3;
@@ -210,22 +185,13 @@ const Download = styled.h1`
 
 const Register=()=>{
 
-    const [checked, setChecked] = useState(false);
-
-    const handleCheckboxChange = (event) => {
-    setChecked(event.target.checked);
-    };
-
+    
     const navigate = useNavigate();
 
     const handleButtonClick = () => {
-        if(!checked) {
-            alert("체크를 해주세요");
-            return;
-        }
-        else{
+        
             navigate('/Register1');
-        }
+
 
     };
 
@@ -236,11 +202,10 @@ const Register=()=>{
             <RegisterText1>Trothly는 iOS 어플리케이션 Troth Cam에 가입해야 가입이 가능합니다.</RegisterText1>
             <RegisterText2>Troth Cam 회원가입이 되어있나요?</RegisterText2>
             <CheckboxContainer>
-                <Checkbox checked={checked} onChange={handleCheckboxChange} />
-                {checked && <CheckedIcon src={checkedIcon} alt="Checked Icon" />}
+                <TrothCamImg src={TrothCamLogo} alt="TrothCamLogo"/>
             </CheckboxContainer>
             <ButtonContainer>
-                <Button checked={checked} onClick={handleButtonClick}>다음</Button>
+                <Button  onClick={handleButtonClick}>확인 후 다음으로</Button>
             </ButtonContainer>
             
 
