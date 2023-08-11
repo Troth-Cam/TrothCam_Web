@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import PhotoBoard from './PhotoBoard';
 import DetailBorard from './DetailBoard';
-import ShareIcon from "./img/share_icon.png";
 import CopyIcon from "./img/copy_icon.png";
 import MoreIcon from "./img/more_icon.png";
 import LockIcon from "./img/lock_icon.png";
-import ListIcon from "./img/list_icon.png";
+import ReloadIcon from "./img/reload_icon.png";
 const UserToken = styled.div`
     display: inline;
     color: #5980EF;
@@ -132,12 +131,9 @@ const Detail_me = () =>{
         <UserToken>qwbekhbjweghrk23</UserToken>
         <BtnDiv>
           <Btn style={{ borderBottomLeftRadius: "5px", borderTopLeftRadius:"5px"}}>이미지</Btn>
-          <Btn><BtnImg src={ShareIcon}/></Btn>
-          <Btn><BtnImg src={CopyIcon}/></Btn>
-          <Btn style={{ borderBottomRightRadius: "5px", borderTopRightRadius:"5px"}}><BtnImg src={MoreIcon}/></Btn>
+          <Btn style={{ borderBottomRightRadius: "5px", borderTopRightRadius:"5px"}}><BtnImg src={CopyIcon}/></Btn>
         </BtnDiv>
         <ButtonDiv>
-                <SettingsBtn>Settings</SettingsBtn>
                 <LogoutBtn>Log out</LogoutBtn>
             </ButtonDiv>
           <TabDiv>
@@ -146,7 +142,7 @@ const Detail_me = () =>{
                 <TabBtn clicked={isTabButton3Clicked} onClick={clickTabBtn3}>비공개 인증서<BtnImg style={{marginLeft: "10px"}} src={LockIcon}/></TabBtn>
             </TabDiv>
         
-         {(isTabButton1Clicked || isTabButton3Clicked) && <RecentArrange><ListImg src={ListIcon}/>최근 보유 순</RecentArrange>}
+         {(isTabButton1Clicked || isTabButton3Clicked)}
          {isTabButton1Clicked && (
                 <PhotoBoardContainer>
                     <PhotoBoard photoList={photoList} />

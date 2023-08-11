@@ -7,11 +7,11 @@ const PhotoBoardDiv = styled.div`
 `;
 const PhotoBoard = (props) => {
   return (
-    <PhotoBoardDiv>
+    <>
           {props.photoList.map((item, index) => (
-          <PhotoItem index={index} item={item} />
+          <PhotoItem key={index} index={index} item={item} />
         ))}
-    </PhotoBoardDiv>
+    </>
   );
 }
 

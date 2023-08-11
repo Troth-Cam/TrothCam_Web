@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from "styled-components";
 import HeartIcon from "./img/heart_icon.png";
 import EmptyHeartIcon from "./img/emptyHeart_icon.png";
@@ -64,11 +64,11 @@ const PriceDiv = styled.div`
 
 const PhotoItem = (props) => {
     const [isLiked, setIsLiked] = useState(false);
-
+  ;
     const handleClick = () => {
         setIsLiked(!isLiked);
     };
-
+    
     return (
         <PhotoItemDiv>
             <PhotoDiv />
