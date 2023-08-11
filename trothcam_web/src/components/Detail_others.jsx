@@ -92,16 +92,14 @@ const Detail_others = () =>{
         <>
         <UserToken>qwbekhbjweghrk23</UserToken>
         <BtnDiv>
-          <Btn style={{ borderBottomLeftRadius: "5px", borderTopLeftRadius:"5px"}}>이미지</Btn>
-          <Btn><BtnImg src={ShareIcon}/></Btn>
-          <Btn><BtnImg src={CopyIcon}/></Btn>
-          <Btn style={{ borderBottomRightRdadius: "5px", borderTopRightRadius:"5px"}}><BtnImg src={MoreIcon}/></Btn>
+        <Btn style={{ borderBottomLeftRadius: "5px", borderTopLeftRadius:"5px"}}>이미지</Btn>
+          <Btn style={{ borderBottomRightRadius: "5px", borderTopRightRadius:"5px"}}><BtnImg src={CopyIcon}/></Btn>
         </BtnDiv>
         <TabDiv>
         <TabBtn clicked={isTabButton1Clicked} onClick={clickTabBtn1} style={{marginLeft:"0px"}}>보유 중인 인증서</TabBtn>
         <TabBtn clicked={isTabButton2Clicked} onClick={clickTabBtn2}>상세 정보</TabBtn>
         </TabDiv>
-        {isTabButton1Clicked && <RecentArrange><ListImg src={ListIcon}/>최근 보유 순</RecentArrange>}
+        {isTabButton1Clicked}
         
         {isTabButton1Clicked ? (
                 <PhotoBoardContainer>

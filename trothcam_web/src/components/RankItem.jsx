@@ -25,18 +25,27 @@ const NameText = styled.div`
   font-size: 15px;
   padding-left: 14px;
   width: 52px;
+  font-weight: 500;
+  color: #222222;
+  font-weight: 500;
+  font-family: Inter;
 `;
 const PriceText = styled.div`
 display:inline-block;
   font-size: 15px;
   padding-left: 20px;
-  
+  color: #222222;
+  font-weight: 500;
+  font-family: Inter;
 `;
 const OwnerText = styled.div`
 display:inline-block;
   padding-left: 20px;
   font-size: 15px;
   width: 45px;
+  font-weight: 500;
+  font-family: Inter;
+  color: #222222;
 `
 
 const RankItem = (props) => {

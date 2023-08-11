@@ -17,6 +17,9 @@ import Footer from "./Footer";
 import SearchBar from "./header/SearchBox";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { ScrollMenu } from 'react-horizontal-scrolling-menu';
+import { LeftArrow } from './LeftArrow';
+import { RightArrow } from './RightArrow';
 
 SwiperCore.use([Navigation, Pagination, Autoplay])
 
@@ -70,16 +73,19 @@ const RankButtonDiv = styled.div`
   border-radius: 10px;
   align-items: center; 
   display: flex;
+  
 `;
 
-const RankButton = styled.div`
+const WhiteButton = styled.div`
   background-color: #FFFFFF;
+  box-shadow: 0px 4px 4px 0px #00000040;
   width: 91px;
   height: 32px;
   position: absolute;
   border-radius: 10px;
   transition: all 1s ease;
   transform: translateX(${props => (props.clicked ? "0%" : "100%")});
+  pointer-events:none;
 `;
 
 const ButtonContainer = styled.div`
@@ -91,7 +97,7 @@ const ButtonContainer = styled.div`
   margin-bottom: 60px;
 `;
 
-const TopDiv = styled.div`
+const TopDiv = styled.text`
   display: inline-block;
   width: 90px;
   height: 32px;
@@ -105,7 +111,7 @@ const TopDiv = styled.div`
   color: ${props => (props.clicked ? '##222222' : '#22222296')};
 `;
 
-const LatestDiv = styled.div`
+const LatestDiv = styled.text`
   display: inline-block;
   width: 90px;
   height: 32px;
@@ -191,7 +197,7 @@ const OptionIconImg = styled.img`
 const Container = styled.div`
 
 width: 61%;
-overflow-x: scroll;
+// overflow-x: scroll;
 white-space: nowrap;
 margin-left: auto;
 margin-right: auto;
@@ -205,6 +211,13 @@ margin-right: auto;
 /* 스크롤바 thumb 스타일 */
 &::-webkit-scrollbar-thumb {
   background-color: transparent;
+}
+.react-horizontal-scrolling-menu--scroll-container::-webkit-scrollbar {
+  display: none;
+}
+.react-horizontal-scrolling-menu--scroll-container {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 `;
 const DatePickerContainer = styled.div`
@@ -234,15 +247,23 @@ const CustomDatePicker = styled(DatePicker)`
   font-family: Inter;
   padding-left: 30px; /* 추가한 스타일 */
 `;
-
+const SwiperContainer = styled(Swiper)`
+height: 750px;
+width: 100%
+& .swiper-pagination-bullet {
+    background: #2B2B2B !important;
+}
+`;
 
 const Main = () => {
 
   const [isAllButtonClicked, setIsAllButtonClicked] = useState(false);
   const [isNewButtonClicked, setIsNewButtonClicked] = useState(true);
-  const [isTopButtonClick, setIsTopButtonClicked] = useState(true);
+  const [isTopButtonClick1, setIsTopButtonClicked1] = useState(true);
   const [selectedDate, setSelectedDate] = useState(null);
-  
+  const [isLatestButtonClick1, setIsLatestButtonClicked1] = useState(false);
+  const [isTopButtonClick2, setIsTopButtonClicked2] = useState(true);
+  const [isLatestButtonClick2, setIsLatestButtonClicked2] = useState(false);
   const rankList = [
     {"Name": "이름1", "price": "17000", "owner": "시니"},
     {"Name": "이름2", "price": "17000", "owner": "시니현"},
@@ -262,7 +283,8 @@ const Main = () => {
     {"Name": "이름", "price": "17000", "owner": "시니현"},
     {"Name": "이름", "price": "17000", "owner": "시니현"},
     {"Name": "이름", "price": "17000", "owner": "시니현"},
-    {"Name": "이름", "price": "17000", "owner": "시니현"}
+    {"Name": "이름", "price": "17000", "owner": "시니현"},
+    
   ];
   
 
@@ -276,56 +298,32 @@ const Main = () => {
     setIsAllButtonClicked(!false);
   };
 
-  const clickTopButton = () => {
-    setIsTopButtonClicked(!isTopButtonClick);
-  };
-
-  const SwiperContainer = styled(Swiper)`
-    height: 750px;
-    width: 100%
-    & .swiper-pagination-bullet {
-        background: #2B2B2B !important;
+  const clickTopButton1 = () => {
+    if(!isTopButtonClick1){
+      setIsTopButtonClicked1(!isTopButtonClick1);
+      setIsLatestButtonClicked1(!isLatestButtonClick1);
     }
-  `;
-
-  const customSelectStyles = {
-    container: (provided) => ({
-      ...provided,
-      width: '85px',
-      marginLeft: '16px',
-      fontSize: '10px'
-    }),
-    control: (provided) => ({
-      ...provided,
-      height: '47px',
-      fontSize: '10px',
-      fontWeight: '600',
-      borderRadius: '10px',
-      backgroundColor: '#fff',
-      border: '1px solid #d9d9d9',
-      outline: 'none',
-      fontFamily: 'Inter'
-    }),
-    option: (provided) => ({
-      ...provided,
-      display: 'flex',
-      alignItems: 'center',
-      paddingLeft: '30px'
-    }),
-    singleValue: (provided) => ({
-      ...provided,
-      display: 'flex',
-      alignItems: 'center'
-    }),
-    indicatorSeparator: () => ({ display: 'none' }),
-    dropdownIndicator: (provided) => ({
-      ...provided,
-      paddingRight: '2',
-      color: "black",
-      fontSize: '10px'
-    })
   };
 
+  const clickLatestButton1 = () =>{
+    if(!isLatestButtonClick1){
+      setIsTopButtonClicked1(!isTopButtonClick1);
+      setIsLatestButtonClicked1(!isLatestButtonClick1);
+    }
+  }
+  const clickTopButton2 = () => {
+    if(!isTopButtonClick2){
+      setIsTopButtonClicked2(!isTopButtonClick2);
+      setIsLatestButtonClicked2(!isLatestButtonClick2);
+    }
+  };
+
+  const clickLatestButton2 = () =>{
+    if(!isLatestButtonClick2){
+      setIsTopButtonClicked2(!isTopButtonClick2);
+      setIsLatestButtonClicked2(!isLatestButtonClick2);
+    }
+  }
   return (
     <div>
       <SearchBar/>
@@ -349,65 +347,37 @@ const Main = () => {
       </SwiperContainer>
             
       <ButtonContainer>
-        <RankButtonDiv onClick={clickTopButton}>
-          <RankButton clicked={isTopButtonClick} />
-          <TextDiv>
-            <TopDiv clicked={isTopButtonClick}>Top</TopDiv>
-            <LatestDiv clicked={!isTopButtonClick}>Latest</LatestDiv>
-          </TextDiv>
+        <RankButtonDiv>
         </RankButtonDiv>
+        <WhiteButton clicked={isTopButtonClick1} />
+        <TextDiv>
+            <TopDiv clicked={isTopButtonClick1} onClick={clickTopButton1}>Top</TopDiv>
+            <LatestDiv clicked={isLatestButtonClick1} onClick={clickLatestButton1}>Latest</LatestDiv>
+          </TextDiv>
         <div>
           <ViewAllButton>View all</ViewAllButton>
         </div>
       </ButtonContainer>
     
       <RankBoard rankList={rankList} />
-      <RecentDiv>최근 거래 목록</RecentDiv>
+
+      <ButtonContainer style={{marginBottom:'0px'}}>
+      <RankButtonDiv>
+        </RankButtonDiv>
+        <WhiteButton clicked={isTopButtonClick2} />
+        <TextDiv>
+            <TopDiv clicked={isTopButtonClick2} onClick={clickTopButton2}>Top</TopDiv>
+            <LatestDiv clicked={isLatestButtonClick2} onClick={clickLatestButton2}>Latest</LatestDiv>
+          </TextDiv>      
+      </ButtonContainer>
+
       <Container>
-        <PhotoBoard photoList={photoList} />
+        <ScrollMenu LeftArrow={LeftArrow} RightArrow={RightArrow}>
+          <PhotoBoard photoList={photoList} />
+          </ScrollMenu>
       </Container>
 
-      <FilterButtonDiv>
-        <FilterImg src={FilterIcon} />
-        <FilterButton clicked={isAllButtonClicked} onClick={clickAllBtn}>ALL</FilterButton>
-        <FilterButton clicked={isNewButtonClicked} onClick={clickNewBtn}>New</FilterButton>
-        <SelectContainer>
-          <Select
-            styles={customSelectStyles}
-            options={[
-              { value: 'price', label: <><OptionIconImg src={CoinIcon} alt="Coin Icon" />가격</> },
-              
-            ]}
-            defaultValue={{ value: 'price', label: <><OptionIconImg src={CoinIcon} alt="Coin Icon" />가격</> }}
-          />
-        </SelectContainer>
-        <SelectContainer>
-          <Select
-            styles={customSelectStyles}
-            options={[
-              { value: 'color', label: <><OptionIconImg src={ColorIcon} alt="Color Icon" />색상</> },
-
-            ]}
-            defaultValue={{ value: 'color', label: <><OptionIconImg src={ColorIcon} alt="Color Icon" />색상</> }}
-          />
-        </SelectContainer>
-        <SelectContainer>
-          <DatePickerContainer>
-            <PlaceholderIcon src={CalendarIcon} alt="Calendar Icon" />
-            <CustomDatePicker
-              selected={selectedDate}
-              onChange={(date) => setSelectedDate(date)}
-              dateFormat="yyyy/MM/dd"
-              placeholderText="날짜"
-            />
-          </DatePickerContainer>
-        </SelectContainer>
-      </FilterButtonDiv>
-    
-      <Container>
-        <PhotoBoard photoList={photoList} />
-      </Container>
-      <div style={{marginTop:"94px"}}/>
+      <div style={{marginTop:"378px"}}/>
       <Footer/>
     </div>
   );
