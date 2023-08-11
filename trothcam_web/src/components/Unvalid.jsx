@@ -24,15 +24,19 @@ const Container = styled.div`
     
     width: 379px;
     height: 218px;
-    margin-top:-79%;
+    margin-top:-270px;
     margin-left:10%;
    
     border-radius: 10px;
-    border: 1px;
-
     linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5));
     border: 1px solid #9FA0A3;
 
+    @media (max-width:780px) {
+        justify-content: center;
+        
+        margin-top:0px;
+        margin-left:5%;
+       
   
 `;
 
