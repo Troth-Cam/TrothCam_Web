@@ -2,8 +2,7 @@ import React, { useContext, useState } from 'react';
 import styled from "styled-components";
 import HeartIcon from "./img/heart_icon.png";
 import EmptyHeartIcon from "./img/emptyHeart_icon.png";
-import { isVisible } from '@testing-library/user-event/dist/utils';
-import { VisibilityContext,VisibleElements } from "react-horizontal-scrolling-menu";
+
 const PhotoItemDiv = styled.div`
     width: 187px;
     display: inline-block;
@@ -65,13 +64,7 @@ const PriceDiv = styled.div`
 
 const PhotoItem = (props) => {
     const [isLiked, setIsLiked] = useState(false);
-    const visibility = React.useContext(VisibilityContext);
-
-    const visible = visibility.isItemVisible(props.index);
-  
-console.log("Index:", props.index);
-console.log("Is Visible:", isVisible);
-    console.log(isVisible);
+  ;
     const handleClick = () => {
         setIsLiked(!isLiked);
     };
@@ -86,7 +79,6 @@ console.log("Is Visible:", isVisible);
                 </LineDiv1>
                 <GrayDiv>{props.item.owner}</GrayDiv>
                 <LineDiv2>
-                visible: {JSON.stringify(visible)}
                     <GrayDiv>20230605</GrayDiv>
                     <PriceDiv>{props.item.price}KRW</PriceDiv>
                 </LineDiv2>

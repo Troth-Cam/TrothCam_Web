@@ -19,8 +19,7 @@ import SearchBar from "./header/SearchBox";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ScrollMenu } from 'react-horizontal-scrolling-menu';
-import { LeftArrow } from './LeftArrow';
-import { RightArrow } from './RightArrow';
+
 
 SwiperCore.use([Navigation, Pagination, Autoplay]);
 
@@ -188,47 +187,21 @@ const BannerImg = styled.div`
   margin-right: auto;
 `;
 
-const OptionIconImg = styled.img`
-  width: 14px;
-  height: 13px;
-  margin-right: 10px;
-`;
 const Container = styled.div`
-  width: 100%;
-  overflow-x: scroll;
-  white-space: nowrap;
-  margin-left: auto;
-  margin-right: auto;
 
-  /* 스크롤바 스타일 */
-  &::-webkit-scrollbar {
-    width: 0.5rem;
-    height: 0.5rem;
-  }
-
-width: 61%;
-// overflow-x: scroll;
+width: 100%;
+overflow-x: scroll;
 white-space: nowrap;
 margin-left: auto;
 margin-right: auto;
-
 /* 스크롤바 스타일 */
 &::-webkit-scrollbar {
   width: 0.5rem;
   height: 0.5rem;
 }
+width: 61%;
+overflow-x: scroll;
 
-/* 스크롤바 thumb 스타일 */
-&::-webkit-scrollbar-thumb {
-  background-color: transparent;
-}
-.react-horizontal-scrolling-menu--scroll-container::-webkit-scrollbar {
-  display: none;
-}
-.react-horizontal-scrolling-menu--scroll-container {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
 `;
 const DatePickerContainer = styled.div`
   display: inline-block;
@@ -386,9 +359,7 @@ const handleRankClick = () => {
       </ButtonContainer>
 
       <Container>
-        <ScrollMenu LeftArrow={LeftArrow} RightArrow={RightArrow}>
           <PhotoBoard photoList={photoList} />
-          </ScrollMenu>
       </Container>
       <div style={{marginTop:"378px"}}/>
       <Footer/>
