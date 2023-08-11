@@ -157,26 +157,25 @@ const Certification = () => {
   
 export default Certification;
 
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  
+
   
 `;
 
 const Col = styled.div`
-    position:relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    align-items:center;
-    //margin-left:-50%;
-    text-align: left;   
   
-`;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items:center;
+  margin-left:-3%;
+  text-align: left;    
 
+`;
 
 const Product = styled.div`
     width: 234px;
@@ -244,6 +243,11 @@ const HeartImg = styled.img`
     width: 41.63045120239258px;
     height: 49.58951950073242px;
     margin-left: 230%;
+
+    @media (max-width: 1400px) {
+        margin-left:180%;
+    
+    }
 
     @media (max-width: 980px) {
         margin-left:60%;
@@ -324,12 +328,14 @@ const SubContainer = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: center;
+    align-items:center;
+  
 
-    @media (max-width: 1000px) {
+    @media (max-width: 1400px) {
     flex-direction: row;
     flex-wrap: wrap;
+    
     }
-
 `;
 
 const FooterContainer = styled.footer`
@@ -346,14 +352,12 @@ const FooterContainer = styled.footer`
 const Col1 = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    margin-left:-9%
-    @media (max-width: 680px) {
+
+    @media (max-width: 750px) {
     justify-content: center;
     align-items: center;
-    margin-top:340px;
-    margin-left:-5%;
+    margin-top:0px;
+    margin-left:0%;
     }
 
 `;
@@ -363,21 +367,15 @@ const Col2 = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    margin-top:35px;
+    margin-top:40px;
 
-    margin-left:-25px;
 
-    @media (max-width:750px) {
+    @media (max-width:780px) {
     justify-content: center;
     align-items: center;
-    margin-top:280px;
-    margin-left:-6%;
-    }
-    @media (max-width:700px) {
-    justify-content: center;
-    align-items: center;
-    margin-top:280px;
-    margin-left:-15%;
+    margin-top:2%;
+    margin-right:6%
+    
     }
 `;
 
@@ -648,13 +646,13 @@ const Pd6Text = styled.div`
 const Detail2 = styled.div`
     display: flex;
     flex-direction: column;
-    margin-top:50px;
+
 
     @media (max-width:680px) {
-        justify-content: center;
-        align-items: center;
-        margin-top:10px;
-        margin-left:10%;
+        //justify-content: center;
+        //align-items: center;
+       
+
     
 `;
 
@@ -675,9 +673,8 @@ const Detail3 = styled.div`
         justify-content: center;
         align-items: center;
         margin-top:20px;
-        margin-left:25%;
+    }
       
-
 `;
 
 const ChertImage= styled.img`

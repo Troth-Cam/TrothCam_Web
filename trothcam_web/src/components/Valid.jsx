@@ -7,15 +7,15 @@ const Valid = (props) => {
         <Container>
             <PayContainer>
                 <Pay1>| 판매가</Pay1>
-                <Infoicon src={infoImg} alt="infoImg" />
+                <Infoicon1 src={infoImg} alt="infoImg" />
             </PayContainer>
 
-            <Input1 type="text" placeholder="가격을 입력해주세요."/>
+            <Input1 type="number" placeholder="가격을 입력해주세요."/>
             <Ex1>판매를 원하는 가격을 작성해주세요.</Ex1>
 
             <PayContainer>
                 <Pay2>| 설명 작성 </Pay2>
-                <Infoicon src={infoImg} alt="infoImg" />
+                <Infoicon2 src={infoImg} alt="infoImg" />
             </PayContainer>
 
             <Input2 type="text" placeholder="설명을 작성해주세요."/>
@@ -33,7 +33,6 @@ const Container = styled.div`
 
     width: 379px;
     height: 546px;
-    margin-top:-50px;
     margin-left:10%;
 
     border-radius: 10px;
@@ -42,11 +41,11 @@ const Container = styled.div`
     linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5));
     border: 1px solid #9FA0A3;
     
-    @media (max-width:680px) {
+    @media (max-width:750px) {
         justify-content: center;
-        
-        margin-top:-260px;
-        margin-left:15%;
+        margin-top:0px;
+        margin-left:5%;
+       
 `;
 
 const PayContainer = styled.div`
@@ -69,7 +68,7 @@ const Pay1 = styled.div`
 
 `;
 
-const Infoicon=styled.img`
+const Infoicon1=styled.img`
     width: 24px;
     height: 24px;
     margin-top:4.3%;
@@ -81,17 +80,23 @@ const Input1 = styled.input`
     width: 343px;
     height: 59px;
     top: 366px;
-    margin-top:2%;
-    margin-left:5%;
+    margin-top:1%;
+    margin-left:3%;
     border-radius: 10px;
     border: 1px solid #BCBDC1;
-    color: #a8a8a8;
+    color: #000000;
     background-color:#ffffff;
 
+    font-family: Inter;       // 입력 텍스트의 폰트
+    font-size: 25px;          // 입력 텍스트의 크기
+    font-weight: 400;
+    line-height: 10px;
+    padding-top: 0px;        // 입력 텍스트의 상단 패딩
+    padding-left: 10px; 
    
     &::placeholder {
         position: absolute;
-        //top: 5px;           // 상단에 고정
+        top: 17px;           // 상단에 고정
         left: 15px;        // 약간의 왼쪽 패딩
         font-family: Inter;
         font-size: 20px;
@@ -119,7 +124,7 @@ const Ex1=styled.div`
 const Pay2 = styled.div`
     width: 115px;
     height: 24px;
-    margin-top:3%;
+    margin-top:1%;
     margin-left:5%;
     font-family: Inter;
     font-size: 20px;
@@ -129,23 +134,38 @@ const Pay2 = styled.div`
     text-align: left;
     color:#000000;
 
-
 `;
-const Input2 = styled.input`
 
+const Infoicon2=styled.img`
+    width: 24px;
+    height: 24px;
+    margin-top:1%;
+    margin-left:-10px;
+`;
+const Input2 = styled.textarea`
+    
     width: 343px;
     height: 258px;
     top: 366px;
-    margin-left:5%;
+    margin-top:1%;
+    margin-left:3%;
     border-radius: 10px;
     border: 1px solid #BCBDC1;
-    color: #a8a8a8;
+    color: #000000;
     background-color:#ffffff;
+
+    font-family: Inter;       // 입력 텍스트의 폰트
+    font-size: 20px;          // 입력 텍스트의 크기
+    font-weight: 400;
+    line-height: 24px;
+    padding-top: 10px;        // 입력 텍스트의 상단 패딩
+    padding-left: 10px; 
 
     &::placeholder {
         position: absolute;
         top: 15px;           // 상단에 고정
         left: 15px;        // 약간의 왼쪽 패딩
+      
         font-family: Inter;
         font-size: 20px;
         font-weight: 400;
@@ -175,7 +195,7 @@ const Ex2=styled.div`
 const Button3 = styled.button`
     width: 342px;
     height: 53px;
-    top: 800px;
+    margin-top: -5px;
     margin-left:5%;
     border-radius: 10px;
 
