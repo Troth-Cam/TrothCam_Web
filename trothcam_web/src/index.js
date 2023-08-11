@@ -16,10 +16,7 @@ import ProductDetail from "./components/ProductDetail";
 import Certification from "./components/Certification";
 import DetailOthers from "./components/Detail_others";
 import DetailMe from "./components/Detail_me";
-<<<<<<< HEAD
 import SearchView from "./components/SearchView";
-=======
->>>>>>> seongeun
 
 const router = createBrowserRouter([
   {
