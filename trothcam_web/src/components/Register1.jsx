@@ -53,18 +53,18 @@ const Title = styled.h1`
 
 const Line = styled.div`
    
-    width: 1250px;
+    width: 100%;
     margin:auto;
     border: 3px solid #000000;
 
     @media (max-width: 1439px) {
-        width:80%;
+        width:100%;
         border: 2px solid #000000;
         margin-top:-10px;
     }
     
     @media (max-width: 950px) {
-        width:80%;
+        width:100%;
         border: 1px solid #000000;
         margin-top:-20px;
     }
@@ -79,7 +79,7 @@ const Agree1 = styled.div`
     line-height: 34px;
     letter-spacing: 0em;
     text-align: left;
-    padding-left: 10%;
+    padding-left: 25%;
     margin-top:2%;
 
     @media (max-width: 1439px) { 
@@ -95,8 +95,8 @@ const Agree1 = styled.div`
 
 const Image1 = styled.img`
 
-    width: 1112px;
-    max-height: 304px;
+    width: 789px;
+    max-height: 310px;
     margin: auto; 
     overflow-y: auto; // 세로 스크롤
     display: block; // 필요한 경우
@@ -181,7 +181,7 @@ const Agree2 = styled.div`
     line-height: 34px;
     letter-spacing: 0em;
     text-align: left;
-    padding-left: 10%;
+    padding-left: 25%;
     margin-top:2%;
 
     @media (max-width: 1439px) { 
@@ -197,8 +197,8 @@ const Agree2 = styled.div`
 
 
 const Image2 = styled.img`
-    width: 1112px;
-    max-height: 304px;
+    width: 789px;
+    max-height: 310px;
     margin: auto; 
     overflow-y: auto; // 세로 스크롤
     display: block; // 필요한 경우
@@ -282,7 +282,7 @@ const Agree3 = styled.div`
     line-height: 34px;
     letter-spacing: 0em;
     text-align: left;
-    padding-left: 10%;
+    padding-left: 25%;
     margin-top:2%;
 
     @media (max-width: 1439px) { 
@@ -299,8 +299,8 @@ const Agree3 = styled.div`
 
 const Image3 = styled.img`
     
-    width: 1112px;
-    max-height: 304px;
+    width: 789px;
+    max-height: 310px;
     margin: auto; 
     overflow-y: auto; // 세로 스크롤
     display: block; // 필요한 경우
@@ -426,8 +426,8 @@ const Checkbox4 = styled.input.attrs({ type: 'checkbox' })`
 
 const Button = styled.button`
   
-    width: clamp(50px, 10vw, 107px);
-    height: clamp(30px, 6vh, 64px);
+    width: clamp(445px, 10vw, 107px);
+    height: clamp(56px, 6vh, 64px);
     font-size: clamp(12px, 1.5vw, 28px);
     
     margin:auto;
@@ -440,7 +440,10 @@ const Button = styled.button`
     color: #FFFFFF;
     border:none;
 
-    color: ${props => (props.enabled ? '#000000' : '#ffffff')};
+    border-radius: 10px;
+
+
+    color: ${props => (props.enabled ? '#ffffff' : '#000000')};
     background-color: ${props => (props.enabled ? '#5980EF': '#D9D9D9')};
 
 `;
@@ -517,7 +520,7 @@ const Register1 = () => {
             <Allagree>전체 동의하기</Allagree>
             <Checkbox4 checked={checked4} onChange={() => handleCheckAll(!checked4)} />
             
-            <Button enabled={isButtonEnabled} onClick={handleSubmit}>다음</Button>
+            <Button enabled={isButtonEnabled} onClick={handleSubmit}>다음으로</Button>
             
             <FooterContainer>
               <Footer />

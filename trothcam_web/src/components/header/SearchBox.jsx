@@ -8,38 +8,54 @@ import { ReactComponent as SearchIcon } from "../../assets/search.svg";
 const SearchBox = () => {
   const navigate = useNavigate();
   const [isInputFocused, setIsInputFocused] = useState(false);
+  const isLoggedIn = localStorage.getItem("accessToken") !== null;
 
   const handleInputFocus = () => {
     setIsInputFocused(true);
   };
 
   const handleLoginClick = () => {
-    //로그인 화면으로 이동
+    navigate("/login");
   };
 
   const handleSignUpClick = () => {
     //navigate("/"); //register1-b로 이동
   };
 
-  return (
-    <SearchBoxContainer>
-      <LogoLayout>
-        <Logo />
-      </LogoLayout>
-      <SearchBoxLayout>
-        <SearchIcon />
-        <SearchBoxInput
-          placeholder="어떤 사진을 찾으시나요?"
-          onFocus={handleInputFocus}
-          isInputFocused={isInputFocused}
-        />
-      </SearchBoxLayout>
+  const handleMyPageClick = () => {
+    // MyPage로 이동
+  };
 
-      <LoginButton onClick={handleLoginClick}>Login</LoginButton>
-      <Link to="/Register">
-        <SignUpButton onClick={handleSignUpClick}>Sign up</SignUpButton>
-      </Link>
-    </SearchBoxContainer>
+  return (
+    <>
+      <SearchBoxContainer>
+        <LogoLayout>
+          <Logo />
+        </LogoLayout>
+        <SearchBoxLayout>
+          <SearchBoxInput
+            placeholder="어떤 사진을 찾으시나요?"
+            onFocus={handleInputFocus}
+            isInputFocused={isInputFocused}
+          />
+          <SearchIcon />
+        </SearchBoxLayout>
+
+        {isLoggedIn ? (
+          <>
+            <MyPageButton onClick={handleMyPageClick}>My Page</MyPageButton>
+          </>
+        ) : (
+          <>
+            <LoginButton onClick={handleLoginClick}>Login</LoginButton>
+            <Link to="/Register">
+              <SignUpButton onClick={handleSignUpClick}>Sign up</SignUpButton>
+            </Link>
+          </>
+        )}
+      </SearchBoxContainer>
+      <Divider />
+    </>
   );
 };
 
@@ -52,7 +68,7 @@ const SearchBoxContainer = styled.div`
   background-color: #ffffff;
 `;
 const LogoLayout = styled.div`
-  margin-left: 1rem;
+  margin-left: 10rem;
 `;
 const SearchBoxLayout = styled.div`
   display: flex;
@@ -68,23 +84,23 @@ const SearchBoxLayout = styled.div`
 `;
 const SearchBoxInput = styled.input`
   border: none;
-  width: 100%;
+  width: 30rem;
   padding-left: 1.2rem;
-  min-width: 15rem;
   outline: none;
+  font-size: 1rem;
   &::placeholder {
     color: ${({ isInputFocused }) =>
       isInputFocused ? "transparent" : "#bcbdc1"};
-    font-size: 0.875rem;
+    font-size: 1rem;
     font-family: Inter;
   }
 `;
 const LoginButton = styled.button`
-  margin-left: 30rem;
+  margin-left: 22rem;
   width: 9.3rem;
   min-width: 9.3rem;
   height: 3rem;
-  border-radius: 0.5rem;
+  border-radius: 0.8rem;
   border: 1.5px solid #5980ef;
   background-color: #ffffff;
   color: #5980ef;
@@ -96,11 +112,29 @@ const SignUpButton = styled.button`
   margin-left: 1rem;
   width: 9.3rem;
   height: 3rem;
-  border-radius: 0.5rem;
+  border-radius: 0.8rem;
   border: none;
   background-color: #5980ef;
   color: #ffffff;
   font-family: Inter;
   font-size: 1.25rem;
   font-weight: 600;
+`;
+const MyPageButton = styled.button`
+  margin-left: 35rem;
+  width: 9.3rem;
+  height: 3rem;
+  border-radius: 0.8rem;
+  border: none;
+  background-color: #5980ef;
+  color: #ffffff;
+  font-family: Inter;
+  font-size: 1.25rem;
+  font-weight: 600;
+`;
+const Divider = styled.div`
+  width: 136.8rem;
+  height: 0.08rem;
+  background-color: #bcbdc1;
+  margin-bottom: 2rem;
 `;

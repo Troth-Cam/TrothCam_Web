@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
 import styled from "styled-components";
-import SwiperCore, { Navigation, Pagination, Autoplay } from "swiper";	// 추가
-import Select from 'react-select';
+import SwiperCore, { Navigation, Pagination, Autoplay } from "swiper"; // 추가
+import Select from "react-select";
 import "swiper/swiper.scss";
 import "swiper/components/navigation/navigation.scss";
 import "swiper/components/pagination/pagination.scss";
-import RankBoard from "./RankBoard"
-import PhotoBoard from './PhotoBoard';
+import RankBoard from "./RankBoard";
+import PhotoBoard from "./PhotoBoard";
 import FilterIcon from "./img/filter_icon.png";
 import Banner from "./img/banner.png";
 import CoinIcon from "./img/coin_icon.png";
@@ -21,7 +22,7 @@ import { ScrollMenu } from 'react-horizontal-scrolling-menu';
 import { LeftArrow } from './LeftArrow';
 import { RightArrow } from './RightArrow';
 
-SwiperCore.use([Navigation, Pagination, Autoplay])
+SwiperCore.use([Navigation, Pagination, Autoplay]);
 
 const RecentDiv = styled.div`
   margin-top: 27px;
@@ -38,7 +39,7 @@ const FilterButton = styled.button`
   background-color: ${props => (props.clicked ? '#FFFFFFE5' : '#222222')};
   color: ${props => (props.clicked ? '#222222' : '#FFFFFF')};
   border: solid 1px;
-  border-color:${props => (props.clicked ? '#9FA0A3' : '#D9D9D9')};
+  border-color: ${(props) => (props.clicked ? "#9FA0A3" : "#D9D9D9")};
   border-radius: 10px;
   font-weight: 600;
   font-size: 15px;
@@ -51,14 +52,13 @@ const FilterButtonDiv = styled.div`
   margin-left: 21.1%;
   display: flex;
   align-items: center;
-  color: 
+  color: ;
 `;
 
 const SelectContainer = styled.div`
-  width: px;
-
+  width: 140px;
+  margin-left: 19px;
 `;
-
 
 const FilterImg = styled.img`
   width: 23.72px;
@@ -71,7 +71,7 @@ const RankButtonDiv = styled.div`
   height: 36px;
   position: flex;
   border-radius: 10px;
-  align-items: center; 
+  align-items: center;
   display: flex;
   
 `;
@@ -107,7 +107,6 @@ const TopDiv = styled.text`
   font-size: 15px;
   font-weight: 500;
   font-family: Inter;
-  
   color: ${props => (props.clicked ? '##222222' : '#22222296')};
 `;
 
@@ -122,7 +121,7 @@ const LatestDiv = styled.text`
   font-weight: 500;
   line-height: 32px;
   font-family: Inter;
-  color: ${props => (props.clicked ? '##222222' : '#22222296')};
+  color: ${(props) => (props.clicked ? "##222222" : "#22222296")};
 `;
 
 const TextDiv = styled.div`
@@ -148,7 +147,7 @@ const BannerBgDiv = styled.div`
   width: 100%;
   position: flex;
   text-align: center;
-  background-image: linear-gradient(to bottom, #88A0E5 10%, #FFFFFF00 53%);
+  background-image: linear-gradient(to bottom, #88a0e5 10%, #ffffff00 53%);
 `;
 
 const BannerTextDiv = styled.div`
@@ -173,7 +172,7 @@ const BannerTextDiv3 = styled.div`
   display: inline-block;
   font-weight: 400;
   font-size: 50px;
-  color: #5980EF;
+  color: #5980ef;
   margin-left: 20px;
   font-family: Inter;
 `;
@@ -195,6 +194,17 @@ const OptionIconImg = styled.img`
   margin-right: 10px;
 `;
 const Container = styled.div`
+  width: 100%;
+  overflow-x: scroll;
+  white-space: nowrap;
+  margin-left: auto;
+  margin-right: auto;
+
+  /* 스크롤바 스타일 */
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
 
 width: 61%;
 // overflow-x: scroll;
@@ -247,6 +257,7 @@ const CustomDatePicker = styled(DatePicker)`
   font-family: Inter;
   padding-left: 30px; /* 추가한 스타일 */
 `;
+
 const SwiperContainer = styled(Swiper)`
 height: 750px;
 width: 100%
@@ -256,7 +267,12 @@ width: 100%
 `;
 
 const Main = () => {
+  const navigate = useNavigate();
 
+const handleRankClick = () => {
+  
+  navigate("/rank");
+};
   const [isAllButtonClicked, setIsAllButtonClicked] = useState(false);
   const [isNewButtonClicked, setIsNewButtonClicked] = useState(true);
   const [isTopButtonClick1, setIsTopButtonClicked1] = useState(true);
@@ -265,14 +281,14 @@ const Main = () => {
   const [isTopButtonClick2, setIsTopButtonClicked2] = useState(true);
   const [isLatestButtonClick2, setIsLatestButtonClicked2] = useState(false);
   const rankList = [
-    {"Name": "이름1", "price": "17000", "owner": "시니"},
-    {"Name": "이름2", "price": "17000", "owner": "시니현"},
-    {"Name": "이름3", "price": "17000", "owner": "시니현"},
-    {"Name": "이름4", "price": "17000", "owner": "시니현"},
-    {"Name": "이름5", "price": "17000", "owner": "시니"},
-    {"Name": "이름6", "price": "17000", "owner": "시니"},
-    {"Name": "이름7", "price": "17000", "owner": "시니현"},
-    {"Name": "이름8", "price": "17000", "owner": "시니현"}
+    { Name: "이름1", price: "17000", owner: "시니" },
+    { Name: "이름2", price: "17000", owner: "시니현" },
+    { Name: "이름3", price: "17000", owner: "시니현" },
+    { Name: "이름4", price: "17000", owner: "시니현" },
+    { Name: "이름5", price: "17000", owner: "시니" },
+    { Name: "이름6", price: "17000", owner: "시니" },
+    { Name: "이름7", price: "17000", owner: "시니현" },
+    { Name: "이름8", price: "17000", owner: "시니현" },
   ];
 
   const photoList = [
@@ -284,7 +300,6 @@ const Main = () => {
     {"Name": "이름", "price": "17000", "owner": "시니현"},
     {"Name": "이름", "price": "17000", "owner": "시니현"},
     {"Name": "이름", "price": "17000", "owner": "시니현"},
-    
   ];
   
 
@@ -326,13 +341,12 @@ const Main = () => {
   }
   return (
     <div>
-      <SearchBar/>
+      <SearchBar />
       <SwiperContainer
         className="banner"
         slidesPerView={1}
         pagination={{ clickable: true }}
-        autoplay={{ delay: 5000 }}
-      >
+        autoplay={{ delay: 5000 }}>
         <SwiperSlide>
           <BannerBgDiv>
             <BannerTextDiv>간단하게 찍고, 간단하게 판매하세요.</BannerTextDiv>
@@ -343,9 +357,9 @@ const Main = () => {
         </SwiperSlide>
         <SwiperSlide>Slide 2</SwiperSlide>
         <SwiperSlide>Slide 3</SwiperSlide>
-        <SwiperSlide>Slide 4</SwiperSlide> 
+        <SwiperSlide>Slide 4</SwiperSlide>
       </SwiperContainer>
-            
+
       <ButtonContainer>
         <RankButtonDiv>
         </RankButtonDiv>
@@ -355,7 +369,7 @@ const Main = () => {
             <LatestDiv clicked={isLatestButtonClick1} onClick={clickLatestButton1}>Latest</LatestDiv>
           </TextDiv>
         <div>
-          <ViewAllButton>View all</ViewAllButton>
+          <ViewAllButton onClick={handleRankClick}>View all</ViewAllButton>
         </div>
       </ButtonContainer>
     
@@ -376,7 +390,6 @@ const Main = () => {
           <PhotoBoard photoList={photoList} />
           </ScrollMenu>
       </Container>
-
       <div style={{marginTop:"378px"}}/>
       <Footer/>
     </div>
