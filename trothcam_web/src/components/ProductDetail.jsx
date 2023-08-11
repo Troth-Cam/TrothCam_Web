@@ -38,8 +38,9 @@ const ProductDetail = () => {
 
     return (
         <Container>
-            <SearchBox></SearchBox>
-        
+            <div>
+                <SearchBox></SearchBox>
+            </div>
             <Col>
                 <Product>Product Detail</Product>
                 <TextContainer>
@@ -118,24 +119,24 @@ const ProductDetail = () => {
                         </BuydetailContainer>
                         <Line />
                         <BuydetailContainer>
-                            <BuyerDetail>온브</BuyerDetail>
-                            <BuyerDetail>블루</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">30,000KRW</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">2시간전</BuyerDetail>
+                            <BuyerDetail>klfasd...</BuyerDetail>
+                            <BuyerDetail>qwbek...</BuyerDetail>
+                            <BuyerDetail marginLeft="0px">30000</BuyerDetail>
+                            <BuyerDetail marginLeft="0px">23.8.5</BuyerDetail>
                         </BuydetailContainer>
                        
                         <BuydetailContainer>
-                            <BuyerDetail>온브</BuyerDetail>
-                            <BuyerDetail>블루</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">30,000KRW</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">10시간전</BuyerDetail>
+                            <BuyerDetail>klfasd...</BuyerDetail>
+                            <BuyerDetail>qwbek...</BuyerDetail>
+                            <BuyerDetail marginLeft="0px">30000</BuyerDetail>
+                            <BuyerDetail marginLeft="0px">23.8.5</BuyerDetail>
                         </BuydetailContainer>
                         
                         <BuydetailContainer>
-                            <BuyerDetail>온브</BuyerDetail>
-                            <BuyerDetail>블루</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">30,000KRW</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">1일전</BuyerDetail>
+                            <BuyerDetail>klfasd...</BuyerDetail>
+                            <BuyerDetail>qwbek...</BuyerDetail>
+                            <BuyerDetail marginLeft="0px">30000</BuyerDetail>
+                            <BuyerDetail marginLeft="0px">23.8.5</BuyerDetail>
                         </BuydetailContainer>
 
 
@@ -158,18 +159,18 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  
+  //align-items:center;
   
 `;
 
 const Col = styled.div`
-  position:relative;
+  
   display: flex;
   flex-direction: column;
   justify-content: center;
   
   align-items:center;
-  //margin-left:-50%;
+  margin-left:-3%;
   text-align: left;    
 
   
@@ -242,6 +243,11 @@ const HeartImg = styled.img`
     width: 41.63045120239258px;
     height: 49.58951950073242px;
     margin-left: 230%;
+
+    @media (max-width: 1400px) {
+        margin-left:180%;
+       
+      }
 
     @media (max-width: 980px) {
         margin-left:60%;
@@ -322,11 +328,10 @@ const SubContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  //align-items:flex-start;
+  align-items:center;
+  //margin-left:-4%;
 
-
-  @media (max-width: 1000px) {
-   
+  @media (max-width: 1400px) {
     flex-direction: row;
     flex-wrap: wrap;
    
@@ -348,14 +353,12 @@ const FooterContainer = styled.footer`
 const Col1 = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  margin-left:-9%
-  @media (max-width: 10px) {
+  
+  @media (max-width: 750px) {
     justify-content: center;
     align-items: center;
-    margin-top:340px;
-    margin-left:-5%;
+    margin-top:0px;
+    margin-left:0%;
   }
 
 `;
@@ -366,20 +369,14 @@ const Col2 = styled.div`
   justify-content: center;
   align-items: flex-start;
   margin-top:-285px;
-  
-  margin-left:-25px;
+ 
 
-  @media (max-width:750px) {
+  @media (max-width:780px) {
     justify-content: center;
     align-items: center;
-    margin-top:20px;
-    margin-left:-4%;
-  }
-  @media (max-width:700px) {
-    justify-content: center;
-    align-items: center;
-    margin-top:4%;
-    margin-left:-8%;
+    margin-top:2%;
+    margin-right:6%
+   
   }
 `;
 
@@ -809,7 +806,7 @@ const BuydetailContainer=styled.div`
 
 const BuyDetail=styled.div`
     margin-top:20px;
-    margin-left:40px;
+    margin-left:43px;
     font-family: Inter;
     font-size: 20px;
     font-weight: 500;
