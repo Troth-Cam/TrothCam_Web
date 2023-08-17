@@ -2,16 +2,18 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import PhotoBoard from './PhotoBoard';
 import DetailBorard from './DetailBoard';
-import ShareIcon from "./img/share_icon.png";
+import ReloadIcon from "./img/reload_icon.svg";
 import CopyIcon from "./img/copy_icon.png";
-import MoreIcon from "./img/more_icon.png";
+import axios from 'axios';
+import {CopyToClipboard} from 'react-copy-to-clipboard'
 const UserToken = styled.div`
-    display: inline;
-    color: #5980EF;
-    font-size: 70px;
-    weight: 700;
-    margin-left: 37px;
-    margin-top: 144px;
+display: inline;
+color: #5980EF;
+font-size: 45px;
+margin-left: 21.8%;
+margin-top: 87px;
+font-weight: 600;
+font-family: inter;
 `;
 const TabBtn = styled.button`
     color: #000000;
@@ -22,34 +24,53 @@ const TabBtn = styled.button`
     border-bottom: solid 3px ${props => (props.clicked ? '#5980EF' : '#ffffff')};
     padding-bottom: 5px;
     margin-left: 36px;
-    margin-top:32px;
     font-size: #000000;
-    font-family: 400;
+    font-weight: 400;
 `;
 const RecentArrange = styled.div`
 font-family: inter;
-font-size: 25px;
+font-size: 20px;
 font-weight: 400;
 color: #000000;
-margin-left: 36px;
+margin-left: 21.8%;
 margin-top: 30px;
 `;
 const BtnDiv = styled.div`
-  display: inline-block;
-  float: right;
-  margin-right: 20px;
+display: inline-block;
+float: right;
+margin-right: 21.8%;
+margin-top: 8px;
 `;
 const Btn = styled.button`
   border: solid 1px #9FA0A3;
-  width: 59px;
-  height: 59px;
+  width: 44px;
+  height: 45px;
   background-color: #FFFFFF00;
 `;
 const BtnImg = styled.img`
-
+width: 26px;
+height: 23px;
 `;
+const TabDiv = styled.div` 
+  margin-top: 70px;
+  margin-left: 21%;
+`;
+const ListImg = styled.img`
+  margin-right: 10px;
+`;
+const PhotoBoardContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); // Four items in a row
+  // gap: 0px; // Gap between items
+  margin: 0 auto; // Center the grid
+  max-width: 820px; // Maximum width for the grid (adjust as needed)
+`;
+const reloadBtn = () =>{
+  window.location.reload();
+}
 const Detail_others = () =>{
-    
+    const currentURL = window.location.href;
+
     const [isTabButton1Clicked, setIsTabButton1Clicked] = useState(true);
     const [isTabButton2Clicked, setIsTabButton2Clicked] = useState(false);
 
@@ -57,36 +78,42 @@ const Detail_others = () =>{
         {"Name": "이름", "price": "17000", "owner": "시니"},
         {"Name": "이름2", "price": "17000", "owner": "시니현"},
         {"Name": "이름", "price": "17000", "owner": "시니현"},
+        {"Name": "이름", "price": "17000", "owner": "시니현"},
       ];
 
     const clickTabBtn1 = () => { 
       setIsTabButton1Clicked(true);
       setIsTabButton2Clicked(false);
-        if(isTabButton1Clicked == true)
-            <PhotoBoard photoList={photoList} />
+      //axios.post()
+
       };
       const clickTabBtn2 = () => {
         setIsTabButton1Clicked(false);
         setIsTabButton2Clicked(true);
-        if(isTabButton2Clicked == true)
-            <DetailBorard/>
+
       };
     return(
         <>
+         {/* <SearchBar /> */}
         <UserToken>qwbekhbjweghrk23</UserToken>
         <BtnDiv>
-          <Btn style={{ borderBottomLeftRadius: "5px", borderTopLeftRadius:"5px"}}>이미지</Btn>
-          <Btn><BtnImg src={ShareIcon}/></Btn>
-          <Btn><BtnImg src={CopyIcon}/></Btn>
-          <Btn style={{ borderBottomRightRadius: "5px", borderTopRightRadius:"5px"}}><BtnImg src={MoreIcon}/></Btn>
+        <Btn onClick={reloadBtn} style={{ borderBottomLeftRadius: "5px", borderTopLeftRadius:"5px"}}><BtnImg src={ReloadIcon}/></Btn>
+        <CopyToClipboard text={currentURL}>
+          <Btn style={{ borderBottomRightRadius: "5px", borderTopRightRadius:"5px"}}><BtnImg src={CopyIcon}/></Btn>
+          </CopyToClipboard>
         </BtnDiv>
-        <div>
-        <TabBtn clicked={isTabButton1Clicked} onClick={clickTabBtn1}>보유 중인 인증서</TabBtn>
+        <TabDiv>
+        <TabBtn clicked={isTabButton1Clicked} onClick={clickTabBtn1} style={{marginLeft:"0px"}}>보유 중인 인증서</TabBtn>
         <TabBtn clicked={isTabButton2Clicked} onClick={clickTabBtn2}>상세 정보</TabBtn>
-        </div>
-        {isTabButton1Clicked && <RecentArrange>최근 본 상품</RecentArrange>}
-        {isTabButton1Clicked ? <PhotoBoard photoList={photoList} /> : null}
-      {isTabButton2Clicked && <DetailBorard />}
+        </TabDiv>
+        {isTabButton1Clicked}
+        
+        {isTabButton1Clicked ? (
+                <PhotoBoardContainer>
+                    <PhotoBoard photoList={photoList} />
+                </PhotoBoardContainer>
+            ) : null}
+      {isTabButton2Clicked && <DetailBorard/>}
         </>
     )
 };

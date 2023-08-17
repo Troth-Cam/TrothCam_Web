@@ -13,8 +13,11 @@ import RegisterFinish from "./components/RegsterFinish";
 import Login from "./components/Login";
 import Validation from "./components/Validation";
 import ProductDetail from "./components/ProductDetail";
+import Certification from "./components/Certification";
 import DetailOthers from "./components/Detail_others";
 import DetailMe from "./components/Detail_me";
+import SearchView from "./components/SearchView";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -27,11 +30,12 @@ const router = createBrowserRouter([
       { path: "/signup", element: <SignUp /> },
       { path: "/loading", element: <Loading /> },
       { path: "/login", element: <Login /> },
-      { path: "/validation", element: <Validation /> },
-      { path: "/registerfinish", element: <RegisterFinish /> },
-      { path: "/productdetail", element: <ProductDetail /> },
-      { path: "/detail_others", element: <DetailOthers /> },
-      { path: "/detail_me", element: <DetailMe /> },
+      { path: "/registerfinish", element: <RegisterFinish />},
+      { path: "/productdetail", element: <ProductDetail/>},
+      { path: "/Certification", element: <Certification/> },
+      { path: "/detail_others", element: <DetailOthers/> },
+      { path: "/detail_me", element: <DetailMe/> },
+      { path: "/search_view", element: <SearchView/> }
     ],
   },
 ]);

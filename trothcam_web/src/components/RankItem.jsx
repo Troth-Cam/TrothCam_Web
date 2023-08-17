@@ -3,31 +3,59 @@ import styled from "styled-components";
 
 const ItemDiv = styled.div`
     border-bottom: solid 1px #BCBDC1;
-    font-size: 25px;
-    height: 104px;
+    font-size: 15px;
+    height: 70px;
     display: flex;
     flex-direction: row;
     align-items: center;
-    font-color: "black";
+    font-color: #000000;
     font-weight:500;
-    width: 582px;
+    width: 379.9px;
     font-family: Inter;
 `; 
 const ImgDiv = styled.div`
-  margin-left: 10px;
-  
+  margin-left: 33px;
+  width: 52px;
+  background-color: red;
+  height: 50px;
+  border-radius: 10px;
 `;
-const NameText = styled.text`
-  margin-left: 35px;
-
+const NameText = styled.div`
+  display:inline-block;
+  font-size: 15px;
+  margin-left: 14px;
+  width: 52px;
+  color: #222222;
+  font-weight: 500;
+  font-family: Inter;
 `;
-const PriceText = styled.text`
-  margin-left: 80px;
-  
+const PriceText = styled.div`
+display:inline-block;
+  font-size: 15px;
+  padding-left: 24px;
+  color: #222222;
+  font-weight: 500;
+  font-family: Inter;
 `;
-const OwnerText = styled.text`
-  margin-left: 30px;
+const OwnerText = styled.div`
+display:inline-block;
+  padding-left: 20px;
+  font-size: 15px;
+  width: 45px;
+  font-weight: 500;
+  font-family: Inter;
+  color: #222222;
+  text-overflow: ellipsis;
+  margin-top:0xp;
+  overflow:hidden;
 `
+const RankText = styled.div`
+margin-left: 20px;
+font-size: 15px;
+font-weight: 500;
+font-family: Inter;
+color: #000000;
+`;
 
 const RankItem = (props) => {
     
@@ -37,13 +65,10 @@ const RankItem = (props) => {
     console.log(props.index);
     return (
       <ItemDiv>
-        <div style={{marginLeft: "45px", width:"52px"}}>
-          {props.index+ 1}
-        </div>
+        <RankText>{props.index+ 1}</RankText>
         <ImgDiv>
-          사진
         </ImgDiv>
-        <div style={{width: "420px"}}>
+        <div style={{width: "266px"}}>
           <NameText> {props.item.Name}</NameText>
           <PriceText>{props.item.price}KRW</PriceText>
           <OwnerText>{props.item.owner}</OwnerText>
