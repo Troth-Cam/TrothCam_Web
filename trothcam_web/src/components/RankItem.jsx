@@ -14,7 +14,7 @@ const ItemDiv = styled.div`
     font-family: Inter;
 `; 
 const ImgDiv = styled.div`
-  margin-left: 10px;
+  margin-left: 33px;
   width: 52px;
   background-color: red;
   height: 50px;
@@ -23,9 +23,8 @@ const ImgDiv = styled.div`
 const NameText = styled.div`
   display:inline-block;
   font-size: 15px;
-  padding-left: 14px;
+  margin-left: 14px;
   width: 52px;
-  font-weight: 500;
   color: #222222;
   font-weight: 500;
   font-family: Inter;
@@ -33,7 +32,7 @@ const NameText = styled.div`
 const PriceText = styled.div`
 display:inline-block;
   font-size: 15px;
-  padding-left: 20px;
+  padding-left: 24px;
   color: #222222;
   font-weight: 500;
   font-family: Inter;
@@ -46,7 +45,17 @@ display:inline-block;
   font-weight: 500;
   font-family: Inter;
   color: #222222;
+  text-overflow: ellipsis;
+  margin-top:0xp;
+  overflow:hidden;
 `
+const RankText = styled.div`
+margin-left: 20px;
+font-size: 15px;
+font-weight: 500;
+font-family: Inter;
+color: #000000;
+`;
 
 const RankItem = (props) => {
     
@@ -56,12 +65,10 @@ const RankItem = (props) => {
     console.log(props.index);
     return (
       <ItemDiv>
-        <div style={{marginLeft: "45px", width:"52px"}}>
-          {props.index+ 1}
-        </div>
+        <RankText>{props.index+ 1}</RankText>
         <ImgDiv>
         </ImgDiv>
-        <div style={{width: "243px"}}>
+        <div style={{width: "266px"}}>
           <NameText> {props.item.Name}</NameText>
           <PriceText>{props.item.price}KRW</PriceText>
           <OwnerText>{props.item.owner}</OwnerText>

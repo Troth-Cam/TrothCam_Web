@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import PhotoBoard from './PhotoBoard';
 import DetailBorard from './DetailBoard';
-import CopyIcon from "./img/copy_icon.png";
-import MoreIcon from "./img/more_icon.png";
 import LockIcon from "./img/lock_icon.png";
-import ReloadIcon from "./img/reload_icon.png";
+import ReloadIcon from "./img/reload_icon.svg";
+import CopyIcon from "./img/copy_icon.png";
+import {CopyToClipboard} from 'react-copy-to-clipboard'
+import api from "../apis/axios";
+
 const UserToken = styled.div`
     display: inline;
     color: #5980EF;
@@ -38,36 +40,16 @@ font-family: inter;
 background-color: #FF0000;
 color: white;
 `;
-const SettingsBtn = styled.button`
-width: 104px;
-height: 37px;
-border-radius: 8px;
-border: 1px solid black;
-font-size: 15px;
-font-weight: 600;
-font-family: inter;
-background-color: white;
-margin-right: 10px;
-
-`;
 const ButtonDiv = styled.div`
 float: right;
 margin-right: 21%;
 margin-top: 15px;
 `;
-
-const RecentArrange = styled.div`
-font-family: inter;
-font-size: 20px;
-font-weight: 400;
-color: #000000;
-margin-left: 21.8%;
-margin-top: 30px;
-`;
 const BtnDiv = styled.div`
   display: inline-block;
   float: right;
   margin-right: 21.8%;
+  margin-top: 8px;
 
 `;
 const Btn = styled.button`
@@ -85,17 +67,34 @@ const TabDiv = styled.div`
   margin-top: 70px;
   margin-left: 21%;
 `;
-const ListImg = styled.img`
-  margin-right: 10px;
-`;
 const PhotoBoardContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(1, 1fr); // Four items in a row
-  gap: 20px; // Gap between items
+  grid-template-columns: repeat(4, 1fr); // Four items in a row
+  gap: 0px; // Gap between items
   margin: 0 auto; // Center the grid
-  max-width: 850px; // Maximum width for the grid (adjust as needed)
+  max-width: 820px; // Maximum width for the grid (adjust as needed)
 `;
+const clickLogout = () => {
+  // 사용자 토큰을 여기에 입력하세요
+  const userToken = '여기에_사용자_토큰_입력';
+
+  const headers = {
+    Authorization: `Bearer ${userToken}`,
+    // 다른 헤더도 필요한 경우 추가하세요
+  };
+
+  // api.post('/auth/logout', null, { headers })
+  //   .then((response) => {
+  //     // 성공 처리
+  //     navigate("/");
+  //   })
+  //   .catch((err) => {
+  //     // 오류 처리
+  //   });
+    
+}
 const Detail_me = () =>{
+  const currentURL = window.location.href;
     
     const [isTabButton1Clicked, setIsTabButton1Clicked] = useState(true);
     const [isTabButton2Clicked, setIsTabButton2Clicked] = useState(false);
@@ -125,16 +124,20 @@ const Detail_me = () =>{
         setIsTabButton2Clicked(false);
         setIsTabButton3Clicked(true);
       };
-
+      const reloadBtn = () =>{
+        window.location.reload();
+      }
     return(
         <>
         <UserToken>qwbekhbjweghrk23</UserToken>
         <BtnDiv>
-          <Btn style={{ borderBottomLeftRadius: "5px", borderTopLeftRadius:"5px"}}>이미지</Btn>
+        <Btn onClick={reloadBtn} style={{ borderBottomLeftRadius: "5px", borderTopLeftRadius:"5px"}}><BtnImg src={ReloadIcon}/></Btn>
+        <CopyToClipboard text={currentURL}>
           <Btn style={{ borderBottomRightRadius: "5px", borderTopRightRadius:"5px"}}><BtnImg src={CopyIcon}/></Btn>
+          </CopyToClipboard>
         </BtnDiv>
         <ButtonDiv>
-                <LogoutBtn>Log out</LogoutBtn>
+                <LogoutBtn onClick={clickLogout}>Log out</LogoutBtn>
             </ButtonDiv>
           <TabDiv>
                 <TabBtn clicked={isTabButton1Clicked} onClick={clickTabBtn1} style={{marginLeft:"0px"}}>보유 중인 인증서</TabBtn>

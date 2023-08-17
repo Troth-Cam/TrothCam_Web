@@ -14,7 +14,7 @@ const RankText = styled.text`
     font-size: 15px;
     color: #777777;
     font-weight: 500;
-    margin-left: 30.88px;
+    margin-left: 11.88px;
 `
 const OwnerText = styled.text`
     font-size: 15px;
@@ -26,7 +26,7 @@ const PriceText = styled.text`
     font-size: 15px;
     color: #777777;
     font-weight: 500;
-    margin-left: 196px;
+    margin-left: 186px;
 `
 const RankBoard = (props) => {
   const limitedRankList1 = props.rankList.slice(0, 5); // 처음 5개의 요소만 잘라내기

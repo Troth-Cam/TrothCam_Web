@@ -3,34 +3,20 @@ import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import styled from "styled-components";
 import SwiperCore, { Navigation, Pagination, Autoplay } from "swiper"; // 추가
-import Select from "react-select";
 import "swiper/swiper.scss";
 import "swiper/components/navigation/navigation.scss";
 import "swiper/components/pagination/pagination.scss";
 import RankBoard from "./RankBoard";
 import PhotoBoard from "./PhotoBoard";
-import FilterIcon from "./img/filter_icon.png";
 import Banner from "./img/banner.png";
-import CoinIcon from "./img/coin_icon.png";
-import ColorIcon from "./img/color_icon.png";
-import CalendarIcon from "./img/calendar_icon.png";
 import Footer from "./Footer";
 import SearchBar from "./header/SearchBox";
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { ScrollMenu } from 'react-horizontal-scrolling-menu';
+import axios from "axios";
+import { ScrollMenu, VisibilityContext } from "react-horizontal-scrolling-menu";
 
 
 SwiperCore.use([Navigation, Pagination, Autoplay]);
 
-const RecentDiv = styled.div`
-  margin-top: 27px;
-  font-weight: 600;
-  font-size: 24px;
-  color: #222222;  
-  margin-left: 21.1%; //289;
-  font-family: Inter;
-`;
 
 const FilterButton = styled.button`
   width: 43px;
@@ -44,24 +30,6 @@ const FilterButton = styled.button`
   font-size: 15px;
   margin-left: 16px;
   font-family: Inter;
-`;
-
-const FilterButtonDiv = styled.div`
-  margin-top: 32px;
-  margin-left: 21.1%;
-  display: flex;
-  align-items: center;
-  color: ;
-`;
-
-const SelectContainer = styled.div`
-  width: 140px;
-  margin-left: 19px;
-`;
-
-const FilterImg = styled.img`
-  width: 23.72px;
-  height: 28.13px;
 `;
 
 const RankButtonDiv = styled.div`
@@ -142,7 +110,7 @@ const ViewAllButton = styled.div`
 `;
 
 const BannerBgDiv = styled.div`
-  height: 670px;
+  height: 667px;
   width: 100%;
   position: flex;
   text-align: center;
@@ -151,9 +119,9 @@ const BannerBgDiv = styled.div`
 
 const BannerTextDiv = styled.div`
   font-weight: 700;
-  font-size: 50px;
+  font-size: 40px;
   color: #222222;
-  padding-top: 182px;
+  padding-top: 190px;
   padding-bottom: 10px;
   display: block;
   font-family: Inter;
@@ -162,7 +130,7 @@ const BannerTextDiv = styled.div`
 const BannerTextDiv2 = styled.div`
   color: #000000;
   display: inline-block;
-  font-size: 50px;
+  font-size: 40px;
   font-weight: 400;
   font-family: Inter;
 `;
@@ -170,67 +138,40 @@ const BannerTextDiv2 = styled.div`
 const BannerTextDiv3 = styled.div`
   display: inline-block;
   font-weight: 400;
-  font-size: 50px;
+  font-size: 40px;
   color: #5980ef;
   margin-left: 20px;
   font-family: Inter;
 `;
 
 const BannerImg = styled.div`
-  width: 1227px;
-  height: 271.54px;
-  margin-top: 64px;
+  width: 806px;
+  height: 178px;
+  margin-top: 151px;
   background-image: url(${Banner});
   background-repeat: no-repeat;
   background-size: cover;
   margin-left: auto;
   margin-right: auto;
+  border: solid 1px #000000;
+  border-radius: 15px;
 `;
 
 const Container = styled.div`
 
-width: 100%;
-overflow-x: scroll;
+overflow: scroll;
+overflow: auto;
 white-space: nowrap;
 margin-left: auto;
 margin-right: auto;
+
 /* 스크롤바 스타일 */
 &::-webkit-scrollbar {
-  width: 0.5rem;
-  height: 0.5rem;
+  display none;
+  overflow:hidden;
 }
 width: 61%;
-overflow-x: scroll;
-
 `;
-const DatePickerContainer = styled.div`
-  display: inline-block;
-  width: 140px;
-  margin-left: 16px;
-  position: relative;
-`;
-
-const PlaceholderIcon = styled.img`
-  position: absolute;
-  left: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 16px;
-  height: 16px;
-`;
-
-const CustomDatePicker = styled(DatePicker)`
-  height: 47px;
-  font-size: 10px;
-  font-weight: 600;
-  border-radius: 10px;
-  background-color: #fff;
-  border: 1px solid #d9d9d9;
-  outline: none;
-  font-family: Inter;
-  padding-left: 30px; /* 추가한 스타일 */
-`;
-
 const SwiperContainer = styled(Swiper)`
 height: 750px;
 width: 100%
@@ -246,26 +187,23 @@ const handleRankClick = () => {
   
   navigate("/rank");
 };
-  const [isAllButtonClicked, setIsAllButtonClicked] = useState(false);
-  const [isNewButtonClicked, setIsNewButtonClicked] = useState(true);
   const [isTopButtonClick1, setIsTopButtonClicked1] = useState(true);
-  const [selectedDate, setSelectedDate] = useState(null);
   const [isLatestButtonClick1, setIsLatestButtonClicked1] = useState(false);
   const [isTopButtonClick2, setIsTopButtonClicked2] = useState(true);
   const [isLatestButtonClick2, setIsLatestButtonClicked2] = useState(false);
   const rankList = [
-    { Name: "이름1", price: "17000", owner: "시니" },
-    { Name: "이름2", price: "17000", owner: "시니현" },
-    { Name: "이름3", price: "17000", owner: "시니현" },
-    { Name: "이름4", price: "17000", owner: "시니현" },
-    { Name: "이름5", price: "17000", owner: "시니" },
-    { Name: "이름6", price: "17000", owner: "시니" },
-    { Name: "이름7", price: "17000", owner: "시니현" },
-    { Name: "이름8", price: "17000", owner: "시니현" },
+    { Name: "이름1", price: "17,000", owner: "dsdsddsdsadsads" },
+    { Name: "이름2", price: "17000", owner: "dsdsddsdsadsads" },
+    { Name: "이름3", price: "17000", owner: "dsdsddsdsadsads" },
+    { Name: "이름4", price: "17000", owner: "dsdsddsdsadsads" },
+    { Name: "이름5", price: "17000", owner: "dsdsddsdsadsads" },
+    { Name: "이름6", price: "17000", owner: "dsdsddsdsadsads" },
+    { Name: "이름7", price: "17000", owner: "dsdsddsdsadsads" },
+    { Name: "이름8", price: "17000", owner: "dsdsddsdsadsads" },
   ];
 
   const photoList = [
-    {"Name": "이름", "price": "17000", "owner": "시니"},
+    {"Name": "이름", "price": "17000", "owner": "sdsdsds"},
     {"Name": "이름2", "price": "17000", "owner": "시니현"},
     {"Name": "이름", "price": "17000", "owner": "시니현"},
     {"Name": "이름4", "price": "17000", "owner": "시니현"},
@@ -276,20 +214,11 @@ const handleRankClick = () => {
   ];
   
 
-  const clickAllBtn = () => {
-    setIsAllButtonClicked(!true);
-    setIsNewButtonClicked(!false);
-  };
-
-  const clickNewBtn = () => {
-    setIsNewButtonClicked(!true);
-    setIsAllButtonClicked(!false);
-  };
-
   const clickTopButton1 = () => {
     if(!isTopButtonClick1){
       setIsTopButtonClicked1(!isTopButtonClick1);
       setIsLatestButtonClicked1(!isLatestButtonClick1);
+      //axios.post("/") top버튼이 눌렀으면
     }
   };
 
@@ -297,12 +226,17 @@ const handleRankClick = () => {
     if(!isLatestButtonClick1){
       setIsTopButtonClicked1(!isTopButtonClick1);
       setIsLatestButtonClicked1(!isLatestButtonClick1);
+
+      //axios.post("/") rank버튼이 눌렀으면
     }
   }
   const clickTopButton2 = () => {
     if(!isTopButtonClick2){
       setIsTopButtonClicked2(!isTopButtonClick2);
       setIsLatestButtonClicked2(!isLatestButtonClick2);
+      console.log("clickTop");
+            
+      //axios.post("/") top버튼이 눌렀으면
     }
   };
 
@@ -310,11 +244,13 @@ const handleRankClick = () => {
     if(!isLatestButtonClick2){
       setIsTopButtonClicked2(!isTopButtonClick2);
       setIsLatestButtonClicked2(!isLatestButtonClick2);
+      
+      //axios.post("/") rank버튼이 눌렀으면
     }
   }
   return (
     <div>
-      <SearchBar />
+      {/* <SearchBar /> */}
       <SwiperContainer
         className="banner"
         slidesPerView={1}
@@ -359,7 +295,9 @@ const handleRankClick = () => {
       </ButtonContainer>
 
       <Container>
+        <ScrollMenu onWheel={onWheel}>
           <PhotoBoard photoList={photoList} />
+        </ScrollMenu>
       </Container>
       <div style={{marginTop:"378px"}}/>
       <Footer/>
@@ -368,3 +306,18 @@ const handleRankClick = () => {
 };
 
 export default Main;
+
+function onWheel(apiObj: scrollVisibilityApiType, ev: React.WheelEvent): void {
+  const isThouchpad = Math.abs(ev.deltaX) !== 0 || Math.abs(ev.deltaY) < 15;
+
+  if (isThouchpad) {
+    ev.stopPropagation();
+    return;
+  }
+
+  if (ev.deltaY < 0) {
+    apiObj.scrollNext();
+  } else if (ev.deltaY > 0) {
+    apiObj.scrollPrev();
+  }
+}
