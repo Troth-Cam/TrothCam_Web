@@ -85,7 +85,13 @@ const PhotoItem = (props) => {
 
 
     const clickProduct = () => {
-        navigate("/productdetail", { state: { id: props.item.price} });
+        console.log(localStorage.getItem("accessToken") );
+        if(localStorage.getItem("accessToken") == null){
+            navigate("/productdetail", { state: { id: props.item.price} });
+        }
+        else{
+            navigate("/Certification", { state: { id: props.item.price} });
+        }
         // const location = useLocation();
         // const stateData = location.state.id;
         // console.log(stateData);

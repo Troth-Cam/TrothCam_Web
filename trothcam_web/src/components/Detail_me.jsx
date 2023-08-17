@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from "react-router-dom";
 import PhotoBoard from './PhotoBoard';
 import DetailBorard from './DetailBoard';
 import LockIcon from "./img/lock_icon.png";
@@ -74,26 +75,28 @@ const PhotoBoardContainer = styled.div`
   margin: 0 auto; // Center the grid
   max-width: 820px; // Maximum width for the grid (adjust as needed)
 `;
-const clickLogout = () => {
-  // 사용자 토큰을 여기에 입력하세요
-  const userToken = '여기에_사용자_토큰_입력';
 
-  const headers = {
-    Authorization: `Bearer ${userToken}`,
-    // 다른 헤더도 필요한 경우 추가하세요
-  };
-
-  // api.post('/auth/logout', null, { headers })
-  //   .then((response) => {
-  //     // 성공 처리
-  //     navigate("/");
-  //   })
-  //   .catch((err) => {
-  //     // 오류 처리
-  //   });
-    
-}
 const Detail_me = () =>{
+  const navigate = useNavigate();
+  const clickLogout = () => {
+    // 사용자 토큰을 여기에 입력하세요
+    const refreshToken = localStorage.getItem("refreshToken");
+  
+    const headers = {
+      Authorization: `Bearer ${refreshToken}`,
+      // 다른 헤더도 필요한 경우 추가하세요
+    };
+  
+    api.post('/auth/logout', null, { headers})
+      .then((response) => {
+        // 성공 처리
+        navigate("/");
+      })
+      .catch((err) => {
+        // 오류 처리
+      });
+      
+  }
   const currentURL = window.location.href;
     
     const [isTabButton1Clicked, setIsTabButton1Clicked] = useState(true);
