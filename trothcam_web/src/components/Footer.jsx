@@ -10,13 +10,12 @@ import PhoneIcon from './img/icon_phone.svg';
 const FooterContainer=styled.footer`
    
 
-    width: 1440px;
+    width: 100%;
     height: 237px;
     
     display: flex;
     align-items: flex-start;
     flex-direction: column;
-    
     
 
     background-color:#E8EAEF;
