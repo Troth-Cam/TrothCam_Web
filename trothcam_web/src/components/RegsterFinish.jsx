@@ -7,7 +7,7 @@ import animationData from "./img/certification_finish.json";
 const RegisterFinish = () => {
   const navigate = useNavigate();
   const handleKeepClick = () => {
-    navigate("/");
+    navigate("/login");
   };
 
   return (
@@ -21,7 +21,7 @@ const RegisterFinish = () => {
         지금 바로 다양한 사진을{"\n"}무제한으로 감상하세요.
       </EnjoypictureText>
       <KeepButtonContainer>
-        <KeepButton onClick={handleKeepClick}>계속하기</KeepButton>
+        <KeepButton onClick={handleKeepClick}>돌아가기</KeepButton>
       </KeepButtonContainer>
     </RegisterFinishContainer>
   );
