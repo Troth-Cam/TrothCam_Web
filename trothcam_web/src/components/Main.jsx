@@ -250,7 +250,7 @@ const handleRankClick = () => {
   }
   return (
     <div>
-      {/* <SearchBar /> */}
+      <SearchBar />
       <SwiperContainer
         className="banner"
         slidesPerView={1}
