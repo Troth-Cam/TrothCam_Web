@@ -81,7 +81,7 @@ const PhotoItem = (props) => {
     const navigate = useNavigate();
     const visibility = useContext(VisibilityContext);
     console.log(props.itemId);
-    const visible = visibility.isItemVisible(props.itemId);
+    // const visible = visibility.isItemVisible(props.itemId);
 
 
     const clickProduct = () => {
@@ -113,7 +113,7 @@ const PhotoItem = (props) => {
             <PhotoDiv />
             <TextDiv>
                 <LineDiv1>
-                    <NameDiv>{props.item.Name}visible: {JSON.stringify(visible)}</NameDiv>
+                    <NameDiv>{props.item.Name}</NameDiv>
                     <IconImg onClick={handleClick} src={isLiked ? HeartIcon : EmptyHeartIcon} alt="Heart Icon" />
                 </LineDiv1>
                 <GrayDiv1>{props.item.owner}</GrayDiv1>

@@ -24,7 +24,7 @@ const SearchBox = () => {
   };
 
   const handleMyPageClick = () => {
-    // MyPage로 이동
+    navigate("/detail_me");
   };
 
   const handleSearch = (event) => {

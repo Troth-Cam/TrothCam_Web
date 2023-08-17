@@ -81,19 +81,20 @@ const Detail_me = () =>{
   const clickLogout = () => {
     // 사용자 토큰을 여기에 입력하세요
     const refreshToken = localStorage.getItem("refreshToken");
-  
-    const headers = {
-      Authorization: `Bearer ${refreshToken}`,
-      // 다른 헤더도 필요한 경우 추가하세요
-    };
-  
-    api.post('/auth/logout', null, { headers})
+    console.log(refreshToken);
+    // const headers = {Authorization: "`Bearer ${refreshToken}`"};
+    //   // 다른 헤더도 필요한 경우 추가하세요
+
+    // console.log(headers);
+    // api.defaults.headers.common['Authorization'] = `Bearer ${refreshToken}`
+    
+    api.post('/auth/logout', {}, {headers: {'Authorization' : `${refreshToken}`}})
       .then((response) => {
         // 성공 처리
         navigate("/");
       })
       .catch((err) => {
-        // 오류 처리
+        console.log(err);
       });
       
   }
