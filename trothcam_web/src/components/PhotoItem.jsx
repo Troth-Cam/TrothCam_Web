@@ -2,7 +2,11 @@ import React, { useContext, useState } from 'react';
 import styled from "styled-components";
 import HeartIcon from "./img/heart_icon.png";
 import EmptyHeartIcon from "./img/emptyHeart_icon.png";
-
+import axios from 'axios';
+import api from "../apis/axios";
+import ProductDetail from './ProductDetail';
+import { VisibilityContext } from "react-horizontal-scrolling-menu";
+import { useNavigate } from "react-router-dom";
 const PhotoItemDiv = styled.div`
     width: 187px;
     display: inline-block;
@@ -21,7 +25,7 @@ const PhotoDiv = styled.div`
 `;
 const TextDiv = styled.div`
     width: 164px;
-    border: 1px solid yellow;
+    // border: 1px solid yellow;
     margin-left: auto;
     margin-right: auto;
     font-family: Inter;
@@ -50,10 +54,20 @@ const LineDiv2 = styled.div`
     justify-content: space-between;
     font-family: Inter;
 `
-const GrayDiv = styled.div`
+const GrayDiv1 = styled.div`
     font-size: 9px;
     color: #9FA0A3;
     font-family: Inter;
+    text-overflow: ellipsis;
+    margin-top:0xp;
+    overflow:hidden;
+    width: 33px;
+`
+const GrayDiv2 = styled.div`
+    font-size: 9px;
+    color: #9FA0A3;
+    font-family: Inter;
+    
 `
 const PriceDiv = styled.div`
     font-weight: 400;
@@ -61,25 +75,44 @@ const PriceDiv = styled.div`
     color: #22222;
     font-family: Inter;
 `
-
 const PhotoItem = (props) => {
+
     const [isLiked, setIsLiked] = useState(false);
-  ;
-    const handleClick = () => {
+    const navigate = useNavigate();
+    const visibility = useContext(VisibilityContext);
+    console.log(props.itemId);
+    const visible = visibility.isItemVisible(props.itemId);
+
+
+    const clickProduct = () => {
+        navigate("/productdetail", { state: { id: props.item.price} });
+        // const location = useLocation();
+        // const stateData = location.state.id;
+        // console.log(stateData);
+    }
+    const handleClick = (e) => {
+        e.stopPropagation(); // 이벤트 버블링 차단
+        if(isLiked){
+            console.log(true);
+            //axios.post()
+        }
+        else{
+            //axios.delete()
+        }
         setIsLiked(!isLiked);
     };
     
     return (
-        <PhotoItemDiv>
+        <PhotoItemDiv onClick={clickProduct}>
             <PhotoDiv />
             <TextDiv>
                 <LineDiv1>
-                    <NameDiv>{props.item.Name}</NameDiv>
+                    <NameDiv>{props.item.Name}visible: {JSON.stringify(visible)}</NameDiv>
                     <IconImg onClick={handleClick} src={isLiked ? HeartIcon : EmptyHeartIcon} alt="Heart Icon" />
                 </LineDiv1>
-                <GrayDiv>{props.item.owner}</GrayDiv>
+                <GrayDiv1>{props.item.owner}</GrayDiv1>
                 <LineDiv2>
-                    <GrayDiv>20230605</GrayDiv>
+                    <GrayDiv2>20230605</GrayDiv2>
                     <PriceDiv>{props.item.price}KRW</PriceDiv>
                 </LineDiv2>
             </TextDiv>

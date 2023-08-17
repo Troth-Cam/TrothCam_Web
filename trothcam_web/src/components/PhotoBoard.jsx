@@ -9,7 +9,7 @@ const PhotoBoard = (props) => {
   return (
     <>
           {props.photoList.map((item, index) => (
-          <PhotoItem key={index} index={index} item={item} />
+          <PhotoItem itemId={index} item={item}/>
         ))}
     </>
   );

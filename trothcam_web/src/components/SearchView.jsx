@@ -4,10 +4,10 @@ import PhotoBoard from './PhotoBoard';
 
 const PhotoBoardContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(1, 1fr); // Four items in a row
-  gap: 20px; // Gap between items
+  grid-template-columns: repeat(4, 1fr); // Four items in a row
+ // gap: 20px; // Gap between items
   margin: 0 auto; // Center the grid
-  max-width: 850px; // Maximum width for the grid (adjust as needed)
+  max-width: 880px; // Maximum width for the grid (adjust as needed)
 `;
 const Search = styled.div`
     font-size: 15px;

@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import PhotoBoard from './PhotoBoard';
 import DetailBorard from './DetailBoard';
-import ShareIcon from "./img/share_icon.png";
+import ReloadIcon from "./img/reload_icon.svg";
 import CopyIcon from "./img/copy_icon.png";
-import MoreIcon from "./img/more_icon.png";
-import ListIcon from "./img/list_icon.png";
-
+import axios from 'axios';
+import {CopyToClipboard} from 'react-copy-to-clipboard'
 const UserToken = styled.div`
 display: inline;
 color: #5980EF;
@@ -37,9 +36,10 @@ margin-left: 21.8%;
 margin-top: 30px;
 `;
 const BtnDiv = styled.div`
-  display: inline-block;
-  float: right;
-  margin-right: 21.8%;
+display: inline-block;
+float: right;
+margin-right: 21.8%;
+margin-top: 8px;
 `;
 const Btn = styled.button`
   border: solid 1px #9FA0A3;
@@ -60,13 +60,17 @@ const ListImg = styled.img`
 `;
 const PhotoBoardContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(1, 1fr); // Four items in a row
-  gap: 20px; // Gap between items
+  grid-template-columns: repeat(4, 1fr); // Four items in a row
+  // gap: 0px; // Gap between items
   margin: 0 auto; // Center the grid
-  max-width: 850px; // Maximum width for the grid (adjust as needed)
+  max-width: 820px; // Maximum width for the grid (adjust as needed)
 `;
+const reloadBtn = () =>{
+  window.location.reload();
+}
 const Detail_others = () =>{
-    
+    const currentURL = window.location.href;
+
     const [isTabButton1Clicked, setIsTabButton1Clicked] = useState(true);
     const [isTabButton2Clicked, setIsTabButton2Clicked] = useState(false);
 
@@ -74,26 +78,29 @@ const Detail_others = () =>{
         {"Name": "이름", "price": "17000", "owner": "시니"},
         {"Name": "이름2", "price": "17000", "owner": "시니현"},
         {"Name": "이름", "price": "17000", "owner": "시니현"},
+        {"Name": "이름", "price": "17000", "owner": "시니현"},
       ];
 
     const clickTabBtn1 = () => { 
       setIsTabButton1Clicked(true);
       setIsTabButton2Clicked(false);
-        if(isTabButton1Clicked == true)
-            <PhotoBoard photoList={photoList} />
+      //axios.post()
+
       };
       const clickTabBtn2 = () => {
         setIsTabButton1Clicked(false);
         setIsTabButton2Clicked(true);
-        if(isTabButton2Clicked == true)
-            <DetailBorard/>
+
       };
     return(
         <>
+         {/* <SearchBar /> */}
         <UserToken>qwbekhbjweghrk23</UserToken>
         <BtnDiv>
-        <Btn style={{ borderBottomLeftRadius: "5px", borderTopLeftRadius:"5px"}}>이미지</Btn>
+        <Btn onClick={reloadBtn} style={{ borderBottomLeftRadius: "5px", borderTopLeftRadius:"5px"}}><BtnImg src={ReloadIcon}/></Btn>
+        <CopyToClipboard text={currentURL}>
           <Btn style={{ borderBottomRightRadius: "5px", borderTopRightRadius:"5px"}}><BtnImg src={CopyIcon}/></Btn>
+          </CopyToClipboard>
         </BtnDiv>
         <TabDiv>
         <TabBtn clicked={isTabButton1Clicked} onClick={clickTabBtn1} style={{marginLeft:"0px"}}>보유 중인 인증서</TabBtn>
@@ -106,7 +113,7 @@ const Detail_others = () =>{
                     <PhotoBoard photoList={photoList} />
                 </PhotoBoardContainer>
             ) : null}
-      {isTabButton2Clicked && <DetailBorard />}
+      {isTabButton2Clicked && <DetailBorard/>}
         </>
     )
 };
