@@ -9,6 +9,7 @@ import axios from "axios";
 const Login = () => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
+  const [keepLogin, setKeepLogin] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -24,9 +25,10 @@ const Login = () => {
         const responseData = response.data;
         if (responseData.isSuccess) {
           // 로그인 성공 시 토큰을 저장하고 다음 페이지로 이동
+          console.log("28", responseData);
           const accessToken = responseData.result.accessToken;
           localStorage.setItem("accessToken", accessToken);
-          navigate("/main");
+          navigate("/");
         } else {
           alert("잘못된 아이디 혹은 비밀번호입니다.");
         }
@@ -40,7 +42,6 @@ const Login = () => {
     <LoginContainer>
       <SearchBox />
       <LoginContent>
-        <LoginText>Login into</LoginText>
         <LogoContainer>
           <StyledLogo />
         </LogoContainer>
@@ -58,8 +59,20 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        <KeepLogin>
+          <CheckboxLabel>
+            <Checkbox
+              type="checkbox"
+              checked={keepLogin}
+              onChange={(e) => setKeepLogin(e.target.checked)}
+            />
+            로그인 유지
+          </CheckboxLabel>
+        </KeepLogin>
         <LoginButton onClick={handleLogin}>로그인</LoginButton>
-        <FindCredentialsText>아이디 | 비밀번호 찾기</FindCredentialsText>
+        <FindCredentialsText>
+          <FindPasswordLink to="/">비밀번호</FindPasswordLink>를 잊으셨나요?
+        </FindCredentialsText>
       </InputContainer>
       <Divider />
       <SignUpText>
@@ -85,13 +98,13 @@ const LoginContent = styled.div`
   margin-top: 10rem;
 `;
 
-const LoginText = styled.div`
-  color: #222;
-  font-family: Inter;
-  font-size: 6rem;
-  font-weight: 400;
-  margin-top: 2rem;
-`;
+// const LoginText = styled.div`
+//   color: #222;
+//   font-family: Inter;
+//   font-size: 6rem;
+//   font-weight: 400;
+//   margin-top: 2rem;
+// `;
 
 const LogoContainer = styled.div`
   display: flex;
@@ -114,10 +127,13 @@ const InputContainer = styled.div`
 const Input = styled.input`
   padding: 0 2rem;
   margin-bottom: 2rem;
+  margin-left: 1rem;
   border: 1px solid #222;
-  width: 70rem;
-  height: 7rem;
+  width: 44.5rem;
+  height: 5.9rem;
   outline: none;
+  border-radius: 1rem;
+  border: 2px solid #bcbdc1;
   font-size: 2.8rem;
   &::placeholder {
     color: #a8a8a8;
@@ -125,44 +141,74 @@ const Input = styled.input`
   }
 `;
 
+const KeepLogin = styled.div`
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  display: flex;
+  align-items: center;
+  label {
+    margin-left: 1rem;
+    font-size: 1.5rem;
+  }
+`;
+
+const CheckboxLabel = styled.label`
+  display: flex;
+  align-items: center;
+`;
+
+const Checkbox = styled.input`
+  width: 2.8rem;
+  height: 2.8rem;
+  margin-right: 1rem;
+  border-radius: 1rem;
+  background: #5980ef;
+`;
+
 const LoginButton = styled.button`
-  padding: 0.8rem 2rem;
-  background-color: rgba(89, 128, 239, 0.9);
   color: #fff;
-  border: none;
   text-align: center;
-  font-size: 3rem;
+  font-size: 2rem;
   cursor: pointer;
-  width: 74rem;
-  height: 8rem;
-  margin: 2rem 0 1rem;
+  width: 49rem;
+  height: 5.6rem;
+  margin-left: 1rem;
+  border: none;
+  border-radius: 1rem;
+  background: #6a8df1;
 `;
 
 const FindCredentialsText = styled.div`
-  text-align: right;
   font-family: Inter;
-  margin-top: 1rem;
+  margin-top: 5rem;
   color: #000;
   font-size: 2rem;
+  text-align: center;
 `;
 
 const Divider = styled.div`
   width: 92rem;
   height: 0.1rem;
   background-color: #9fa0a3;
-  margin-top: 10rem;
+  margin-top: 5rem;
 `;
 
 const SignUpText = styled.div`
   color: #222;
   text-align: center;
   font-family: Inter;
-  font-size: 2.8rem;
+  font-size: 2rem;
   margin-top: 6rem;
   margin-bottom: 10rem;
 `;
 
 const SignUpLink = styled(Link)`
+  color: #5980ef;
+  cursor: pointer;
+  text-decoration: none;
+`;
+
+const FindPasswordLink = styled(Link)`
   color: #5980ef;
   cursor: pointer;
   text-decoration: none;

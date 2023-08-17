@@ -3,7 +3,7 @@ import styled from "styled-components";
 import SearchBox from "./header/SearchBox";
 import Validation from "./Validation";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const SignUp = () => {
   const [token, setToken] = useState("");
@@ -24,16 +24,19 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const persistedData = location.state;
 
   const handleCheckValidate = async (token) => {
     //유효성 확인 로직
     if (token.length >= 1) {
-      const url = "https://trothly.com/auth/validate-token";
+      const url = "/auth/validate-token";
 
       const requestBody = {
         webToken: token,
       };
 
+      localStorage.setItem("signupData", JSON.stringify(persistedData));
       try {
         const response = await axios.post(url, requestBody);
         const responseData = response.data;
@@ -42,13 +45,19 @@ const SignUp = () => {
           setTokenConfirmed(true);
           setTokenError("");
           console.log("이메일: ", responseData.result.email);
-          navigate("/validation");
+          //navigate("/validation");
         } else {
           setTokenConfirmed(false);
           setTokenError("유효하지 않은 token입니다.");
         }
       } catch (error) {
-        console.log("요청에 실패하였습니다.", error);
+        //2003으로 변경
+        if (error.response && error.response.status === 400) {
+          setTokenConfirmed(false);
+          setTokenError("유효하지 않은 token입니다.");
+        } else {
+          console.log("요청에 실패하였습니다.", error);
+        }
       }
     }
   };
@@ -207,9 +216,10 @@ const SignUp = () => {
         .then((response) => {
           setLoading(false);
           const responseData = response.data;
+          console.log("219", responseData);
           if (responseData.isSuccess) {
             // 회원 가입 성공 시 registerfinish 페이지로 이동
-            navigate("/registerfinish");
+            navigate("/registerfinish", { state: persistedData });
           } else {
             // 요청은 성공하였지만, 서버 측에서 에러 메시지를 전달한 경우
             alert(responseData.message);
@@ -226,6 +236,19 @@ const SignUp = () => {
       navigate("/loading");
     }
   }, [loading, navigate]);
+
+  useEffect(() => {
+    const signupData = JSON.parse(localStorage.getItem("signupData"));
+
+    if (signupData) {
+      setToken(signupData.token);
+      setId(signupData.id);
+      setPassword(signupData.password);
+      setName(signupData.name);
+      setPhone(signupData.phone);
+      setEmail(signupData.email);
+    }
+  }, []);
 
   return (
     <SignUpContainer>

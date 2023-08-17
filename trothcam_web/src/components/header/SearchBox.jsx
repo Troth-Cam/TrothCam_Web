@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useNavigate, yyuseLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ReactComponent as Logo } from "../../assets/logo.svg";
 import { ReactComponent as SearchIcon } from "../../assets/search.svg";
 
@@ -9,6 +9,7 @@ const SearchBox = () => {
   const navigate = useNavigate();
   const [isInputFocused, setIsInputFocused] = useState(false);
   const isLoggedIn = localStorage.getItem("accessToken") !== null;
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleInputFocus = () => {
     setIsInputFocused(true);
@@ -19,11 +20,21 @@ const SearchBox = () => {
   };
 
   const handleSignUpClick = () => {
-    //navigate("/"); //register1-b로 이동
+    navigate("/register");
   };
 
   const handleMyPageClick = () => {
     // MyPage로 이동
+  };
+
+  const handleSearch = (event) => {
+    if (event.key === "Enter") {
+      navigate(`/search?query=${encodeURIComponent(searchQuery)}`); //search 페이지로 이동
+    }
+  };
+
+  const handleSearchInputChange = (event) => {
+    setSearchQuery(event.target.value);
   };
 
   return (
@@ -36,6 +47,9 @@ const SearchBox = () => {
           <SearchBoxInput
             placeholder="어떤 사진을 찾으시나요?"
             onFocus={handleInputFocus}
+            onKeyDown={handleSearch}
+            value={searchQuery}
+            onChange={handleSearchInputChange}
             isInputFocused={isInputFocused}
           />
           <SearchIcon />
@@ -64,8 +78,8 @@ export default SearchBox;
 const SearchBoxContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: stretch;
   background-color: #ffffff;
+  width: 100%;
 `;
 const LogoLayout = styled.div`
   margin-left: 10rem;
@@ -74,8 +88,6 @@ const SearchBoxLayout = styled.div`
   display: flex;
   align-items: center;
   justify-content: stretch;
-
-  width: 33rem;
   height: 2rem;
   border-radius: 1.3rem;
   border: 1px solid #a8a8a8;
@@ -84,7 +96,7 @@ const SearchBoxLayout = styled.div`
 `;
 const SearchBoxInput = styled.input`
   border: none;
-  width: 30rem;
+  width: 25rem;
   padding-left: 1.2rem;
   outline: none;
   font-size: 1rem;
@@ -121,9 +133,9 @@ const SignUpButton = styled.button`
   font-weight: 600;
 `;
 const MyPageButton = styled.button`
-  margin-left: 35rem;
+  margin-left: 30rem;
   width: 9.3rem;
-  height: 3rem;
+  height: 3.3rem;
   border-radius: 0.8rem;
   border: none;
   background-color: #5980ef;
@@ -133,7 +145,6 @@ const MyPageButton = styled.button`
   font-weight: 600;
 `;
 const Divider = styled.div`
-  width: 136.8rem;
   height: 0.08rem;
   background-color: #bcbdc1;
   margin-bottom: 2rem;
