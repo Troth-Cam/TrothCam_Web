@@ -25,7 +25,6 @@ const Login = () => {
         const responseData = response.data;
         if (responseData.isSuccess) {
           // 로그인 성공 시 토큰을 저장하고 다음 페이지로 이동
-          console.log("28", responseData);
           const accessToken = responseData.result.accessToken;
           const refreshToken = responseData.result.refreshToken;
           localStorage.setItem("accessToken", accessToken);

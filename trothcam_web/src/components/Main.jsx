@@ -14,15 +14,13 @@ import SearchBar from "./header/SearchBox";
 import axios from "axios";
 import { ScrollMenu, VisibilityContext } from "react-horizontal-scrolling-menu";
 
-
 SwiperCore.use([Navigation, Pagination, Autoplay]);
-
 
 const FilterButton = styled.button`
   width: 43px;
   height: 29px;
-  background-color: ${props => (props.clicked ? '#FFFFFFE5' : '#222222')};
-  color: ${props => (props.clicked ? '#222222' : '#FFFFFF')};
+  background-color: ${(props) => (props.clicked ? "#FFFFFFE5" : "#222222")};
+  color: ${(props) => (props.clicked ? "#222222" : "#FFFFFF")};
   border: solid 1px;
   border-color: ${(props) => (props.clicked ? "#9FA0A3" : "#D9D9D9")};
   border-radius: 10px;
@@ -33,26 +31,25 @@ const FilterButton = styled.button`
 `;
 
 const RankButtonDiv = styled.div`
-  background-color: #E8EAEF;
+  background-color: #e8eaef;
   width: 181px;
   height: 36px;
   position: flex;
   border-radius: 10px;
   align-items: center;
   display: flex;
-  
 `;
 
 const WhiteButton = styled.div`
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   box-shadow: 0px 4px 4px 0px #00000040;
   width: 91px;
   height: 32px;
   position: absolute;
   border-radius: 10px;
   transition: all 1s ease;
-  transform: translateX(${props => (props.clicked ? "0%" : "100%")});
-  pointer-events:none;
+  transform: translateX(${(props) => (props.clicked ? "0%" : "100%")});
+  pointer-events: none;
 `;
 
 const ButtonContainer = styled.div`
@@ -74,7 +71,7 @@ const TopDiv = styled.text`
   font-size: 15px;
   font-weight: 500;
   font-family: Inter;
-  color: ${props => (props.clicked ? '##222222' : '#22222296')};
+  color: ${(props) => (props.clicked ? "##222222" : "#22222296")};
 `;
 
 const LatestDiv = styled.text`
@@ -98,7 +95,7 @@ const TextDiv = styled.div`
 const ViewAllButton = styled.div`
   width: 93px;
   height: 36px;
-  background-color: #E8EAEF;
+  background-color: #e8eaef;
   font-family: Inter;
   color: #222222;
   border-radius: 10px;
@@ -173,20 +170,18 @@ margin-right: auto;
 width: 61%;
 `;
 const SwiperContainer = styled(Swiper)`
-height: 750px;
-width: 100%
-& .swiper-pagination-bullet {
-    background: #2B2B2B !important;
-}
+  height: 750px;
+  width: 100% & .swiper-pagination-bullet {
+    background: #2b2b2b !important;
+  }
 `;
 
 const Main = () => {
   const navigate = useNavigate();
 
-const handleRankClick = () => {
-  
-  navigate("/rank");
-};
+  const handleRankClick = () => {
+    navigate("/rank");
+  };
   const [isTopButtonClick1, setIsTopButtonClicked1] = useState(true);
   const [isLatestButtonClick1, setIsLatestButtonClicked1] = useState(false);
   const [isTopButtonClick2, setIsTopButtonClicked2] = useState(true);
@@ -203,51 +198,50 @@ const handleRankClick = () => {
   ];
 
   const photoList = [
-    {"Name": "이름", "price": "17000", "owner": "sdsdsds"},
-    {"Name": "이름2", "price": "17000", "owner": "시니현"},
-    {"Name": "이름", "price": "17000", "owner": "시니현"},
-    {"Name": "이름4", "price": "17000", "owner": "시니현"},
-    {"Name": "이름", "price": "17000", "owner": "시니현"},
-    {"Name": "이름", "price": "17000", "owner": "시니현"},
-    {"Name": "이름", "price": "17000", "owner": "시니현"},
-    {"Name": "이름", "price": "17000", "owner": "시니현"},
+    { Name: "이름", price: "17000", owner: "sdsdsds" },
+    { Name: "이름2", price: "17000", owner: "시니현" },
+    { Name: "이름", price: "17000", owner: "시니현" },
+    { Name: "이름4", price: "17000", owner: "시니현" },
+    { Name: "이름", price: "17000", owner: "시니현" },
+    { Name: "이름", price: "17000", owner: "시니현" },
+    { Name: "이름", price: "17000", owner: "시니현" },
+    { Name: "이름", price: "17000", owner: "시니현" },
   ];
-  
 
   const clickTopButton1 = () => {
-    if(!isTopButtonClick1){
+    if (!isTopButtonClick1) {
       setIsTopButtonClicked1(!isTopButtonClick1);
       setIsLatestButtonClicked1(!isLatestButtonClick1);
       //axios.post("/") top버튼이 눌렀으면
     }
   };
 
-  const clickLatestButton1 = () =>{
-    if(!isLatestButtonClick1){
+  const clickLatestButton1 = () => {
+    if (!isLatestButtonClick1) {
       setIsTopButtonClicked1(!isTopButtonClick1);
       setIsLatestButtonClicked1(!isLatestButtonClick1);
 
       //axios.post("/") rank버튼이 눌렀으면
     }
-  }
+  };
   const clickTopButton2 = () => {
-    if(!isTopButtonClick2){
+    if (!isTopButtonClick2) {
       setIsTopButtonClicked2(!isTopButtonClick2);
       setIsLatestButtonClicked2(!isLatestButtonClick2);
       console.log("clickTop");
-            
+
       //axios.post("/") top버튼이 눌렀으면
     }
   };
 
-  const clickLatestButton2 = () =>{
-    if(!isLatestButtonClick2){
+  const clickLatestButton2 = () => {
+    if (!isLatestButtonClick2) {
       setIsTopButtonClicked2(!isTopButtonClick2);
       setIsLatestButtonClicked2(!isLatestButtonClick2);
-      
+
       //axios.post("/") rank버튼이 눌렀으면
     }
-  }
+  };
   return (
     <div>
       <SearchBar />
@@ -270,28 +264,38 @@ const handleRankClick = () => {
       </SwiperContainer>
 
       <ButtonContainer>
-        <RankButtonDiv>
-        </RankButtonDiv>
+        <RankButtonDiv></RankButtonDiv>
         <WhiteButton clicked={isTopButtonClick1} />
         <TextDiv>
-            <TopDiv clicked={isTopButtonClick1} onClick={clickTopButton1}>Top</TopDiv>
-            <LatestDiv clicked={isLatestButtonClick1} onClick={clickLatestButton1}>Latest</LatestDiv>
-          </TextDiv>
+          <TopDiv clicked={isTopButtonClick1} onClick={clickTopButton1}>
+            Top
+          </TopDiv>
+          <LatestDiv
+            clicked={isLatestButtonClick1}
+            onClick={clickLatestButton1}>
+            Latest
+          </LatestDiv>
+        </TextDiv>
         <div>
           <ViewAllButton onClick={handleRankClick}>View all</ViewAllButton>
         </div>
       </ButtonContainer>
-    
+
       <RankBoard rankList={rankList} />
 
-      <ButtonContainer style={{marginBottom:'0px'}}>
-      <RankButtonDiv>
-        </RankButtonDiv>
+      <ButtonContainer style={{ marginBottom: "0px" }}>
+        <RankButtonDiv></RankButtonDiv>
         <WhiteButton clicked={isTopButtonClick2} />
         <TextDiv>
-            <TopDiv clicked={isTopButtonClick2} onClick={clickTopButton2}>Top</TopDiv>
-            <LatestDiv clicked={isLatestButtonClick2} onClick={clickLatestButton2}>Latest</LatestDiv>
-          </TextDiv>      
+          <TopDiv clicked={isTopButtonClick2} onClick={clickTopButton2}>
+            Top
+          </TopDiv>
+          <LatestDiv
+            clicked={isLatestButtonClick2}
+            onClick={clickLatestButton2}>
+            Latest
+          </LatestDiv>
+        </TextDiv>
       </ButtonContainer>
 
       <Container>
@@ -299,8 +303,8 @@ const handleRankClick = () => {
           <PhotoBoard photoList={photoList} />
         </ScrollMenu>
       </Container>
-      <div style={{marginTop:"378px"}}/>
-      <Footer/>
+      <div style={{ marginTop: "378px" }} />
+      <Footer />
     </div>
   );
 };
