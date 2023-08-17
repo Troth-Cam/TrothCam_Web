@@ -13,7 +13,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    const url = "/auth/login";
+    const url = "https://trothly.com/auth/login";
     const requestBody = {
       id,
       password,
