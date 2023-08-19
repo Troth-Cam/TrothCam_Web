@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from "react-router-dom";
 import PhotoBoard from './PhotoBoard';
@@ -8,6 +8,8 @@ import ReloadIcon from "./img/reload_icon.svg";
 import CopyIcon from "./img/copy_icon.png";
 import {CopyToClipboard} from 'react-copy-to-clipboard'
 import api from "../apis/axios";
+import axios from 'axios';
+import SearchBox from './header/SearchBox';
 
 const UserToken = styled.div`
     display: inline;
@@ -79,22 +81,20 @@ const PhotoBoardContainer = styled.div`
 const Detail_me = () =>{
   const navigate = useNavigate();
   const clickLogout = () => {
-    // 사용자 토큰을 여기에 입력하세요
     const refreshToken = localStorage.getItem("refreshToken");
-    console.log(refreshToken);
-    // const headers = {Authorization: "`Bearer ${refreshToken}`"};
-    //   // 다른 헤더도 필요한 경우 추가하세요
-
-    // console.log(headers);
-    // api.defaults.headers.common['Authorization'] = `Bearer ${refreshToken}`
+    // console.log(refreshToken);
     
-    api.post('/auth/logout', {}, {headers: {'Authorization' : `${refreshToken}`}})
+    api.post('/auth/logout', {}, {headers: {"Authorization" : `Bearer ${refreshToken}`}})
       .then((response) => {
         // 성공 처리
         navigate("/");
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("accessToken");
       })
       .catch((err) => {
         console.log(err);
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("accessToken");
       });
       
   }
@@ -112,11 +112,28 @@ const Detail_me = () =>{
         {"Name": "이름", "price": "17000", "owner": "시니현"},
         {"Name": "이름", "price": "17000", "owner": "시니현"},
       ];
+    // const [photoList,setPhotoList] = useState([]);
 
     const clickTabBtn1 = () => { 
+      const accessToken = localStorage.getItem("accessToken");
       setIsTabButton1Clicked(true);
       setIsTabButton2Clicked(false);
       setIsTabButton3Clicked(false);
+      axios.get('api/products',  {
+        params:{
+          "web-id": "testId",
+          "public": "Y"
+        },
+      headers: {
+          "Authorization": `Bearer ${accessToken}`
+        }
+      })
+        .then((response) =>{
+          console.log(response)
+        })
+        .catch((err) =>{
+          console.log(err)
+        });
       };
       const clickTabBtn2 = () => {
         setIsTabButton1Clicked(false);
@@ -124,15 +141,57 @@ const Detail_me = () =>{
         setIsTabButton3Clicked(false);
       };
       const clickTabBtn3 = () => {
+        const accessToken = localStorage.getItem("accessToken");
         setIsTabButton1Clicked(false);
         setIsTabButton2Clicked(false);
         setIsTabButton3Clicked(true);
+        api.get('/api/products',  {
+          params:{
+            "web-id": "testId",
+            "public": "N"
+          },
+        headers: {
+            "Authorization": `Bearer ${accessToken}`
+          }
+        })
+          .then((response) =>{
+            console.log(response)
+          })
+          .catch((err) =>{
+            console.log(err)
+          });
       };
       const reloadBtn = () =>{
         window.location.reload();
       }
+
+      useEffect(()=>{
+        const accessToken = localStorage.getItem("accessToken");
+        console.log(`토큰${accessToken}`);
+        api.get('api/products',  {
+          params:{
+            "web-id": "testId",
+            "public": "Y"
+          },
+        headers: {
+            "Authorization": `Bearer ${accessToken}`
+          }
+        })
+          .then((response) =>{
+            console.log(response)
+            // console.log(response.data.result);
+            // setPhotoList(response.data.result);
+            console.log(photoList);
+          })
+          .catch((err) =>{
+            console.log("asds")
+            console.log(err);
+          });
+      }, []);
+
     return(
         <>
+        <SearchBox/>
         <UserToken>qwbekhbjweghrk23</UserToken>
         <BtnDiv>
         <Btn onClick={reloadBtn} style={{ borderBottomLeftRadius: "5px", borderTopLeftRadius:"5px"}}><BtnImg src={ReloadIcon}/></Btn>

@@ -30,7 +30,7 @@ const SignUp = () => {
   const handleCheckValidate = async (token) => {
     //유효성 확인 로직
     if (token.length >= 1) {
-      const url = "/auth/validate-token";
+      const url = "https://trothly.com/auth/validate-token";
 
       const requestBody = {
         webToken: token,
@@ -201,7 +201,7 @@ const SignUp = () => {
     ) {
       setLoading(true);
 
-      const url = "/auth/signup";
+      const url = "https://trothly.com/auth/signup";
       const requestBody = {
         webToken: token,
         webId: id,
