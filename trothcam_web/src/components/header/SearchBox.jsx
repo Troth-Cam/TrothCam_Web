@@ -108,7 +108,7 @@ const SearchBoxInput = styled.input`
   }
 `;
 const LoginButton = styled.button`
-  margin-left: 22rem;
+  margin-left: 12rem;
   width: 9.3rem;
   min-width: 9.3rem;
   height: 3rem;
@@ -133,9 +133,9 @@ const SignUpButton = styled.button`
   font-weight: 600;
 `;
 const MyPageButton = styled.button`
-  margin-left: 30rem;
-  width: 9.3rem;
-  height: 3.3rem;
+  margin-left: 25%;
+  width: 9rem;
+  height: 3rem;
   border-radius: 0.8rem;
   border: none;
   background-color: #5980ef;
