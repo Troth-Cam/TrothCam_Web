@@ -72,10 +72,10 @@ const TabDiv = styled.div`
 `;
 const PhotoBoardContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr); // Four items in a row
+  grid-template-columns: repeat(1, 4fr); // Four items in a row
   gap: 0px; // Gap between items
   margin: 0 auto; // Center the grid
-  max-width: 820px; // Maximum width for the grid (adjust as needed)
+  max-width: 920px; // Maximum width for the grid (adjust as needed)
 `;
 
 const Detail_me = () =>{
@@ -103,17 +103,13 @@ const Detail_me = () =>{
     const [isTabButton1Clicked, setIsTabButton1Clicked] = useState(true);
     const [isTabButton2Clicked, setIsTabButton2Clicked] = useState(false);
     const [isTabButton3Clicked, setIsTabButton3Clicked] = useState(false);
-    const photoList = [
-        {"Name": "이름", "price": "17000", "owner": "시니"},
-        {"Name": "이름2", "price": "17000", "owner": "시니현"},
-        {"Name": "이름", "price": "17000", "owner": "시니현"},
-        {"Name": "이름", "price": "17000", "owner": "시니현"},
-        {"Name": "이름", "price": "17000", "owner": "시니현"},
-        {"Name": "이름", "price": "17000", "owner": "시니현"},
-        {"Name": "이름", "price": "17000", "owner": "시니현"},
-      ];
+    const [photoList, setPhotoList] = useState([]);
+
     // const [photoList,setPhotoList] = useState([]);
 
+    const productFetch=()=>{
+      console.log("sdsd");
+    }
     const clickTabBtn1 = () => { 
       const accessToken = localStorage.getItem("accessToken");
       setIsTabButton1Clicked(true);
@@ -121,7 +117,7 @@ const Detail_me = () =>{
       setIsTabButton3Clicked(false);
       axios.get('api/products',  {
         params:{
-          "web-id": "testId",
+          "web-id": "yeoni",
           "public": "Y"
         },
       headers: {
@@ -129,9 +125,11 @@ const Detail_me = () =>{
         }
       })
         .then((response) =>{
-          console.log(response)
+          console.log(response);
+          setPhotoList(response.data.result);
         })
         .catch((err) =>{
+          console.log("에러")
           console.log(err)
         });
       };
@@ -145,9 +143,9 @@ const Detail_me = () =>{
         setIsTabButton1Clicked(false);
         setIsTabButton2Clicked(false);
         setIsTabButton3Clicked(true);
-        api.get('/api/products',  {
+        axios.get('api/products',  {
           params:{
-            "web-id": "testId",
+            "web-id": "yeoni",
             "public": "N"
           },
         headers: {
@@ -155,7 +153,8 @@ const Detail_me = () =>{
           }
         })
           .then((response) =>{
-            console.log(response)
+            console.log(response.data.result);
+            setPhotoList(response.data.result);
           })
           .catch((err) =>{
             console.log(err)
@@ -168,9 +167,9 @@ const Detail_me = () =>{
       useEffect(()=>{
         const accessToken = localStorage.getItem("accessToken");
         console.log(`토큰${accessToken}`);
-        api.get('api/products',  {
+        axios.get('api/products',  {
           params:{
-            "web-id": "testId",
+            "web-id": "yeoni",
             "public": "Y"
           },
         headers: {
@@ -178,13 +177,12 @@ const Detail_me = () =>{
           }
         })
           .then((response) =>{
-            console.log(response)
+            // console.log(response)
             // console.log(response.data.result);
-            // setPhotoList(response.data.result);
+            setPhotoList(response.data.result);
             console.log(photoList);
           })
           .catch((err) =>{
-            console.log("asds")
             console.log(err);
           });
       }, []);
@@ -211,13 +209,13 @@ const Detail_me = () =>{
          {(isTabButton1Clicked || isTabButton3Clicked)}
          {isTabButton1Clicked && (
                 <PhotoBoardContainer>
-                    <PhotoBoard photoList={photoList} />
+                    <PhotoBoard photoList={photoList} productFetch={productFetch}/>
                 </PhotoBoardContainer>
             )}
         {isTabButton2Clicked && <DetailBorard />}
         {isTabButton3Clicked && (
                 <PhotoBoardContainer>
-                    <PhotoBoard photoList={photoList} />
+                    <PhotoBoard photoList={photoList} productFetch={productFetch}/>
                 </PhotoBoardContainer>
             )}
         </>

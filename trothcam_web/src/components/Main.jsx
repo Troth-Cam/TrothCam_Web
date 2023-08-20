@@ -12,28 +12,14 @@ import Banner from "./img/banner.png";
 import Footer from "./Footer";
 import SearchBar from "./header/SearchBox";
 import axios from "axios";
-import { ScrollMenu, VisibilityContext } from "react-horizontal-scrolling-menu";
+import { ScrollMenu } from "react-horizontal-scrolling-menu";
 import api from "../apis/axios";
-import { useInView } from 'react-intersection-observer';
 
 
 
 SwiperCore.use([Navigation, Pagination, Autoplay]);
 
 
-const FilterButton = styled.button`
-  width: 43px;
-  height: 29px;
-  background-color: ${props => (props.clicked ? '#FFFFFFE5' : '#222222')};
-  color: ${props => (props.clicked ? '#222222' : '#FFFFFF')};
-  border: solid 1px;
-  border-color: ${(props) => (props.clicked ? "#9FA0A3" : "#D9D9D9")};
-  border-radius: 10px;
-  font-weight: 600;
-  font-size: 15px;
-  margin-left: 16px;
-  font-family: Inter;
-`;
 
 const RankButtonDiv = styled.div`
   background-color: #E8EAEF;
@@ -185,17 +171,22 @@ width: 100%
 
 const Main = () => {
   const navigate = useNavigate();
-  const [ref, inView] = useInView();
+
 const handleRankClick = () => {
   
   navigate("/rank");
 };
 
+  const accessToken = localStorage.getItem("accessToken");
+  
   const [isTopButtonClick1, setIsTopButtonClicked1] = useState(true);
   const [isLatestButtonClick1, setIsLatestButtonClicked1] = useState(false);
   const [isTopButtonClick2, setIsTopButtonClicked2] = useState(true);
   const [isLatestButtonClick2, setIsLatestButtonClicked2] = useState(false);
   const [rankList, setRankList] = useState([]);
+  const [photoList, setPhotoList] = useState([]);
+  const [pageTop, setPageTop] = useState(0);
+  const [pageLatest, setPageLatest] = useState(0);
  // const rankList = [
  //   { Name: "이름1", price: "17,000", owner: "dsdsddsdsadsads" },
    // { Name: "이름2", price: "17000", owner: "dsdsddsdsadsads" },
@@ -208,38 +199,75 @@ const handleRankClick = () => {
 // ];
 const productFetch = () =>{
   console.log("fetch함수 실행")
+  
+    if(isTopButtonClick2){
+      clickTopButton2();
+      console.log("clickTop")
+    }
+    else{
+      console.log("clickLatest")
+      clickLatestButton2();
+      
+    }
 };
 
 
 
 useEffect(() => {
-  api.get('/api/product-ranking/top', null, null)
+  axios.get('/api/product-ranking/top')
     .then((response)=>{
-      //setRankList(response.result);
-      console.log(response.result);
+      setRankList(response.data.result);
+      // console.log(`top data ${response.data.result}`);
     })
     .catch((err) =>{
-      console.log(err);
+      // console.log(e);
     });
+
+    //로그인했으면
+    if(localStorage.getItem("accessToken")){
+      axios.get('api/yeoni/product-ranking/top/0', {headers: {
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`}
+      })
+      .then((response)=>{
+        console.log("top 로그임했을때-초기값");
+        console.log(response.data.result);
+        setPhotoList(response.data.result.getProductRankResDto);
+      })
+      .catch((err) =>{
+        console.log(localStorage.getItem("accessToken"))
+        console.log("로그인 했을 떄 불러오기 실패");
+        console.log(err);
+      });
+    }
+    else{
+      api.get('/api/product-ranking/top/0')
+      .then((response)=>{
+        console.log(",top 로그임 안!!!!!!!! 했을때-초기값");
+        setPhotoList(response.data.result.getProductRankResDto);
+        // setPageTop((pageTop=>pageTop + 1))
+      })
+      .catch((err) =>{
+        console.log(err);
+      });
+  }
 }, []);
 
-  const photoList = [
-    {"Name": "이름", "price": "17000", "owner": "sdsdsds"},
-    {"Name": "이름2", "price": "17000", "owner": "시니현"},
-    {"Name": "이름", "price": "17000", "owner": "시니현"},
-    {"Name": "이름4", "price": "17000", "owner": "시니현"},
-    {"Name": "이름", "price": "17000", "owner": "시니현"},
-    {"Name": "이름", "price": "17000", "owner": "시니현"},
-    {"Name": "이름", "price": "17000", "owner": "시니현"},
-    {"Name": "이름", "price": "17000", "owner": "시니현"},
-  ];
   
 
   const clickTopButton1 = () => {
     if(!isTopButtonClick1){
       setIsTopButtonClicked1(!isTopButtonClick1);
       setIsLatestButtonClicked1(!isLatestButtonClick1);
-      //axios.post("/") top버튼이 눌렀으면
+      api.get('/api/product-ranking/top')
+      .then((response)=>{
+        console.log(response.data);
+        setRankList(response.data.result);
+        console.log(`top data ${response.data.result}`);
+      })
+      .catch((err) =>{
+        console.log(err);
+      });
+      
     }
   };
 
@@ -248,32 +276,106 @@ useEffect(() => {
       setIsTopButtonClicked1(!isTopButtonClick1);
       setIsLatestButtonClicked1(!isLatestButtonClick1);
 
-      api.get('/api/product-ranking/latest') //latest버튼이 눌렀으면
-        .then((response) => {
-          setRankList(response.data);
-          console.log(response.data);
-        })
-        .catch((err) =>{
-
-        })
+      api.get('/api/product-ranking/latest')
+      .then((response)=>{
+        console.log(response.data);
+        setRankList(response.data.result);
+        console.log(`latest data ${response.data.result}`);
+      })
+      .catch((err) =>{
+        console.log(err);
+      });
     }
   }
+
   const clickTopButton2 = () => {
+    console.log("top함수 들어감")
     if(!isTopButtonClick2){
       setIsTopButtonClicked2(!isTopButtonClick2);
       setIsLatestButtonClicked2(!isLatestButtonClick2);
-      console.log("clickTop");
-            
-      //axios.post("/") top버튼이 눌렀으면
+      console.log(accessToken);
+      
+      if(accessToken){
+        console.log("top acceess함수 들어감")
+        axios.get(`api/yeoni/product-ranking/top/${pageTop}`,{headers: {
+          "Authorization": `Bearer ${accessToken}`}
+        })
+        .then((response)=>{
+         setPhotoList(response.data.result.getProductRankResDto);
+         console.log("top버튼 로그인 했을 때")
+          console.log(response.data.result);
+          if(response.data.result.getProductRankResDto.length >= 7){
+            setPageTop(pageTop => pageTop + 1);
+            console.log("sdsd");
+            //console.log(`길이 ${response.data.result.getProductRankResDto.length}`);
+          } 
+          })
+        .catch((err) =>{
+          console.log(err);
+        });
+      }
+      else{
+      api.get(`/api/product-ranking/top/${pageTop}`)
+        .then((response)=>{
+         setPhotoList(response.data.result.getProductRankResDto);
+         console.log("top버튼 로그인 안!!!!!!!! 했을 때")
+        console.log(response.data.result);
+        if(response.data.result.getProductRankResDto.length >= 7){
+          setPageTop(pageTop => pageTop + 1);
+          console.log("sdsd");
+          //console.log(`길이 ${response.data.result.getProductRankResDto.length}`);
+        } 
+        })
+      .catch((err) =>{
+        console.log(err);
+      });
+    }
+
     }
   };
 
   const clickLatestButton2 = () =>{
+    //latest버튼 눌렀을 때 
     if(!isLatestButtonClick2){
       setIsTopButtonClicked2(!isTopButtonClick2);
       setIsLatestButtonClicked2(!isLatestButtonClick2);
-      
-      //axios.post("/") rank버튼이 눌렀으면
+      //로그인했을 때 
+      if(accessToken){
+        axios.get(`/api/yeoni/product-ranking/latest/${pageLatest}`, {headers: {
+          "Authorization": `Bearer ${accessToken}`}
+        })
+        .then((response)=>{
+          setPhotoList(response.data.result.getProductRankResDto);
+          console.log("latest버튼 로그인 했을 떄 ");
+          console.log(response.data.result);
+          if(response.data.result.getProductRankResDto.length >= 7){
+            setPageLatest(pageLatest => pageLatest + 1);
+            console.log("sdsd");
+            //console.log(`길이 ${response.data.result.getProductRankResDto.length}`);
+          } 
+        })
+        .catch((err) =>{
+          console.log(err);
+        });
+      }
+    
+      else{
+        api.get(`/api/product-ranking/latest/${pageLatest}`)
+        .then((response)=>{
+          setPhotoList(response.data.result.getProductRankResDto);
+          console.log("latest버튼 로그인 안했을 때 ");
+          console.log(response.data.result);
+          if(response.data.result.getProductRankResDto.length >= 7){
+            setPageLatest(pageLatest => pageLatest + 1);
+            console.log("sdsd");
+            //console.log(`길이 ${response.data.result.getProductRankResDto.length}`);
+          } 
+        
+        })
+        .catch((err) =>{
+          console.log(err);
+        });
+      }
     }
   }
   return (
@@ -310,7 +412,7 @@ useEffect(() => {
         </div>
       </ButtonContainer>
     
-    
+         <RankBoard rankList={rankList}/>
 
       <ButtonContainer style={{marginBottom:'0px'}}>
       <RankButtonDiv>
@@ -322,9 +424,8 @@ useEffect(() => {
           </TextDiv>      
       </ButtonContainer>
 
-      {/* <RankBoard rankList={rankList}/> */}
       <Container>
-        <ScrollMenu onWheel={onWheel}>
+        <ScrollMenu>
           <PhotoBoard photoList={photoList} productFetch={productFetch}/>
         </ScrollMenu>
       </Container>
@@ -336,17 +437,4 @@ useEffect(() => {
 
 export default Main;
 
-function onWheel(apiObj: scrollVisibilityApiType, ev: React.WheelEvent): void {
-  const isThouchpad = Math.abs(ev.deltaX) !== 0 || Math.abs(ev.deltaY) < 15;
 
-  if (isThouchpad) {
-    ev.stopPropagation();
-    return;
-  }
-
-  if (ev.deltaY < 0) {
-    apiObj.scrollNext();
-  } else if (ev.deltaY > 0) {
-    apiObj.scrollPrev();
-  }
-}

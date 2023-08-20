@@ -2,9 +2,9 @@ import React, { useContext, useState } from 'react';
 import styled from "styled-components";
 import HeartIcon from "./img/heart_icon.png";
 import EmptyHeartIcon from "./img/emptyHeart_icon.png";
-import axios from 'axios';
 import api from "../apis/axios";
 import ProductDetail from './ProductDetail';
+
 //import { VisibilityContext } from "react-horizontal-scrolling-menu";
 import { useNavigate } from "react-router-dom";
 const PhotoItemDiv = styled.div`
@@ -76,14 +76,13 @@ const PriceDiv = styled.div`
     font-family: Inter;
 `
 const PhotoItem = (props) => {
-    const product_id = props.item.productId
-    const [isLiked, setIsLiked] = useState(props.liked);
+    const [isLiked, setIsLiked] = useState(props.item.liked);
     const navigate = useNavigate();
-    console.log(props.itemId);
+
     const accessToken = localStorage.getItem("accessToken");
 
     const clickProduct = () => {
-        if(localStorage.getItem("accessToken") == null){
+        if(!localStorage.getItem("accessToken")){
             navigate("/productdetail", { state: { id: props.item.price} });
         }
         else{
@@ -97,18 +96,33 @@ const PhotoItem = (props) => {
         e.stopPropagation(); // 이벤트 버블링 차단
         if(isLiked){
             console.log(true);
-            // axios.post('api/like-product', {"prodictId": product_id}, {
-            //   headers: {
-            //       "Authorization": `Bearer ${accessToken}`
-            //     }
-            //   })
+            api.post('api/like-product', {"prodictId": props.item.productId}, {
+              headers: {
+                  "Authorization": `Bearer ${accessToken}`
+                }
+              })
+              .then((response) => {
+                console.log(response.data.message);
+              })
+              .catch((err)=>{
+                console.log(err.data.message);
+              });
         }
         else{
-            //axios.delete()
+            api.delete('api/like-product', {"prodictId": props.item.productId}, {
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`
+                  }
+                })
+                .then((response) => {
+                  console.log(response);
+                })
+                .catch((err)=>{
+                  console.log(err);
+                });
         }
         setIsLiked(!isLiked);
     };
-
     return (
     
         <PhotoItemDiv onClick={clickProduct}>
