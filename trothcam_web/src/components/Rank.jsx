@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import SearchBar from "./header/SearchBox";
 import Footer from "./Footer";
 import rankImage from "./img/picture.png";
@@ -190,11 +191,17 @@ const Rank = () => {
 };
 
 const Post = ({ post }) => {
+  const navigate = useNavigate();
+
   const truncateText = (text, maxLength) => {
     if (text.length >= maxLength) {
       return text.substring(0, maxLength - 3) + "...";
     }
     return text;
+  };
+
+  const handlePersonButtonClick = () => {
+    navigate("/detail_others");
   };
 
   return (
@@ -205,8 +212,12 @@ const Post = ({ post }) => {
       </ImageWrapper>
       <PostInfo>{post.name}</PostInfo>
       <PostInfo>{post.tags}</PostInfo>
-      <PostInfoPerson>{truncateText(post.owner, 8)}</PostInfoPerson>
-      <PostInfoPerson>{truncateText(post.author, 8)}</PostInfoPerson>
+      <PostInfoPerson onClick={handlePersonButtonClick}>
+        {truncateText(post.owner, 8)}
+      </PostInfoPerson>
+      <PostInfoPerson onClick={handlePersonButtonClick}>
+        {truncateText(post.author, 8)}
+      </PostInfoPerson>
       <PostInfo>{post.price}</PostInfo>
     </PostContainer>
   );

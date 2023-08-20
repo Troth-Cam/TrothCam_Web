@@ -133,7 +133,7 @@ const SignUpButton = styled.button`
   font-weight: 600;
 `;
 const MyPageButton = styled.button`
-  margin-left: 15rem;
+  margin-left: 25%;
   width: 9rem;
   height: 3rem;
   border-radius: 0.8rem;
