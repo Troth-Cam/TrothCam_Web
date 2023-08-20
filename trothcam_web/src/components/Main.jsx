@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import styled from "styled-components";
@@ -13,6 +13,9 @@ import Footer from "./Footer";
 import SearchBar from "./header/SearchBox";
 import axios from "axios";
 import { ScrollMenu, VisibilityContext } from "react-horizontal-scrolling-menu";
+import api from "../apis/axios";
+import { useInView } from 'react-intersection-observer';
+
 
 SwiperCore.use([Navigation, Pagination, Autoplay]);
 
@@ -179,23 +182,43 @@ const SwiperContainer = styled(Swiper)`
 const Main = () => {
   const navigate = useNavigate();
 
-  const handleRankClick = () => {
-    navigate("/rank");
-  };
+  const [ref, inView] = useInView();
+const handleRankClick = () => {
+  
+  navigate("/rank");
+};
+
   const [isTopButtonClick1, setIsTopButtonClicked1] = useState(true);
   const [isLatestButtonClick1, setIsLatestButtonClicked1] = useState(false);
   const [isTopButtonClick2, setIsTopButtonClicked2] = useState(true);
   const [isLatestButtonClick2, setIsLatestButtonClicked2] = useState(false);
-  const rankList = [
-    { Name: "이름1", price: "17,000", owner: "dsdsddsdsadsads" },
-    { Name: "이름2", price: "17000", owner: "dsdsddsdsadsads" },
-    { Name: "이름3", price: "17000", owner: "dsdsddsdsadsads" },
-    { Name: "이름4", price: "17000", owner: "dsdsddsdsadsads" },
-    { Name: "이름5", price: "17000", owner: "dsdsddsdsadsads" },
-    { Name: "이름6", price: "17000", owner: "dsdsddsdsadsads" },
-    { Name: "이름7", price: "17000", owner: "dsdsddsdsadsads" },
-    { Name: "이름8", price: "17000", owner: "dsdsddsdsadsads" },
-  ];
+  const [rankList, setRankList] = useState([]);
+ // const rankList = [
+ //   { Name: "이름1", price: "17,000", owner: "dsdsddsdsadsads" },
+   // { Name: "이름2", price: "17000", owner: "dsdsddsdsadsads" },
+  //  { Name: "이름3", price: "17000", owner: "dsdsddsdsadsads" },
+ //   { Name: "이름4", price: "17000", owner: "dsdsddsdsadsads" },
+ //   { Name: "이름5", price: "17000", owner: "dsdsddsdsadsads" },
+ //   { Name: "이름6", price: "17000", owner: "dsdsddsdsadsads" },
+ //   { Name: "이름7", price: "17000", owner: "dsdsddsdsadsads" },
+  //  { Name: "이름8", price: "17000", owner: "dsdsddsdsadsads" },
+// ];
+const productFetch = () =>{
+  console.log("fetch함수 실행")
+};
+
+
+
+useEffect(() => {
+  api.get('/api/product-ranking/top', null, null)
+    .then((response)=>{
+      //setRankList(response.result);
+      console.log(response.result);
+    })
+    .catch((err) =>{
+      console.log(err);
+    });
+}, []);
 
   const photoList = [
     { Name: "이름", price: "17000", owner: "sdsdsds" },
@@ -221,7 +244,14 @@ const Main = () => {
       setIsTopButtonClicked1(!isTopButtonClick1);
       setIsLatestButtonClicked1(!isLatestButtonClick1);
 
-      //axios.post("/") rank버튼이 눌렀으면
+      api.get('/api/product-ranking/latest') //latest버튼이 눌렀으면
+        .then((response) => {
+          setRankList(response.data);
+          console.log(response.data);
+        })
+        .catch((err) =>{
+
+        })
     }
   };
   const clickTopButton2 = () => {
@@ -281,8 +311,6 @@ const Main = () => {
         </div>
       </ButtonContainer>
 
-      <RankBoard rankList={rankList} />
-
       <ButtonContainer style={{ marginBottom: "0px" }}>
         <RankButtonDiv></RankButtonDiv>
         <WhiteButton clicked={isTopButtonClick2} />
@@ -298,9 +326,10 @@ const Main = () => {
         </TextDiv>
       </ButtonContainer>
 
+      {/* <RankBoard rankList={rankList}/> */}
       <Container>
         <ScrollMenu onWheel={onWheel}>
-          <PhotoBoard photoList={photoList} />
+          <PhotoBoard photoList={photoList} productFetch={productFetch}/>
         </ScrollMenu>
       </Container>
       <div style={{ marginTop: "378px" }} />

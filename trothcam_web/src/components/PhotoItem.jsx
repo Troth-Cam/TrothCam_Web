@@ -5,7 +5,7 @@ import EmptyHeartIcon from "./img/emptyHeart_icon.png";
 import axios from 'axios';
 import api from "../apis/axios";
 import ProductDetail from './ProductDetail';
-import { VisibilityContext } from "react-horizontal-scrolling-menu";
+//import { VisibilityContext } from "react-horizontal-scrolling-menu";
 import { useNavigate } from "react-router-dom";
 const PhotoItemDiv = styled.div`
     width: 187px;
@@ -76,16 +76,13 @@ const PriceDiv = styled.div`
     font-family: Inter;
 `
 const PhotoItem = (props) => {
-
-    const [isLiked, setIsLiked] = useState(false);
+    const product_id = props.item.productId
+    const [isLiked, setIsLiked] = useState(props.liked);
     const navigate = useNavigate();
-    const visibility = useContext(VisibilityContext);
     console.log(props.itemId);
-    // const visible = visibility.isItemVisible(props.itemId);
-
+    const accessToken = localStorage.getItem("accessToken");
 
     const clickProduct = () => {
-        console.log(localStorage.getItem("accessToken") );
         if(localStorage.getItem("accessToken") == null){
             navigate("/productdetail", { state: { id: props.item.price} });
         }
@@ -100,25 +97,30 @@ const PhotoItem = (props) => {
         e.stopPropagation(); // 이벤트 버블링 차단
         if(isLiked){
             console.log(true);
-            //axios.post()
+            // axios.post('api/like-product', {"prodictId": product_id}, {
+            //   headers: {
+            //       "Authorization": `Bearer ${accessToken}`
+            //     }
+            //   })
         }
         else{
             //axios.delete()
         }
         setIsLiked(!isLiked);
     };
-    
+
     return (
+    
         <PhotoItemDiv onClick={clickProduct}>
             <PhotoDiv />
             <TextDiv>
                 <LineDiv1>
-                    <NameDiv>{props.item.Name}</NameDiv>
+                    <NameDiv>{props.item.title}</NameDiv>
                     <IconImg onClick={handleClick} src={isLiked ? HeartIcon : EmptyHeartIcon} alt="Heart Icon" />
                 </LineDiv1>
-                <GrayDiv1>{props.item.owner}</GrayDiv1>
+                <GrayDiv1>{props.item.ownerWebId}</GrayDiv1>
                 <LineDiv2>
-                    <GrayDiv2>20230605</GrayDiv2>
+                    <GrayDiv2>{props.item.soldAt}</GrayDiv2>
                     <PriceDiv>{props.item.price}KRW</PriceDiv>
                 </LineDiv2>
             </TextDiv>
