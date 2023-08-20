@@ -173,11 +173,11 @@ const Rank = () => {
         </LatestPurchasedButton>
         <Divider />
         <RankListContainer>
-          <RankListText marginRight="5rem">순위</RankListText>
-          <RankListText marginRight="19rem">이름</RankListText>
-          <RankListText marginRight="8.8rem">태그</RankListText>
-          <RankListText marginRight="7rem">소유자</RankListText>
-          <RankListText marginRight="11rem">원작자</RankListText>
+          <RankListText marginRight="6%">순위</RankListText>
+          <RankListText marginRight="20%">이름</RankListText>
+          <RankListText marginRight="6%">태그</RankListText>
+          <RankListText marginRight="6%">소유자</RankListText>
+          <RankListText marginRight="12%">원작자</RankListText>
           <RankListText>가격</RankListText>
         </RankListContainer>
         <Divider />
@@ -240,29 +240,30 @@ const Button = styled.button`
 `;
 
 const TopCostButton = styled(Button)`
-  margin-left: 13rem;
-  width: 9.7rem;
+  margin-left: 17%;
+  width: 9rem;
   height: 3.3rem;
 `;
 
 const LatestPurchasedButton = styled(Button)`
   margin-left: 1rem;
-  width: 16rem;
+  width: 15rem;
   height: 3.3rem;
 `;
 
 const Divider = styled.div`
-  width: 79.7rem;
+  width: 65%;
   height: 0.1rem;
   background-color: #bcbdc1;
   margin-top: 0.8rem;
-  margin-left: 12.5rem;
+  margin-left: 18%;
 `;
 
 const RankListContainer = styled.div`
   display: flex;
   margin-top: 1rem;
-  margin-left: 14.5rem;
+  margin-left: 19%;
+  margin-right: 15%;
 `;
 
 const RankListText = styled.div`
@@ -271,7 +272,7 @@ const RankListText = styled.div`
   font-weight: 500;
   margin-top: 2rem;
   &:not(:last-child) {
-    margin-right: ${({ marginRight }) => marginRight || "4rem"};
+    margin-right: ${({ marginRight }) => marginRight || "3%"};
   }
 `;
 
@@ -280,8 +281,8 @@ const PostContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-top: 1rem;
-  margin-left: 10rem;
-  width: 80rem;
+  margin-left: 15%;
+  width: 65%;
 `;
 
 const PostInfoId = styled.div`
@@ -289,8 +290,7 @@ const PostInfoId = styled.div`
   font-family: Inter;
   font-size: 1.7rem;
   font-weight: 500;
-  margin-left: 5.5rem;
-  margin-right: 1rem;
+  margin-left: 8%;
 `;
 const PostInfo = styled.div`
   color: #000;
@@ -308,8 +308,8 @@ const PostInfoPerson = styled.div`
 const ImageWrapper = styled.div`
   width: 7.3rem;
   height: 7.6rem;
-  margin-left: -4rem;
-  margin-right: -5rem;
+  margin-left: -2%;
+  margin-right: -5%;
 `;
 
 const PostImage = styled.img`
