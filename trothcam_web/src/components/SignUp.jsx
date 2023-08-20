@@ -197,7 +197,9 @@ const SignUp = () => {
       idConfirmed &&
       isValidPassword(password) &&
       passwordConfirmed &&
-      name
+      name &&
+      phone &&
+      email
     ) {
       setLoading(true);
 

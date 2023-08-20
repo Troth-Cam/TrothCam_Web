@@ -28,13 +28,15 @@ const Login = () => {
           const accessToken = responseData.result.accessToken;
           const refreshToken = responseData.result.refreshToken;
           localStorage.setItem("accessToken", accessToken);
-          localStorage.setItem("refreshToken",refreshToken);
+          localStorage.setItem("refreshToken", refreshToken);
+          localStorage.setItem("id", id);
           navigate("/");
         } else {
           alert("잘못된 아이디 혹은 비밀번호입니다.");
         }
       })
       .catch((error) => {
+        console.log(error);
         alert("서버와 통신 중 오류가 발생했습니다.");
       });
   };
