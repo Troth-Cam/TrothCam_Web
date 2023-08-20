@@ -205,7 +205,6 @@ const productFetch = () =>{
       console.log("clickTop")
     }
     else{
-      console.log("clickLatest")
       clickLatestButton2();
       
     }
@@ -243,7 +242,7 @@ useEffect(() => {
       api.get('/api/product-ranking/top/0')
       .then((response)=>{
         console.log(",top 로그임 안!!!!!!!! 했을때-초기값");
-        setPhotoList(response.data.result.getProductRankResDto);
+        setPhotoList(response.data.result.getProductPagingResDto);
         // setPageTop((pageTop=>pageTop + 1))
       })
       .catch((err) =>{
@@ -289,14 +288,12 @@ useEffect(() => {
   }
 
   const clickTopButton2 = () => {
-    console.log("top함수 들어감")
     if(!isTopButtonClick2){
       setIsTopButtonClicked2(!isTopButtonClick2);
       setIsLatestButtonClicked2(!isLatestButtonClick2);
-      console.log(accessToken);
-      
+
       if(accessToken){
-        console.log("top acceess함수 들어감")
+        
         axios.get(`api/yeoni/product-ranking/top/${pageTop}`,{headers: {
           "Authorization": `Bearer ${accessToken}`}
         })
