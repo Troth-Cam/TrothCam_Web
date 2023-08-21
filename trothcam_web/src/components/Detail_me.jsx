@@ -90,14 +90,15 @@ const Detail_me = () =>{
     api.post('/auth/logout', {}, {headers: {"Authorization" : `Bearer ${refreshToken}`}})
       .then((response) => {
         // 성공 처리
-        navigate("/");
         localStorage.removeItem("refreshToken");
         localStorage.removeItem("accessToken");
+        navigate("/");
       })
       .catch((err) => {
         console.log(err);
         localStorage.removeItem("refreshToken");
         localStorage.removeItem("accessToken");
+        navigate("/");
       });
       
   }
@@ -130,7 +131,7 @@ const Detail_me = () =>{
       setIsTabButton3Clicked(false);
       axios.get('api/products',  {
         params:{
-          "web-id": localStorage.getItem("id"),
+          "webToken": localStorage.getItem("webToken"),
           "public": "Y"
         },
       headers: {
@@ -160,7 +161,7 @@ const Detail_me = () =>{
         axios.get('/api/products',  {
 
           params:{
-            "web-id": localStorage.getItem("id"),
+            "webToken": localStorage.getItem("webToken"),
             "public": "N"
           },
         headers: {
@@ -184,7 +185,7 @@ const Detail_me = () =>{
         console.log(`토큰${accessToken}`);
         axios.get('api/products',  {
           params:{
-            "web-id": localStorage.getItem("id"),
+            "webToken": localStorage.getItem("webToken"),
             "public": "Y"
           },
         headers: {
@@ -207,7 +208,7 @@ const Detail_me = () =>{
     return(
         <>
         <SearchBox/>
-        <UserToken>{localStorage.getItem("id")}</UserToken>
+        <UserToken>{localStorage.getItem("webToken").slice(0, 14)}...</UserToken>
         <BtnDiv>
         <Btn onClick={reloadBtn} style={{ borderBottomLeftRadius: "5px", borderTopLeftRadius:"5px"}}><BtnImg src={ReloadIcon}/></Btn>
         <CopyToClipboard text={currentURL}>

@@ -304,8 +304,8 @@ useEffect(() => {
          setPhotoList(response.data.result.getProductRankResDto);
          console.log("top버튼 로그인 했을 때")
           console.log(response.data.result);
-          if(response.data.result.getProductRankResDto.length >= 7){
-           // setPageTop(pageTop => pageTop + 1);
+          if(response.data.result.totalPages - 1 > pageTop){
+            setPageTop(pageTop => pageTop + 1);
             console.log("sdsd");
             //console.log(`길이 ${response.data.result.getProductRankResDto.length}`);
           } 
@@ -320,8 +320,8 @@ useEffect(() => {
          setPhotoList(response.data.result.getProductRankResDto);
          console.log("top버튼 로그인 안!!!!!!!! 했을 때")
         console.log(response.data.result);
-        if(response.data.result.getProductRankResDto.length >= 7){
-         // setPageTop(pageTop => pageTop + 1);
+        if(response.data.result.totalPages - 1 > pageLatest){
+          setPageTop(pageLatest => pageLatest + 1);
           console.log("sdsd");
           //console.log(`길이 ${response.data.result.getProductRankResDto.length}`);
         } 
