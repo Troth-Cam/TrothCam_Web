@@ -7,6 +7,7 @@ import ProductDetail from './ProductDetail';
 
 //import { VisibilityContext } from "react-horizontal-scrolling-menu";
 import { useNavigate } from "react-router-dom";
+import axios from '../apis/axios';
 const PhotoItemDiv = styled.div`
     width: 187px;
     display: inline-block;
@@ -94,9 +95,9 @@ const PhotoItem = (props) => {
     }
     const handleClick = (e) => {
         e.stopPropagation(); // 이벤트 버블링 차단
-        if(isLiked){
-            console.log(true);
-            api.post('api/like-product', {"prodictId": props.item.productId}, {
+        if(!isLiked){
+            console.log(props.item.productId);
+            axios.post('/api/like-product', {"productId": props.item.productId}, {
               headers: {
                   "Authorization": `Bearer ${accessToken}`
                 }
@@ -105,11 +106,11 @@ const PhotoItem = (props) => {
                 console.log(response.data.message);
               })
               .catch((err)=>{
-                console.log(err.data.message);
+                console.log(err.data);
               });
         }
         else{
-            api.delete('api/like-product', {"prodictId": props.item.productId}, {
+            axios.delete('/api/like-product', {"productId": props.item.productId}, {
                 headers: {
                     "Authorization": `Bearer ${accessToken}`
                   }
@@ -132,7 +133,7 @@ const PhotoItem = (props) => {
                     <NameDiv>{props.item.title}</NameDiv>
                     <IconImg onClick={handleClick} src={isLiked ? HeartIcon : EmptyHeartIcon} alt="Heart Icon" />
                 </LineDiv1>
-                <GrayDiv1>{props.item.ownerToken}</GrayDiv1>
+                <GrayDiv1>{props.item.ownerToken.slice(0,11)}</GrayDiv1>
                 <LineDiv2>
                 <GrayDiv2>{props.item.soldAt.slice(0, 10)}</GrayDiv2>
                     <PriceDiv>{props.item.price}KRW</PriceDiv>
