@@ -59,19 +59,19 @@ color: #000000;
 
 const RankItem = (props) => {
     
-    console.log(props.item);
-    console.log(props.item.Name);
-    console.log(props.item.price);
-    console.log(props.index);
+   // console.log(props.item);
+    //console.log(props.item.Name);
+    //console.log(props.item.price);
+   // console.log(props.index);
     return (
       <ItemDiv>
         <RankText>{props.index+ 1}</RankText>
         <ImgDiv>
         </ImgDiv>
         <div style={{width: "266px"}}>
-          <NameText> {props.item.Name}</NameText>
+          <NameText> {props.item.title}</NameText>
           <PriceText>{props.item.price}KRW</PriceText>
-          <OwnerText>{props.item.owner}</OwnerText>
+          <OwnerText>{props.item.ownerName}</OwnerText>
         </div>
       </ItemDiv>
     );

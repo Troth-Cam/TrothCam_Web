@@ -106,6 +106,7 @@ const Detail_me = () =>{
     const [isTabButton1Clicked, setIsTabButton1Clicked] = useState(true);
     const [isTabButton2Clicked, setIsTabButton2Clicked] = useState(false);
     const [isTabButton3Clicked, setIsTabButton3Clicked] = useState(false);
+
     // const photoList = [
     //     {"Name": "이름", "price": "17000", "owner": "시니"},
     //     {"Name": "이름2", "price": "17000", "owner": "시니현"},
@@ -117,6 +118,11 @@ const Detail_me = () =>{
     //   ];
      const [photoList,setPhotoList] = useState([]);
 
+
+
+    const productFetch=()=>{
+      console.log("sdsd");
+    }
     const clickTabBtn1 = () => { 
       const accessToken = localStorage.getItem("accessToken");
       setIsTabButton1Clicked(true);
@@ -124,7 +130,7 @@ const Detail_me = () =>{
       setIsTabButton3Clicked(false);
       axios.get('api/products',  {
         params:{
-          "web-id": "yeoni",
+          "web-id": localStorage.getItem("id"),
           "public": "Y"
         },
       headers: {
@@ -132,9 +138,11 @@ const Detail_me = () =>{
         }
       })
         .then((response) =>{
-          console.log(response)
+          console.log(response);
+          setPhotoList(response.data.result);
         })
         .catch((err) =>{
+          console.log("에러")
           console.log(err)
         });
       };
@@ -148,9 +156,11 @@ const Detail_me = () =>{
         setIsTabButton1Clicked(false);
         setIsTabButton2Clicked(false);
         setIsTabButton3Clicked(true);
+
         axios.get('/api/products',  {
+
           params:{
-            "web-id": "yeoni",
+            "web-id": localStorage.getItem("id"),
             "public": "N"
           },
         headers: {
@@ -158,7 +168,8 @@ const Detail_me = () =>{
           }
         })
           .then((response) =>{
-            console.log(response)
+            console.log(response.data.result);
+            setPhotoList(response.data.result);
           })
           .catch((err) =>{
             console.log(err)
@@ -173,7 +184,7 @@ const Detail_me = () =>{
         console.log(`토큰${accessToken}`);
         axios.get('api/products',  {
           params:{
-            "web-id": "yeoni",
+            "web-id": localStorage.getItem("id"),
             "public": "Y"
           },
         headers: {
@@ -183,12 +194,12 @@ const Detail_me = () =>{
           .then((response) =>{
             console.log(response)
             setPhotoList(response.data.result);
+
             // console.log(response.data.result);
-            // setPhotoList(response.data.result);
+            setPhotoList(response.data.result);
             console.log(photoList);
           })
           .catch((err) =>{
-            console.log("asds")
             console.log(err);
           });
       }, []);
@@ -196,7 +207,7 @@ const Detail_me = () =>{
     return(
         <>
         <SearchBox/>
-        <UserToken>qwbekhbjweghrk23</UserToken>
+        <UserToken>{localStorage.getItem("id")}</UserToken>
         <BtnDiv>
         <Btn onClick={reloadBtn} style={{ borderBottomLeftRadius: "5px", borderTopLeftRadius:"5px"}}><BtnImg src={ReloadIcon}/></Btn>
         <CopyToClipboard text={currentURL}>
@@ -222,6 +233,7 @@ const Detail_me = () =>{
         {isTabButton3Clicked && (
                 <PhotoBoardContainer>
                     <PhotoBoard photoList={photoList} productFetch={productFetch} />
+
                 </PhotoBoardContainer>
             )}
         </>

@@ -65,6 +65,10 @@ const PhotoBoardContainer = styled.div`
   margin: 0 auto; // Center the grid
   max-width: 820px; // Maximum width for the grid (adjust as needed)
 `;
+const productFetch=() =>{
+
+}
+
 const reloadBtn = () =>{
   window.location.reload();
 }
@@ -110,7 +114,7 @@ const Detail_others = () =>{
         
         {isTabButton1Clicked ? (
                 <PhotoBoardContainer>
-                    <PhotoBoard photoList={photoList} />
+                       <PhotoBoard photoList={photoList} productFetch={productFetch}/>
                 </PhotoBoardContainer>
             ) : null}
       {isTabButton2Clicked && <DetailBorard/>}

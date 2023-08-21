@@ -1,162 +1,189 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import SearchBar from "./header/SearchBox";
 import Footer from "./Footer";
 import rankImage from "./img/picture.png";
+import axios from "axios";
 
 const Rank = () => {
   const [topCostActive, setTopCostActive] = useState(false);
   const [latestPurchasedActive, setLatestPurchasedActive] = useState(false);
+  const [rankData, setRankData] = useState([]);
 
   const handleTopCost = () => {
-    //랭크 리스트 갱신, 전체 게시물 중 가장 높은 가격인 게시물  30개 불러오기
+    //랭크 리스트 갱신, 전체 게시물 중 가장 높은 가격인 게시물 30개 불러오기
+    axios
+      .get("https://trothly.com/api/view-all/top")
+      .then((response) => {
+        const responseData = response.data;
+        const topCostRankData = responseData.result;
+        console.log("Top Cost 응답 데이터:", topCostRankData);
+
+        setRankData(topCostRankData);
+      })
+      .catch((error) => {
+        console.error("API 요청 중 오류 발생:", error);
+      });
     setTopCostActive(true);
     setLatestPurchasedActive(false);
   };
 
   const handleLatestPurchased = () => {
     //랭크 리스트 갱신, 전체 게시물 중 가장 최근에 거래가 완료된 게시물 30개 불러오기
+    axios
+      .get("https://trothly.com/api/view-all/latest")
+      .then((response) => {
+        const responseData = response.data;
+        const latestPurchasedRankData = responseData.result;
+        console.log("Latest Purchased 응답 데이터:", latestPurchasedRankData);
+
+        setRankData(latestPurchasedRankData);
+      })
+      .catch((error) => {
+        console.error("API 요청 중 오류 발생:", error);
+      });
     setTopCostActive(false);
     setLatestPurchasedActive(true);
   };
 
-  const rankData = [
-    {
-      id: 1,
-      image: rankImage,
-      name: "Ipsum",
-      tags: "#2234",
-      owner: "aljk1j2ww",
-      author: "sdjkj33ww",
-      price: "30000KRW",
-    },
-    {
-      id: 2,
-      image: rankImage,
-      name: "Ipsum",
-      tags: "#2234",
-      owner: "aljk1j2ww",
-      author: "sdjkj33ww",
-      price: "30000KRW",
-    },
-    {
-      id: 3,
-      image: rankImage,
-      name: "Ipsum",
-      tags: "#2234",
-      owner: "aljk1j2ww",
-      author: "sdjkj33dd",
-      price: "30000KRW",
-    },
-    {
-      id: 4,
-      image: rankImage,
-      name: "Ipsum",
-      tags: "#2234",
-      owner: "aljk1j2tt",
-      author: "sdjkj33ef",
-      price: "30000KRW",
-    },
-    {
-      id: 5,
-      image: rankImage,
-      name: "Ipsum",
-      tags: "#2234",
-      owner: "aljk1j2we",
-      author: "sdjkj33fe",
-      price: "30000KRW",
-    },
-    {
-      id: 6,
-      image: rankImage,
-      name: "Ipsum",
-      tags: "#2234",
-      owner: "aljk1j2ae",
-      author: "sdjkj33fe",
-      price: "30000KRW",
-    },
-    {
-      id: 7,
-      image: rankImage,
-      name: "Ipsum",
-      tags: "#2234",
-      owner: "aljk1j2r",
-      author: "sdjkj33e",
-      price: "30000KRW",
-    },
-    {
-      id: 8,
-      image: rankImage,
-      name: "Ipsum",
-      tags: "#2234",
-      owner: "aljk1j2e",
-      author: "sdjkj33e",
-      price: "30000KRW",
-    },
-    {
-      id: 9,
-      image: rankImage,
-      name: "Ipsum",
-      tags: "#2234",
-      owner: "aljk1j2e",
-      author: "sdjkj33e",
-      price: "30000KRW",
-    },
-    {
-      id: 10,
-      image: rankImage,
-      name: "Ipsum",
-      tags: "#2234",
-      owner: "aljk1j2qq",
-      author: "sdjkj33qq",
-      price: "30000KRW",
-    },
-    {
-      id: 11,
-      image: rankImage,
-      name: "Ipsum",
-      tags: "#2234",
-      owner: "aljk1j2t",
-      author: "sdjkj33t",
-      price: "30000KRW",
-    },
-    {
-      id: 12,
-      image: rankImage,
-      name: "Ipsum",
-      tags: "#2234",
-      owner: "aljk1j2rr",
-      author: "sdjkj33rr",
-      price: "30000KRW",
-    },
-    {
-      id: 13,
-      image: rankImage,
-      name: "Ipsum",
-      tags: "#2234",
-      owner: "aljk1j2q",
-      author: "sdjkj33q",
-      price: "30000KRW",
-    },
-    {
-      id: 14,
-      image: rankImage,
-      name: "Ipsum",
-      tags: "#2234",
-      owner: "aljk1j2w",
-      author: "sdjkj33w",
-      price: "30000KRW",
-    },
-    {
-      id: 15,
-      image: rankImage,
-      name: "Ipsum",
-      tags: "#2234",
-      owner: "aljk1j2rr",
-      author: "sdjkj33ww",
-      price: "30000KRW",
-    },
-  ];
+  //   const rankData = [
+  //     {
+  //       id: 1,
+  //       image: rankImage,
+  //       name: "Ipsum",
+  //       tags: "#2234",
+  //       owner: "aljk1j2ww",
+  //       author: "sdjkj33ww",
+  //       price: "30000KRW",
+  //     },
+  //     {
+  //       id: 2,
+  //       image: rankImage,
+  //       name: "Ipsum",
+  //       tags: "#2234",
+  //       owner: "aljk1j2ww",
+  //       author: "sdjkj33ww",
+  //       price: "30000KRW",
+  //     },
+  //     {
+  //       id: 3,
+  //       image: rankImage,
+  //       name: "Ipsum",
+  //       tags: "#2234",
+  //       owner: "aljk1j2ww",
+  //       author: "sdjkj33dd",
+  //       price: "30000KRW",
+  //     },
+  //     {
+  //       id: 4,
+  //       image: rankImage,
+  //       name: "Ipsum",
+  //       tags: "#2234",
+  //       owner: "aljk1j2tt",
+  //       author: "sdjkj33ef",
+  //       price: "30000KRW",
+  //     },
+  //     {
+  //       id: 5,
+  //       image: rankImage,
+  //       name: "Ipsum",
+  //       tags: "#2234",
+  //       owner: "aljk1j2we",
+  //       author: "sdjkj33fe",
+  //       price: "30000KRW",
+  //     },
+  //     {
+  //       id: 6,
+  //       image: rankImage,
+  //       name: "Ipsum",
+  //       tags: "#2234",
+  //       owner: "aljk1j2ae",
+  //       author: "sdjkj33fe",
+  //       price: "30000KRW",
+  //     },
+  //     {
+  //       id: 7,
+  //       image: rankImage,
+  //       name: "Ipsum",
+  //       tags: "#2234",
+  //       owner: "aljk1j2r",
+  //       author: "sdjkj33e",
+  //       price: "30000KRW",
+  //     },
+  //     {
+  //       id: 8,
+  //       image: rankImage,
+  //       name: "Ipsum",
+  //       tags: "#2234",
+  //       owner: "aljk1j2e",
+  //       author: "sdjkj33e",
+  //       price: "30000KRW",
+  //     },
+  //     {
+  //       id: 9,
+  //       image: rankImage,
+  //       name: "Ipsum",
+  //       tags: "#2234",
+  //       owner: "aljk1j2e",
+  //       author: "sdjkj33e",
+  //       price: "30000KRW",
+  //     },
+  //     {
+  //       id: 10,
+  //       image: rankImage,
+  //       name: "Ipsum",
+  //       tags: "#2234",
+  //       owner: "aljk1j2qq",
+  //       author: "sdjkj33qq",
+  //       price: "30000KRW",
+  //     },
+  //     {
+  //       id: 11,
+  //       image: rankImage,
+  //       name: "Ipsum",
+  //       tags: "#2234",
+  //       owner: "aljk1j2t",
+  //       author: "sdjkj33t",
+  //       price: "30000KRW",
+  //     },
+  //     {
+  //       id: 12,
+  //       image: rankImage,
+  //       name: "Ipsum",
+  //       tags: "#2234",
+  //       owner: "aljk1j2rr",
+  //       author: "sdjkj33rr",
+  //       price: "30000KRW",
+  //     },
+  //     {
+  //       id: 13,
+  //       image: rankImage,
+  //       name: "Ipsum",
+  //       tags: "#2234",
+  //       owner: "aljk1j2q",
+  //       author: "sdjkj33q",
+  //       price: "30000KRW",
+  //     },
+  //     {
+  //       id: 14,
+  //       image: rankImage,
+  //       name: "Ipsum",
+  //       tags: "#2234",
+  //       owner: "aljk1j2w",
+  //       author: "sdjkj33w",
+  //       price: "30000KRW",
+  //     },
+  //     {
+  //       id: 15,
+  //       image: rankImage,
+  //       name: "Ipsum",
+  //       tags: "#2234",
+  //       owner: "aljk1j2rr",
+  //       author: "sdjkj33ww",
+  //       price: "30000KRW",
+  //     },
+  //   ];
 
   return (
     <>
@@ -172,11 +199,11 @@ const Rank = () => {
         </LatestPurchasedButton>
         <Divider />
         <RankListContainer>
-          <RankListText marginRight="5rem">순위</RankListText>
-          <RankListText marginRight="19rem">이름</RankListText>
-          <RankListText marginRight="8.8rem">태그</RankListText>
-          <RankListText marginRight="7rem">소유자</RankListText>
-          <RankListText marginRight="11rem">원작자</RankListText>
+          <RankListText marginRight="6%">순위</RankListText>
+          <RankListText marginRight="20%">이름</RankListText>
+          <RankListText marginRight="6%">태그</RankListText>
+          <RankListText marginRight="6%">소유자</RankListText>
+          <RankListText marginRight="12%">원작자</RankListText>
           <RankListText>가격</RankListText>
         </RankListContainer>
         <Divider />
@@ -190,23 +217,37 @@ const Rank = () => {
 };
 
 const Post = ({ post }) => {
+  const navigate = useNavigate();
+
   const truncateText = (text, maxLength) => {
+    if (typeof text !== "string") {
+      return "";
+    }
+
     if (text.length >= maxLength) {
       return text.substring(0, maxLength - 3) + "...";
     }
     return text;
   };
 
+  const handlePersonButtonClick = () => {
+    navigate("/detail_others");
+  };
+
   return (
     <PostContainer>
       <PostInfoId>{post.id}</PostInfoId>
       <ImageWrapper>
-        <PostImage src={rankImage} alt={post.name} />
+        <PostImage src={rankImage} alt={post.imageUrl} />
       </ImageWrapper>
-      <PostInfo>{post.name}</PostInfo>
+      <PostInfo>{post.ownerName}</PostInfo>
       <PostInfo>{post.tags}</PostInfo>
-      <PostInfoPerson>{truncateText(post.owner, 8)}</PostInfoPerson>
-      <PostInfoPerson>{truncateText(post.author, 8)}</PostInfoPerson>
+      <PostInfoPerson onClick={handlePersonButtonClick}>
+        {truncateText(post.ownerToken, 8)}
+      </PostInfoPerson>
+      <PostInfoPerson onClick={handlePersonButtonClick}>
+        {truncateText(post.authorshipToken, 8)}
+      </PostInfoPerson>
       <PostInfo>{post.price}</PostInfo>
     </PostContainer>
   );
@@ -229,29 +270,30 @@ const Button = styled.button`
 `;
 
 const TopCostButton = styled(Button)`
-  margin-left: 13rem;
-  width: 9.7rem;
+  margin-left: 17%;
+  width: 9rem;
   height: 3.3rem;
 `;
 
 const LatestPurchasedButton = styled(Button)`
   margin-left: 1rem;
-  width: 16rem;
+  width: 15rem;
   height: 3.3rem;
 `;
 
 const Divider = styled.div`
-  width: 79.7rem;
+  width: 65%;
   height: 0.1rem;
   background-color: #bcbdc1;
   margin-top: 0.8rem;
-  margin-left: 12.5rem;
+  margin-left: 18%;
 `;
 
 const RankListContainer = styled.div`
   display: flex;
   margin-top: 1rem;
-  margin-left: 14.5rem;
+  margin-left: 19%;
+  margin-right: 15%;
 `;
 
 const RankListText = styled.div`
@@ -260,7 +302,7 @@ const RankListText = styled.div`
   font-weight: 500;
   margin-top: 2rem;
   &:not(:last-child) {
-    margin-right: ${({ marginRight }) => marginRight || "4rem"};
+    margin-right: ${({ marginRight }) => marginRight || "3%"};
   }
 `;
 
@@ -269,8 +311,8 @@ const PostContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-top: 1rem;
-  margin-left: 10rem;
-  width: 80rem;
+  margin-left: 15%;
+  width: 65%;
 `;
 
 const PostInfoId = styled.div`
@@ -278,8 +320,7 @@ const PostInfoId = styled.div`
   font-family: Inter;
   font-size: 1.7rem;
   font-weight: 500;
-  margin-left: 5.5rem;
-  margin-right: 1rem;
+  margin-left: 8%;
 `;
 const PostInfo = styled.div`
   color: #000;
@@ -297,8 +338,8 @@ const PostInfoPerson = styled.div`
 const ImageWrapper = styled.div`
   width: 7.3rem;
   height: 7.6rem;
-  margin-left: -4rem;
-  margin-right: -5rem;
+  margin-left: -2%;
+  margin-right: -5%;
 `;
 
 const PostImage = styled.img`

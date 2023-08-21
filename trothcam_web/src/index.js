@@ -17,6 +17,7 @@ import Certification from "./components/Certification";
 import DetailOthers from "./components/Detail_others";
 import DetailMe from "./components/Detail_me";
 import SearchView from "./components/SearchView";
+import Rank from "./components/Rank";
 
 const router = createBrowserRouter([
   {
@@ -30,12 +31,13 @@ const router = createBrowserRouter([
       { path: "/signup", element: <SignUp /> },
       { path: "/loading", element: <Loading /> },
       { path: "/login", element: <Login /> },
-      { path: "/registerfinish", element: <RegisterFinish />},
-      { path: "/productdetail", element: <ProductDetail/>},
-      { path: "/Certification", element: <Certification/> },
-      { path: "/detail_others", element: <DetailOthers/> },
-      { path: "/detail_me", element: <DetailMe/> },
-      { path: "/search_view", element: <SearchView/> }
+      { path: "/registerfinish", element: <RegisterFinish /> },
+      { path: "/productdetail", element: <ProductDetail /> },
+      { path: "/Certification", element: <Certification /> },
+      { path: "/detail_others", element: <DetailOthers /> },
+      { path: "/detail_me", element: <DetailMe /> },
+      { path: "/search_view", element: <SearchView /> },
+      { path: "/rank", element: <Rank /> },
     ],
   },
 ]);

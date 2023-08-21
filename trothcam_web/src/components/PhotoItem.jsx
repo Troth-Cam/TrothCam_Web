@@ -83,13 +83,13 @@ const PhotoItem = (props) => {
 
     const clickProduct = () => {
         if(!localStorage.getItem("accessToken")){
-            navigate("/productdetail", { state: { id: props.item.price} });
+            navigate("/productdetail", { state: { id: props.item.productId} });
         }
         else{
-            navigate("/Certification", { state: { id: props.item.price} });
+            navigate("/Certification", { state: { id: props.item.productId} });
         }
         // const location = useLocation();
-        // const stateData = location.state.id;
+        // const stateData = location.state.productId;
         // console.log(stateData);
     }
     const handleClick = (e) => {
@@ -132,9 +132,9 @@ const PhotoItem = (props) => {
                     <NameDiv>{props.item.title}</NameDiv>
                     <IconImg onClick={handleClick} src={isLiked ? HeartIcon : EmptyHeartIcon} alt="Heart Icon" />
                 </LineDiv1>
-                <GrayDiv1>{props.item.ownerWebId}</GrayDiv1>
+                <GrayDiv1>{props.item.ownerToken}</GrayDiv1>
                 <LineDiv2>
-                    <GrayDiv2>{props.item.soldAt.slice(0, 10)}</GrayDiv2>
+                <GrayDiv2>{props.item.soldAt.slice(0, 10)}</GrayDiv2>
                     <PriceDiv>{props.item.price}KRW</PriceDiv>
                 </LineDiv2>
             </TextDiv>

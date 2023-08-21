@@ -35,7 +35,6 @@ const ProductDetail = () => {
         </ModalBackdrop>
       );
 
-
     return (
         <Container>
             <div>

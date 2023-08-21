@@ -5,10 +5,10 @@ import { ReactComponent as Checkbox } from "../components/img/icon _checkmark ci
 
 const Validation = () => {
   const navigate = useNavigate();
+  const signupData = JSON.parse(localStorage.getItem("signupData"));
 
   const handleContinueButtonClick = () => {
-    // 확인 버튼을 누르면 회원가입 페이지로 돌아감
-    navigate("/signup");
+    navigate("/signup", { state: signupData });
   };
 
   return (
