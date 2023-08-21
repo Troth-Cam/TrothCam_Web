@@ -185,6 +185,7 @@ const handleRankClick = () => {
   const [isLatestButtonClick2, setIsLatestButtonClicked2] = useState(false);
   const [rankList, setRankList] = useState([]);
   const [photoList, setPhotoList] = useState([]);
+
   const [pageTop, setPageTop] = useState(0);
   const [pageLatest, setPageLatest] = useState(0);
  // const rankList = [
@@ -199,9 +200,10 @@ const handleRankClick = () => {
 // ];
 const productFetch = () =>{
   console.log("fetch함수 실행")
-  
+  //setVisibility(true);
     if(isTopButtonClick2){
       clickTopButton2();
+    
       console.log("clickTop")
     }
     else{
@@ -224,7 +226,7 @@ useEffect(() => {
 
     //로그인했으면
     if(localStorage.getItem("accessToken")){
-      axios.get('api/yeoni/product-ranking/top/0', {headers: {
+      axios.get(`api/${localStorage.getItem("id")}/product-ranking/top/0`, {headers: {
         "Authorization": `Bearer ${localStorage.getItem("accessToken")}`}
       })
       .then((response)=>{
@@ -242,7 +244,8 @@ useEffect(() => {
       api.get('/api/product-ranking/top/0')
       .then((response)=>{
         console.log(",top 로그임 안!!!!!!!! 했을때-초기값");
-        setPhotoList(response.data.result.getProductPagingResDto);
+        setPhotoList(response.data.result.getProductRankResDto);
+
         // setPageTop((pageTop=>pageTop + 1))
       })
       .catch((err) =>{
@@ -294,7 +297,7 @@ useEffect(() => {
 
       if(accessToken){
         
-        axios.get(`api/yeoni/product-ranking/top/${pageTop}`,{headers: {
+        axios.get(`api/${localStorage.getItem("id")}/product-ranking/top/${pageTop}`,{headers: {
           "Authorization": `Bearer ${accessToken}`}
         })
         .then((response)=>{
@@ -302,7 +305,7 @@ useEffect(() => {
          console.log("top버튼 로그인 했을 때")
           console.log(response.data.result);
           if(response.data.result.getProductRankResDto.length >= 7){
-            setPageTop(pageTop => pageTop + 1);
+           // setPageTop(pageTop => pageTop + 1);
             console.log("sdsd");
             //console.log(`길이 ${response.data.result.getProductRankResDto.length}`);
           } 
@@ -318,7 +321,7 @@ useEffect(() => {
          console.log("top버튼 로그인 안!!!!!!!! 했을 때")
         console.log(response.data.result);
         if(response.data.result.getProductRankResDto.length >= 7){
-          setPageTop(pageTop => pageTop + 1);
+         // setPageTop(pageTop => pageTop + 1);
           console.log("sdsd");
           //console.log(`길이 ${response.data.result.getProductRankResDto.length}`);
         } 
@@ -338,7 +341,7 @@ useEffect(() => {
       setIsLatestButtonClicked2(!isLatestButtonClick2);
       //로그인했을 때 
       if(accessToken){
-        axios.get(`/api/yeoni/product-ranking/latest/${pageLatest}`, {headers: {
+        axios.get(`/api/${localStorage.getItem("id")}/product-ranking/latest/${pageLatest}`, {headers: {
           "Authorization": `Bearer ${accessToken}`}
         })
         .then((response)=>{
@@ -346,7 +349,7 @@ useEffect(() => {
           console.log("latest버튼 로그인 했을 떄 ");
           console.log(response.data.result);
           if(response.data.result.getProductRankResDto.length >= 7){
-            setPageLatest(pageLatest => pageLatest + 1);
+            //setPageLatest(pageLatest => pageLatest + 1);
             console.log("sdsd");
             //console.log(`길이 ${response.data.result.getProductRankResDto.length}`);
           } 
@@ -363,11 +366,10 @@ useEffect(() => {
           console.log("latest버튼 로그인 안했을 때 ");
           console.log(response.data.result);
           if(response.data.result.getProductRankResDto.length >= 7){
-            setPageLatest(pageLatest => pageLatest + 1);
+           // setPageLatest(pageLatest => pageLatest + 1);
             console.log("sdsd");
             //console.log(`길이 ${response.data.result.getProductRankResDto.length}`);
           } 
-        
         })
         .catch((err) =>{
           console.log(err);
@@ -433,5 +435,4 @@ useEffect(() => {
 };
 
 export default Main;
-
 

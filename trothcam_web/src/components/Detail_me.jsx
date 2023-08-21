@@ -75,8 +75,11 @@ const PhotoBoardContainer = styled.div`
   grid-template-columns: repeat(1, 4fr); // Four items in a row
   gap: 0px; // Gap between items
   margin: 0 auto; // Center the grid
-  max-width: 920px; // Maximum width for the grid (adjust as needed)
+  max-width: 840px; // Maximum width for the grid (adjust as needed)
 `;
+const productFetch=() =>{
+
+}
 
 const Detail_me = () =>{
   const navigate = useNavigate();
@@ -103,9 +106,19 @@ const Detail_me = () =>{
     const [isTabButton1Clicked, setIsTabButton1Clicked] = useState(true);
     const [isTabButton2Clicked, setIsTabButton2Clicked] = useState(false);
     const [isTabButton3Clicked, setIsTabButton3Clicked] = useState(false);
-    const [photoList, setPhotoList] = useState([]);
 
-    // const [photoList,setPhotoList] = useState([]);
+    // const photoList = [
+    //     {"Name": "이름", "price": "17000", "owner": "시니"},
+    //     {"Name": "이름2", "price": "17000", "owner": "시니현"},
+    //     {"Name": "이름", "price": "17000", "owner": "시니현"},
+    //     {"Name": "이름", "price": "17000", "owner": "시니현"},
+    //     {"Name": "이름", "price": "17000", "owner": "시니현"},
+    //     {"Name": "이름", "price": "17000", "owner": "시니현"},
+    //     {"Name": "이름", "price": "17000", "owner": "시니현"},
+    //   ];
+     const [photoList,setPhotoList] = useState([]);
+
+
 
     const productFetch=()=>{
       console.log("sdsd");
@@ -117,7 +130,7 @@ const Detail_me = () =>{
       setIsTabButton3Clicked(false);
       axios.get('api/products',  {
         params:{
-          "web-id": "yeoni",
+          "web-id": localStorage.getItem("id"),
           "public": "Y"
         },
       headers: {
@@ -143,9 +156,11 @@ const Detail_me = () =>{
         setIsTabButton1Clicked(false);
         setIsTabButton2Clicked(false);
         setIsTabButton3Clicked(true);
-        axios.get('api/products',  {
+
+        axios.get('/api/products',  {
+
           params:{
-            "web-id": "yeoni",
+            "web-id": localStorage.getItem("id"),
             "public": "N"
           },
         headers: {
@@ -169,7 +184,7 @@ const Detail_me = () =>{
         console.log(`토큰${accessToken}`);
         axios.get('api/products',  {
           params:{
-            "web-id": "yeoni",
+            "web-id": localStorage.getItem("id"),
             "public": "Y"
           },
         headers: {
@@ -177,7 +192,9 @@ const Detail_me = () =>{
           }
         })
           .then((response) =>{
-            // console.log(response)
+            console.log(response)
+            setPhotoList(response.data.result);
+
             // console.log(response.data.result);
             setPhotoList(response.data.result);
             console.log(photoList);
@@ -190,7 +207,7 @@ const Detail_me = () =>{
     return(
         <>
         <SearchBox/>
-        <UserToken>qwbekhbjweghrk23</UserToken>
+        <UserToken>{localStorage.getItem("id")}</UserToken>
         <BtnDiv>
         <Btn onClick={reloadBtn} style={{ borderBottomLeftRadius: "5px", borderTopLeftRadius:"5px"}}><BtnImg src={ReloadIcon}/></Btn>
         <CopyToClipboard text={currentURL}>
@@ -215,7 +232,8 @@ const Detail_me = () =>{
         {isTabButton2Clicked && <DetailBorard />}
         {isTabButton3Clicked && (
                 <PhotoBoardContainer>
-                    <PhotoBoard photoList={photoList} productFetch={productFetch}/>
+                    <PhotoBoard photoList={photoList} productFetch={productFetch} />
+
                 </PhotoBoardContainer>
             )}
         </>

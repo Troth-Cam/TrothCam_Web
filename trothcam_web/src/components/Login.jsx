@@ -27,9 +27,11 @@ const Login = () => {
           // 로그인 성공 시 토큰을 저장하고 다음 페이지로 이동
           const accessToken = responseData.result.accessToken;
           const refreshToken = responseData.result.refreshToken;
+          const webToken = responseData.result.webToken;
           localStorage.setItem("accessToken", accessToken);
           localStorage.setItem("refreshToken", refreshToken);
           localStorage.setItem("id", id);
+          localStorage.setItem("webToken", webToken);
           navigate("/");
         } else {
           alert("잘못된 아이디 혹은 비밀번호입니다.");
