@@ -14,12 +14,13 @@ const PhotoBoard = (props) => {
       console.log(inView, '무한 스크롤 요청 🎃')
       props.productFetch();
     }
+    console.log(props.photoList);
   }, [inView]);
 
   return (
     <div>
-      {props.photoList.map((item, index) => (
-        <PhotoItem itemId={index} item={item} />
+     {props.photoList && Object.values(props.photoList).map((item, index) => (
+        <PhotoItem key={index} itemId={index} item={item} />
       ))}
       <text ref={ref}> </text>
     </div>
