@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "./header/SearchBox";
@@ -47,143 +47,9 @@ const Rank = () => {
     setLatestPurchasedActive(true);
   };
 
-  //   const rankData = [
-  //     {
-  //       id: 1,
-  //       image: rankImage,
-  //       name: "Ipsum",
-  //       tags: "#2234",
-  //       owner: "aljk1j2ww",
-  //       author: "sdjkj33ww",
-  //       price: "30000KRW",
-  //     },
-  //     {
-  //       id: 2,
-  //       image: rankImage,
-  //       name: "Ipsum",
-  //       tags: "#2234",
-  //       owner: "aljk1j2ww",
-  //       author: "sdjkj33ww",
-  //       price: "30000KRW",
-  //     },
-  //     {
-  //       id: 3,
-  //       image: rankImage,
-  //       name: "Ipsum",
-  //       tags: "#2234",
-  //       owner: "aljk1j2ww",
-  //       author: "sdjkj33dd",
-  //       price: "30000KRW",
-  //     },
-  //     {
-  //       id: 4,
-  //       image: rankImage,
-  //       name: "Ipsum",
-  //       tags: "#2234",
-  //       owner: "aljk1j2tt",
-  //       author: "sdjkj33ef",
-  //       price: "30000KRW",
-  //     },
-  //     {
-  //       id: 5,
-  //       image: rankImage,
-  //       name: "Ipsum",
-  //       tags: "#2234",
-  //       owner: "aljk1j2we",
-  //       author: "sdjkj33fe",
-  //       price: "30000KRW",
-  //     },
-  //     {
-  //       id: 6,
-  //       image: rankImage,
-  //       name: "Ipsum",
-  //       tags: "#2234",
-  //       owner: "aljk1j2ae",
-  //       author: "sdjkj33fe",
-  //       price: "30000KRW",
-  //     },
-  //     {
-  //       id: 7,
-  //       image: rankImage,
-  //       name: "Ipsum",
-  //       tags: "#2234",
-  //       owner: "aljk1j2r",
-  //       author: "sdjkj33e",
-  //       price: "30000KRW",
-  //     },
-  //     {
-  //       id: 8,
-  //       image: rankImage,
-  //       name: "Ipsum",
-  //       tags: "#2234",
-  //       owner: "aljk1j2e",
-  //       author: "sdjkj33e",
-  //       price: "30000KRW",
-  //     },
-  //     {
-  //       id: 9,
-  //       image: rankImage,
-  //       name: "Ipsum",
-  //       tags: "#2234",
-  //       owner: "aljk1j2e",
-  //       author: "sdjkj33e",
-  //       price: "30000KRW",
-  //     },
-  //     {
-  //       id: 10,
-  //       image: rankImage,
-  //       name: "Ipsum",
-  //       tags: "#2234",
-  //       owner: "aljk1j2qq",
-  //       author: "sdjkj33qq",
-  //       price: "30000KRW",
-  //     },
-  //     {
-  //       id: 11,
-  //       image: rankImage,
-  //       name: "Ipsum",
-  //       tags: "#2234",
-  //       owner: "aljk1j2t",
-  //       author: "sdjkj33t",
-  //       price: "30000KRW",
-  //     },
-  //     {
-  //       id: 12,
-  //       image: rankImage,
-  //       name: "Ipsum",
-  //       tags: "#2234",
-  //       owner: "aljk1j2rr",
-  //       author: "sdjkj33rr",
-  //       price: "30000KRW",
-  //     },
-  //     {
-  //       id: 13,
-  //       image: rankImage,
-  //       name: "Ipsum",
-  //       tags: "#2234",
-  //       owner: "aljk1j2q",
-  //       author: "sdjkj33q",
-  //       price: "30000KRW",
-  //     },
-  //     {
-  //       id: 14,
-  //       image: rankImage,
-  //       name: "Ipsum",
-  //       tags: "#2234",
-  //       owner: "aljk1j2w",
-  //       author: "sdjkj33w",
-  //       price: "30000KRW",
-  //     },
-  //     {
-  //       id: 15,
-  //       image: rankImage,
-  //       name: "Ipsum",
-  //       tags: "#2234",
-  //       owner: "aljk1j2rr",
-  //       author: "sdjkj33ww",
-  //       price: "30000KRW",
-  //     },
-  //   ];
+  useEffect(() => {
+    handleTopCost();
+  }, []);
 
   return (
     <>
@@ -230,8 +96,14 @@ const Post = ({ post }) => {
     return text;
   };
 
-  const handlePersonButtonClick = () => {
-    navigate("/detail_others");
+  const handleOwnerButtonClick = () => {
+    console.log(post.ownerToken);
+    navigate("/detail_others", { state: { userId: post.ownerToken } });
+  };
+
+  const handleAuthorButtonClick = () => {
+    console.log(post.authorshipToken);
+    navigate("/detail_others", { state: { userId: post.authorshipToken } });
   };
 
   return (
@@ -242,10 +114,10 @@ const Post = ({ post }) => {
       </ImageWrapper>
       <PostInfo>{post.ownerName}</PostInfo>
       <PostInfo>{post.tags}</PostInfo>
-      <PostInfoPerson onClick={handlePersonButtonClick}>
+      <PostInfoPerson onClick={handleOwnerButtonClick}>
         {truncateText(post.ownerToken, 8)}
       </PostInfoPerson>
-      <PostInfoPerson onClick={handlePersonButtonClick}>
+      <PostInfoPerson onClick={handleAuthorButtonClick}>
         {truncateText(post.authorshipToken, 8)}
       </PostInfoPerson>
       <PostInfo>{post.price}</PostInfo>
