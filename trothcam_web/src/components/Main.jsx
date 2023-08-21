@@ -187,7 +187,7 @@ const handleRankClick = () => {
   const [photoList, setPhotoList] = useState([]);
 
   const [pageTop, setPageTop] = useState(0);
-  const [pageLatest, setPageLatest] = useState(0);
+  const [pageLatest, YsetPageLatest] = useState(0);
  // const rankList = [
  //   { Name: "이름1", price: "17,000", owner: "dsdsddsdsadsads" },
    // { Name: "이름2", price: "17000", owner: "dsdsddsdsadsads" },
@@ -215,7 +215,9 @@ const productFetch = () =>{
 
 
 useEffect(() => {
-  axios.get('/api/product-ranking/top')
+  const accessToken = localStorage.getItem("accessToken");
+  const url = `https://trothly.com/api/${localStorage.getItem("id")}/product-ranking/top/0`
+  api.get('/api/product-ranking/top')
     .then((response)=>{
       setRankList(response.data.result);
       // console.log(`top data ${response.data.result}`);
@@ -226,8 +228,9 @@ useEffect(() => {
 
     //로그인했으면
     if(localStorage.getItem("accessToken")){
-      axios.get(`api/${localStorage.getItem("id")}/product-ranking/top/0`, {headers: {
-        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`}
+
+      axios.get(`/api/${localStorage.getItem("id")}/product-ranking/top/${pageTop}`,{headers: {
+        "Authorization": `Bearer ${accessToken}`}
       })
       .then((response)=>{
         console.log("top 로그임했을때-초기값");
@@ -235,7 +238,7 @@ useEffect(() => {
         setPhotoList(response.data.result.getProductRankResDto);
       })
       .catch((err) =>{
-        console.log(localStorage.getItem("accessToken"))
+        console.log(accessToken)
         console.log("로그인 했을 떄 불러오기 실패");
         console.log(err);
       });
@@ -297,7 +300,7 @@ useEffect(() => {
 
       if(accessToken){
         
-        axios.get(`api/${localStorage.getItem("id")}/product-ranking/top/${pageTop}`,{headers: {
+        axios.get(`/api/${localStorage.getItem("id")}/product-ranking/top/${pageTop}`,{headers: {
           "Authorization": `Bearer ${accessToken}`}
         })
         .then((response)=>{

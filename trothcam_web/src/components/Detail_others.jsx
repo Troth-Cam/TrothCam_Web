@@ -88,7 +88,7 @@ const Detail_others = () =>{
   
       const accessToken = localStorage.getItem("accessToken");
       console.log(`토큰${accessToken}`);
-      axios.get('api/products',  {
+      axios.get('/api/products',  {
         params:{
           "webToken": otherToken,
           "public": "Y"
@@ -117,7 +117,7 @@ const Detail_others = () =>{
       setIsTabButton2Clicked(false);
       const accessToken = localStorage.getItem("accessToken");
       console.log(`토큰${accessToken}`);
-      axios.get('api/products',  {
+      axios.get('/api/products',  {
         params:{
           "webToken": otherToken,
           "public": "Y"

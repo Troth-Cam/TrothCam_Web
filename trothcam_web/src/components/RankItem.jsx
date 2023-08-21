@@ -60,9 +60,12 @@ color: #000000;
 
 
 const RankItem = (props) => {
+
   const navigate = useNavigate();
   const moveToDetailOthers = () =>{
+    if(localStorage.getItem("accessToken")){
     navigate("/detail_others", { state: { userId: props.item.ownerToken} });
+    }
   }    
   
    // console.log(props.item);
