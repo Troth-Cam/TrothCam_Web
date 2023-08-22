@@ -24,6 +24,7 @@ const ProductDetail = () => {
     //const location = useLocation();
     //const stateData = location.state.id;
     //console.log(stateData);
+    const productId=1;
     
     
     const [detail, setProductDetail] = useState({});
@@ -33,11 +34,7 @@ const ProductDetail = () => {
         // 서버에 요청하여 상품 정보를 가져오는 함수
         const fetchProductDetail = async () => {
             try {
-                const response = await axios.get('https://trothly.com/api/product-detail', {
-                    data: {
-                        productId: "1"
-                    },
-                });
+                const response = await axios.get('https://trothly.com/api/product-detail');
 
                 if (response.data.isSuccess) {
                     setProductDetail(response.data.result);
@@ -103,8 +100,8 @@ const ProductDetail = () => {
       );
 
 
-  
       return (
+
         <Container>
             <div>
                 <SearchBox></SearchBox>

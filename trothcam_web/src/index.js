@@ -30,13 +30,6 @@ const router = createBrowserRouter([
       { path: "/register1", element: <Register1 /> },
       { path: "/signup", element: <SignUp /> },
       { path: "/loading", element: <Loading /> },
-<<<<<<< Updated upstream
-      { path: "/registerfinish", element: <RegisterFinish />},
-      { path: "/productdetail", element: <ProductDetail/>},
-      { path: "/Certification", element: <Certification/> },
-      { path: "/detail_others", element: <DetailOthers/> },
-      { path: "/detail_me", element: <DetailMe/> },
-=======
       { path: "/login", element: <Login /> },
       { path: "/registerfinish", element: <RegisterFinish /> },
       { path: "/productdetail", element: <ProductDetail /> },
@@ -46,7 +39,7 @@ const router = createBrowserRouter([
       { path: "/detail_me", element: <DetailMe /> },
       { path: "/search_view", element: <SearchView /> },
       { path: "/rank", element: <Rank /> },
->>>>>>> Stashed changes
+
     ],
   },
 ]);
