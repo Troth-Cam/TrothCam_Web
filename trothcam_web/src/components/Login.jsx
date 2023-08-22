@@ -35,8 +35,10 @@ const Login = () => {
             localStorage.setItem("webToken", webToken);
           } else {
             const accessToken = responseData.result.accessToken;
+            const webToken = responseData.result.webToken;
             localStorage.setItem("accessToken", accessToken);
             localStorage.setItem("id", id);
+            localStorage.setItem("webToken", webToken);
           }
           navigate("/");
         } else {
@@ -116,14 +118,6 @@ const LoginContent = styled.div`
   align-items: center;
   margin-top: 10rem;
 `;
-
-// const LoginText = styled.div`
-//   color: #222;
-//   font-family: Inter;
-//   font-size: 6rem;
-//   font-weight: 400;
-//   margin-top: 2rem;
-// `;
 
 const LogoContainer = styled.div`
   display: flex;
