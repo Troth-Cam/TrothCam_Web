@@ -17,16 +17,53 @@ import pd5 from './img/pd5.png';
 import pd6 from './img/pd6.png';
 import infoImg from './img/infoIcon.png';
 import { useNavigate } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 const UnvalidCertification = () => {
    
+    const location = useLocation();
+    const stateData = location.state.id;
+    const productId=stateData;
+    console.log(stateData);
+
+    const url = "https://trothly.com/api/products/${productId}/convert-to-private"
+    const accessToken = localStorage.getItem("accessToken");
+
+    const navigate = useNavigate();
+
+    // 버튼 [ 누르면 비공개, 페이지 이동]
+    const [serverResponse, setServerResponse] = useState(null);
+
+    const handleButtonClick = () => {
+        axios.patch(url, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+        .then(response => {
+            console.log('Response:', response.data);
+    
+            // Store the response data in the state
+            setServerResponse(response.data); // json객체 저장
+    
+            navigate("/ValidCertification", { state: { productId: productId } });
+        })
+        .catch(error => {
+            console.error('Error sending PATCH request:', error);
+        });
+      };
+
+
+
+
+
+
     //시간 계산 - 최근 거래 일자 계산
     const now = new Date(); //현재시각
     //const updatedAt = new Date(productDetail.result.updatedAt); //최근 거래 일자
     //const diffMilliseconds = now - updatedAt; //차이 계산
     //const diffDays = Math.floor(diffMilliseconds / (1000 * 60 * 60 * 24));
-  
 
      // 현재 시각 표현
     const year = now.getFullYear();
@@ -46,13 +83,9 @@ const UnvalidCertification = () => {
             : text;
     }
 
-    // 버튼 [ 누르면 비공개, 페이지 이동]
-    const navigate = useNavigate();
-    const handleButtonClick = () => {
-        // 확인 버튼을 누르면 회원가입 페이지로 돌아감
-        navigate("/validcertification");
-      };
+  
 
+    //모달 관련 함수들
     const [showModal, setShowModal] = useState(false);
 
     const openModal = () => {
