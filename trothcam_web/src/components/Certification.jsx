@@ -17,11 +17,15 @@ import pd3 from './img/pd3.png';
 import pd4 from './img/pd4.png';
 import pd5 from './img/pd5.png';
 import pd6 from './img/pd6.png';
+import { useLocation } from 'react-router-dom';
 
 
 
 const Certification = () => {
-
+    //이전 페이지에서 productid 가져오기
+    const location = useLocation();
+    const stateData = location.state.id;
+    console.log(stateData);
     
     const [showModal, setShowModal] = useState(false);
 

@@ -7,6 +7,7 @@ import heartIcon from './img/icon_heart.png';
 import PersonIcon from './img/person_icon.png';
 import DownloadIcon from './img/download_icon.png';
 import blackheartIcon from './img/blackheart_icon.png';
+import redheartIcon from './img/icon_heart.png';
 import eyeIcon from './img/eye_icon.png';
 import chertImg from './img/chert.png';
 import pd1 from './img/pd1.png';
@@ -18,34 +19,38 @@ import pd6 from './img/pd6.png';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 
-const ProductDetail = () => {
+const ProductDetail_logedin = () => {
+
     //이전 페이지에서 productid 가져오기
-    //let productId=null;
     //const location = useLocation();
     //const stateData = location.state.id;
     //console.log(stateData);
-    const productId=1;
+
+    let productId=null;
     
     
-    const [detail, setProductDetail] = useState({});
-    console.log("productDetail 페이지 확인");
+    const [Detail, setProductDetail] = useState({});
+    const accessToken = localStorage.getItem("accessToken");
+    console.log(accessToken);
 
     useEffect(() => {
-        // 서버에 요청하여 상품 정보를 가져오는 함수
         const fetchProductDetail = async () => {
+            
             try {
-                const response = await axios.get('https://trothly.com/api/product-detail');
-
-                if (response.data.isSuccess) {
-                    setProductDetail(response.data.result);
+                const response = await axios.get('https://trothly.com/api/product-detail/${webId}', {
+                    productId: "1"
+                }, {headers: {"Authorization" : `Bearer ${accessToken}`}});
+    
+                if (response.data) {
+                    setProductDetail(response.data);
                 } else {
-                    console.error('Failed to fetch product details:', response.data.message);
+                    console.error('Failed to fetch product details.');
                 }
             } catch (error) {
                 console.error('Error fetching product details:', error);
             }
         };
-
+    
         fetchProductDetail();
     }, []);
    
@@ -100,8 +105,33 @@ const ProductDetail = () => {
       );
 
 
-      return (
+    //좋아요 포시
+    // const [isLiked, setIsLiked] = useState(false);
 
+    // const handleLikeToggle = async () => {
+    //     const accessToken = localStorage.getItem("accessToken");
+    //     const apiUrl = "https://trothly.com/api/like-product"; 
+    //     const data = {
+    //       productId: "1",
+    //     };
+    
+    //     try {
+    //       if (isLiked) {
+    //         // 좋아요가 되어있는 상태면 좋아요 취소 요청을 보냅니다.
+    //         await axios.delete(apiUrl, { data: data },{headers: {"Authorization" : `Bearer ${accessToken}`}});
+    //         console.log("좋아요 취소");
+    //       } else {
+    //         // 좋아요가 안 되어있는 상태면 좋아요 요청을 보냅니다.
+    //         await axios.post(apiUrl, data,{headers: {"Authorization" : `Bearer ${accessToken}`}});
+    //         console.log("좋아요 누름!");
+    //       }
+    //       setIsLiked(!isLiked); // 좋아요 상태 토글
+    //     } catch (error) {
+    //       console.error("Error toggling like:", error);
+    //     }
+    //   };
+  
+      return (
         <Container>
             <div>
                 <SearchBox></SearchBox>
@@ -111,8 +141,8 @@ const ProductDetail = () => {
                 <TextContainer>
                         <Title1>Smile</Title1>
                         <Title2>#12345</Title2>
-                            <HeartImg src={heartIcon} alt="heartIcon" />
-                            
+                            {/* <HeartImg src={isLiked ? redheartIcon : blackheartIcon} onClick={handleLikeToggle} style={{ cursor: "pointer" }} alt="blackheartIcon" />
+                             */}
                 </TextContainer>
 
                 <InfoContainer>
@@ -218,7 +248,7 @@ const ProductDetail = () => {
     );
   };
   
-export default ProductDetail;
+export default ProductDetail_logedin;
 
 const Container = styled.div`
   display: flex;
