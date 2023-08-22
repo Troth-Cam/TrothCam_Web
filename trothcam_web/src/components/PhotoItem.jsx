@@ -86,8 +86,19 @@ const PhotoItem = (props) => {
         if(!localStorage.getItem("accessToken")){
             navigate("/productdetail", { state: { id: props.item.productId} });
         }
-        else{
-            navigate("/Certification", { state: { id: props.item.productId} });
+        else{ //로그인 했으면
+            console.log("=================================");
+            console.log(props.productState);
+
+            if(props.productState == "public"){
+                navigate("/unvalidCertification", { state: { id: props.item.productId} });
+            }
+            else if(props.productState == "private"){
+              //  navigate("/validCertification", { state: { id: props.item.productId} });
+            }
+            else{
+                navigate("/Certification", { state: { id: props.item.productId} });
+            }
         }
         // const location = useLocation();
         // const stateData = location.state.productId;
