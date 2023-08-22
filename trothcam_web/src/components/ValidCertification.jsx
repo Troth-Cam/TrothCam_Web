@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useState ,useEffect} from 'react';
+import React, { useState, useEffect  } from 'react';
 import SearchBox from "./header/SearchBox";
 import Footer from './Footer';
 import smileImg from './img/smileImg.svg';
@@ -15,55 +15,56 @@ import pd3 from './img/pd3.png';
 import pd4 from './img/pd4.png';
 import pd5 from './img/pd5.png';
 import pd6 from './img/pd6.png';
+import infoImg from './img/infoIcon.png';
+import { useNavigate } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 
-const ProductDetail = () => {
+const ValidCertification = () => {
+  
     //이전 페이지에서 productid 가져오기
-    //let productId=null;
-    //const location = useLocation();
-    //const stateData = location.state.id;
-    //console.log(stateData);
-    const productId=1;
+    const location = useLocation();
+    const stateData = location.state.id;
+    const productId=stateData;
+    console.log(stateData);
+
+    const url = "https://trothly.com/api/products/${productId}/convert-to-public"
+    const accessToken = localStorage.getItem("accessToken");
+
+    const data = {
+        price: {InputPrice},
+        description: {inputText}
+    };
+
     
-    
-    const [detail, setProductDetail] = useState({});
-    console.log("productDetail 페이지 확인");
+    // const updateProduct = async (url, data,) => {
+    //     try {
+    //       const endpoint = `${url}/api/products/${productId}/convert-to-public`;
+    //       const response = await axios.patch(endpoint, data);
+      
+    //       if (response.data.isSuccess) {
+    //         console.log("Product updated successfully!");
+    //         return response.data;
+    //       } else {
+    //         throw new Error(response.data.message);
+    //       }
+      
+    //     } catch (error) {
+    //       console.error("Error updating product:", error.message);
+    //       throw error; // or handle it depending on your use case
+    //     }
+    //   }
 
-    useEffect(() => {
-        // 서버에 요청하여 상품 정보를 가져오는 함수
-        const fetchProductDetail = async () => {
-            try {
-                const response = await axios.get('https://trothly.com/api/product-detail');
-
-                if (response.data.isSuccess) {
-                    setProductDetail(response.data.result);
-                } else {
-                    console.error('Failed to fetch product details:', response.data.message);
-                }
-            } catch (error) {
-                console.error('Error fetching product details:', error);
-            }
-        };
-
-        fetchProductDetail();
-    }, []);
-   
-
-    // 데이터가 로드되기 전에는 로딩 메시지를 표시
-    // if (!productDetail) {
-    //     return <div>Loading...</div>;
-    // }
-
+    //updateProduct(url, productId, data);
 
     //시간 계산 - 최근 거래 일자 계산
-     const now = new Date(); //현재시각
-    // const updatedAt = new Date(productDetail.result.updatedAt); //최근 거래 일자
-    // const diffMilliseconds = now - updatedAt; //차이 계산
-    // const diffDays = Math.floor(diffMilliseconds / (1000 * 60 * 60 * 24));
+    const now = new Date(); //현재시각
+    const updatedAt = new Date(productDetail.result.updatedAt); //최근 거래 일자
+    const diffMilliseconds = now - updatedAt; //차이 계산
+    const diffDays = Math.floor(diffMilliseconds / (1000 * 60 * 60 * 24));
+  
 
-
-    // 현재 시각 표현
+     // 현재 시각 표현
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0'); // 월은 0에서 시작하므로 1을 더해야 합니다.
     const date = String(now.getDate()).padStart(2, '0');
@@ -81,8 +82,62 @@ const ProductDetail = () => {
             : text;
     }
 
+    //판매하기 버튼 유효성
 
-    //이미지 클릭시 모달 기능
+        const [InputPrice, setPrice] = useState('');  // 가격 상태
+        const [isValid, setIsValid] = useState(false);  // 버튼 유효성 상태
+    
+        // 입력 값이 변경될 때마다 호출되는 핸들러
+        const handleInputChange = (e) => {
+            setPrice(e.target.value);
+        };
+    
+        // 가격 값이 변경될 때 유효성을 체크
+        useEffect(() => {
+            const parsedPrice = parseInt(InputPrice, 10);
+            if (parsedPrice >= 100 && parsedPrice <= 10000000) {
+                setIsValid(true);
+            } else {
+                setIsValid(false);
+            }
+        }, [InputPrice]);
+
+    //판매하기 버튼 누르면 다음 페이지로 이동
+    const navigate = useNavigate();
+
+    const handleButtonClick = () => {
+        if (isValid) {
+            axios.patch(url, data, {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+            .then(response => {
+                console.log('Response:', response.data);
+                navigate("/UnvalidCertification", { state: { productId: productId } });
+            })
+            .catch(error => {
+                console.error('Error sending PATCH request:', error);
+            });
+          
+        }
+      };
+
+    //문구 입력 500자 제한
+    const [inputText, setInputText] = useState('');
+  
+    const stringInputChange = (event) => {
+    const newText = event.target.value;
+    
+        // 길이 제한: 500자까지만 입력 가능하도록 함
+        if (newText.length <= 500) {
+        setInputText(newText);
+        }
+    };
+  
+    const charCount = inputText.length;
+    const charLimit = 500;
+
     const [showModal, setShowModal] = useState(false);
 
     const openModal = () => {
@@ -100,8 +155,7 @@ const ProductDetail = () => {
       );
 
 
-      return (
-
+    return (
         <Container>
             <div>
                 <SearchBox></SearchBox>
@@ -109,19 +163,17 @@ const ProductDetail = () => {
             <Col>
                 <Product>Product Detail</Product>
                 <TextContainer>
-                        <Title1>Smile</Title1>
+                        <Title1>{productDetail.result.title}</Title1>
                         <Title2>#12345</Title2>
-                            <HeartImg src={heartIcon} alt="heartIcon" />
+                            <HeartImg src={blackheartIcon} alt="heartIcon" />
                             
                 </TextContainer>
 
                 <InfoContainer>
-                            <DownloadImg src={DownloadIcon} alt="DownloadIcon"/>
-                            <Info1> 13 downloads</Info1>
-                            <EyeImg src={eyeIcon} alt="eyeIcon"/>
-                            <Info2> 39 views</Info2>
-                            <BlackheartImg src={blackheartIcon} alt="blackheartIcon"/>
-                            <Info3> 5 likes</Info3>
+                        <EyeImg src={eyeIcon} alt="eyeIcon"/>
+                        <Info2> {productDetail.result.views} views</Info2>
+                        <BlackheartImg src={blackheartIcon} alt="blackheartIcon"/>
+                        <Info3> {productDetail.result.likes} likes</Info3>
                             
                 </InfoContainer>
             </Col>
@@ -133,8 +185,14 @@ const ProductDetail = () => {
                     <ImgDiv>
                         <StyledImage src={smileImg} alt="smileImg" onClick={openModal}  />
                         {showModal && <Modal image={smileImg} onClose={closeModal} />}
-                        <Text1>소유자</Text1>
-                        <Text2>원작자</Text2>
+                        <InfoContainer1>
+                            <Text1>소유자 </Text1>
+                            <Text1token> {truncateText(productDetail.result.ownerToken, 15)}</Text1token>
+                        </InfoContainer1>
+                        <InfoContainer1>
+                            <Text2>원작자 </Text2>
+                            <Text2token> {truncateText(productDetail.result.authorshipToken, 15)}</Text2token>
+                        </InfoContainer1>
                     </ImgDiv>
                    
                     <Detail1>
@@ -163,19 +221,32 @@ const ProductDetail = () => {
                 <Col2>
                   
                     <Detail2>
-                        <Day>최근 거래 3일전</Day>
+                    <Container1>
                         <PayContainer>
-                            <Pay1>판매가</Pay1>
-                            <Pay2>  30,000KRW</Pay2>
+                            <Pay1>| 판매가</Pay1>
+                            <Infoicon1 src={infoImg} alt="infoImg" />
                         </PayContainer>
-                        <BuyButton>구매하기</BuyButton>
+
+                        <Input1 type="number" placeholder="가격을 입력해주세요."onChange={handleInputChange}/>
+                        <Ex1>판매를 원하는 가격을 작성해주세요.</Ex1>
+
+                        <PayContainer>
+                            <Pay2>| 설명 작성 </Pay2>
+                            <Infoicon2 src={infoImg} alt="infoImg" />
+                            <StringLimit>{charCount}/{charLimit}</StringLimit>
+                        </PayContainer>
+
+                        <Input2 type="text" placeholder="설명을 작성해주세요." value={inputText} onChange={stringInputChange} />
+                        <Ex2>사진에 대한 자세한 설명을 작성해주세요.</Ex2>
+                        <Button3 disabled={!isValid}  onClick={handleButtonClick}>온라인에 게시하기 (판매하기)</Button3>
+                    </Container1>
                     </Detail2>
 
                     <Detail3>
                         <ChertImage src={chertImg} alt="chertImg"/>
                         <BuyChert>거래내역</BuyChert>
-                        <LastBuy>마지막으로 <span style={{color: '#5980EF'}}>30,000KRW</span>에 거래되었어요.</LastBuy>
-                        <LastBuyDate>2023년 07월 27일 01:10:33 기준</LastBuyDate>
+                        <LastBuy>마지막으로 <span style={{color: '#5980EF'}}> {productDetail.result.histories[0].price}KRW</span>에 거래되었어요.</LastBuy>
+                        <LastBuyDate>{formattedDate} </LastBuyDate>
                         <BuydetailContainer>
                             <BuyDetail>판매자</BuyDetail>
                             <BuyDetail>구매자</BuyDetail>
@@ -184,24 +255,24 @@ const ProductDetail = () => {
                         </BuydetailContainer>
                         <Line />
                         <BuydetailContainer>
-                            <BuyerDetail>klfasd...</BuyerDetail>
-                            <BuyerDetail>qwbek...</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">30000</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">23.8.5</BuyerDetail>
+                            <BuyerDetail1>{truncateText(productDetail.result.ownerToken,8)}</BuyerDetail1>
+                            <BuyerDetail1>{truncateText(productDetail.result.authorshipToken, 8)}</BuyerDetail1>
+                            <BuyerDetail2 marginLeft="0px">{productDetail.result.histories[0].price}</BuyerDetail2>
+                            <BuyerDetail2 marginLeft="0px">23.8.5</BuyerDetail2>
                         </BuydetailContainer>
                        
                         <BuydetailContainer>
-                            <BuyerDetail>klfasd...</BuyerDetail>
-                            <BuyerDetail>qwbek...</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">30000</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">23.8.5</BuyerDetail>
+                        <BuyerDetail1>{truncateText(productDetail.result.ownerToken,8)}</BuyerDetail1>
+                            <BuyerDetail1>{truncateText(productDetail.result.authorshipToken, 8)}</BuyerDetail1>
+                            <BuyerDetail2 marginLeft="0px">{productDetail.result.histories[1].price}</BuyerDetail2>
+                            <BuyerDetail2 marginLeft="0px">23.8.5</BuyerDetail2>
                         </BuydetailContainer>
                         
                         <BuydetailContainer>
-                            <BuyerDetail>klfasd...</BuyerDetail>
-                            <BuyerDetail>qwbek...</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">30000</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">23.8.5</BuyerDetail>
+                            <BuyerDetail1>{truncateText(productDetail.result.ownerToken,8)}</BuyerDetail1>
+                            <BuyerDetail1>{truncateText(productDetail.result.authorshipToken, 8)}</BuyerDetail1>
+                            <BuyerDetail2 marginLeft="0px">{productDetail.result.histories[2].price}</BuyerDetail2>
+                            <BuyerDetail2 marginLeft="0px">23.8.5</BuyerDetail2>
                         </BuydetailContainer>
 
 
@@ -218,13 +289,12 @@ const ProductDetail = () => {
     );
   };
   
-export default ProductDetail;
+export default ValidCertification;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  //align-items:center;
   
 `;
 
@@ -305,17 +375,17 @@ const Title2 = styled.div`
 
 `;
 const HeartImg = styled.img`
-    width: 41.63045120239258px;
-    height: 49.58951950073242px;
-    margin-left: 230%;
+    width: 61.35px;
+    height:60px;
+    margin-left: 290%;
 
     @media (max-width: 1400px) {
-        margin-left:180%;
+        margin-left:250%;
        
       }
 
     @media (max-width: 980px) {
-        margin-left:60%;
+        margin-left:50%;
        
       }
 `;
@@ -326,35 +396,19 @@ const InfoContainer = styled.div`
     display: flex;
     flex-direction: row;
     text-align: left;  
-    margin-left:-22%;
+    margin-left:-30%;
     @media (max-width: 980px) {
-        margin-left:-10%;
+        margin-left:-30%;
        
       }
 
 `;
-const DownloadImg= styled.img`
-    width:30px;
-    height:30px;
-    margin-left:70px;
-`;
 
-const Info1= styled.div`
-    margin-top:0px;
-    margin-left:10px;
-    font-family: Inter;
-    font-size: 20px;
-    font-weight: 400;
-    line-height: 24px;
-    letter-spacing: 0em;
-    text-align: left;
-    color:#000000;
-`;
 
 const EyeImg= styled.img`
     width:30px;
     height:28px;
-    margin-left:45px;
+    margin-left:0px;
 `;
 
 const Info2= styled.div`
@@ -371,7 +425,7 @@ const Info2= styled.div`
 
 const BlackheartImg= styled.img`
     width:30px;
-    height:30px;
+    height:28px;
     margin-left:45px;
 `;
 
@@ -429,20 +483,20 @@ const Col1 = styled.div`
 `;
 
 const Col2 = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  margin-top:-285px;
- 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top:40px;
 
-  @media (max-width:780px) {
+
+    @media (max-width:780px) {
     justify-content: center;
     align-items: center;
     margin-top:2%;
     margin-right:6%
-   
-  }
+    
+    }
 `;
 
 const ImgDiv = styled.div`
@@ -487,13 +541,25 @@ const ModalContent = styled.img`
   max-height: 90%;
 `;
 
+
+const InfoContainer1 = styled.div`
+    display: flex;
+    flex-direction: row;
+    text-align: left;  
+   // margin-left:-30%;
+    @media (max-width: 980px) {
+        //margin-left:-30%;
+       
+      }
+
+`;
 const Text1 = styled.div`
-    width: 123px;
-    height: 30px;
+    width: 56px;
+    height: 24px;
     margin-top:20px;
     margin-left:20px;
     font-family: Inter;
-    font-size: 25px;
+    font-size: 20px;
     font-weight: 400;
     line-height: 30px;
     letter-spacing: 0em;
@@ -501,20 +567,45 @@ const Text1 = styled.div`
     color: #000000;
 `;
 
+const Text1token = styled.div`
+  
+    margin-top:20px;
+    margin-left:20px;
+    font-family: Inter;
+    font-size: 23px;
+    font-weight: 400;
+    line-height: 30px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #5980EF;
+`;
+
 const Text2 = styled.div`
-    width: 69px;
-    height: 30px;
+    width: 56px;
+    height: 24px;
     margin-top:11px;
     margin-left:20px;
     font-family: Inter;
-    font-size: 25px;
+    font-size: 20px;
     font-weight: 400;
     line-height: 30px;
     letter-spacing: 0em;
     text-align: left;
     color: #000000;
-    
 
+`;
+
+const Text2token = styled.div`
+  
+    margin-top:20px;
+    margin-left:20px;
+    font-family: Inter;
+    font-size: 23px;
+    font-weight: 400;
+    line-height: 30px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #5980EF;
 `;
 
 
@@ -709,50 +800,54 @@ const Pd6Text = styled.div`
 `;
 
 
+
 const Detail2 = styled.div`
     display: flex;
     flex-direction: column;
+
+
+    @media (max-width:680px) {
+        //justify-content: center;
+        //align-items: center;
+       
+
     
+`;
+
+
+const Container1 = styled.div`
+    display: flex;
+    flex-direction: column;
+
     width: 379px;
-    height: 218px;
-    
+    height: 546px;
     margin-left:10%;
-   
+
     border-radius: 10px;
     border: 1px;
 
     linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5));
     border: 1px solid #9FA0A3;
-
-  
+    
+    @media (max-width:750px) {
+        justify-content: center;
+        margin-top:0px;
+        margin-left:5%;
+       
 `;
 
-const Day = styled.div`
-    width: 182px;
-    height: 23px;
-    margin-top:8%;
-    margin-left:6%;
-    font-family: Inter;
-    font-size: 20px;
-    font-weight: 400;
-    line-height: 24px;
-    letter-spacing: 0em;
-    text-align: left;
-    color:#A6A6A6;
-
-`;
 const PayContainer = styled.div`
     display: flex;
     flex-direction: row;
 `;
 
 const Pay1 = styled.div`
-    width: 55px;
+    width: 100px;
     height: 24px;
-    margin-top:15%;
+    margin-top:5%;
     margin-left:6%;
     font-family: Inter;
-    font-size: 17px;
+    font-size: 20px;
     font-weight: 400;
     line-height: 20px;
     letter-spacing: 0em;
@@ -761,38 +856,162 @@ const Pay1 = styled.div`
 
 `;
 
-const Pay2 = styled.div`
-    width: 287px;
-    height: 49px;
-    margin-top:10%;
-    margin-left:5%;
-    font-family: Inter;
-    font-size: 45px;
+const Infoicon1=styled.img`
+    width: 24px;
+    height: 24px;
+    margin-top:4.3%;
+    margin-left:-20px;
+`;
+
+
+const Input1 = styled.input`
+    width: 343px;
+    height: 59px;
+    top: 366px;
+    margin-top:1%;
+    margin-left:3%;
+    border-radius: 10px;
+    border: 1px solid #BCBDC1;
+    color: #000000;
+    background-color:#ffffff;
+
+    font-family: Inter;       // 입력 텍스트의 폰트
+    font-size: 25px;          // 입력 텍스트의 크기
     font-weight: 400;
-    line-height: 54px;
+    line-height: 10px;
+    padding-top: 0px;        // 입력 텍스트의 상단 패딩
+    padding-left: 10px; 
+   
+    &::placeholder {
+        position: absolute;
+        top: 17px;           // 상단에 고정
+        left: 15px;        // 약간의 왼쪽 패딩
+        font-family: Inter;
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 24px;
+        color: #a8a8a8;  // Placeholder 색상
+    }
+    
+`;
+
+const Ex1=styled.div`
+    width: 338px;
+    height: 24px;
+    margin-top:10px;
+    margin-left:6%;
+    font-family: Inter;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 16px;
     letter-spacing: 0em;
     text-align: left;
-    color:#000000
+    color:#9FA0A3;
+
+`;
+const Pay2 = styled.div`
+    width: 115px;
+    height: 24px;
+    margin-top:1%;
+    margin-left:5%;
+    font-family: Inter;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: left;
+    color:#000000;
 
 `;
 
-const BuyButton = styled.button`
-    width: 342px;
-    height: 43px;
-    margin-top:3%;
-    margin-left:6%;
+const Infoicon2=styled.img`
+    width: 24px;
+    height: 24px;
+    margin-top:1%;
+    margin-left:-10px;
+`;
+
+const StringLimit = styled.div`
+    width: 49px;
+    height: 21px;
+    margin-top:1%;
+    margin-left:45%;
+    font-family: Inter;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0em;
+    text-align: left;
+    color:#a8a8a8;
+
+`;
+const Input2 = styled.textarea`
+    
+    width: 343px;
+    height: 258px;
+    top: 366px;
+    margin-top:1%;
+    margin-left:3%;
     border-radius: 10px;
-    background: #5980EF;
+    border: 1px solid #BCBDC1;
+    color: #000000;
+    background-color:#ffffff;
+
+    font-family: Inter;       // 입력 텍스트의 폰트
+    font-size: 20px;          // 입력 텍스트의 크기
+    font-weight: 400;
+    line-height: 24px;
+    padding-top: 10px;        // 입력 텍스트의 상단 패딩
+    padding-left: 10px; 
+
+    &::placeholder {
+        position: absolute;
+        top: 15px;           // 상단에 고정
+        left: 15px;        // 약간의 왼쪽 패딩
+      
+        font-family: Inter;
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 24px;
+        color: #a8a8a8;  // Placeholder 색상
+    }
+    
+`;
+
+const Ex2=styled.div`
+    width: 338px;
+    height: 24px;
+    margin-top:10px;
+    margin-left:6%;
+    font-family: Inter;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-align: left;
+    color:#9FA0A3;
+
+`;
+
+
+
+const Button3 = styled.button`
+    width: 342px;
+    height: 53px;
+    margin-top: -5px;
+    margin-left:5%;
+    border-radius: 10px;
+
+
     font-family: Inter;
     font-size: 20px;
     font-weight: 400;
     line-height: 24px;
     letter-spacing: 0em;
     text-align: center;
-    color:#ffffff;
-    border:none;
-
     
+    color:#FFFFFF;
+    background-color: ${({ disabled }) => (disabled ? '#777777' : '#5980EF')};
 `;
 
 
@@ -891,10 +1110,26 @@ const Line = styled.hr`
 
 `;
 
-const BuyerDetail=styled.div`
+const BuyerDetail1=styled.div`
     margin-top:20px;
-    margin-left: ${(props) => props.marginLeft || '20px'};
-    padding-left:30px;
+    margin-left: ${(props) => props.marginLeft || '16px'};
+    padding-left:16px;
+    font-family: Inter;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 30px;
+    letter-spacing: 0em;
+    text-align: left;
+    color:#5980EF;
+
+`;
+
+
+const BuyerDetail2=styled.div`
+    width:78px;
+    margin-top:20px;
+    margin-left: ${(props) => props.marginLeft || '16px'};
+    padding-left:16px;
     font-family: Inter;
     font-size: 15px;
     font-weight: 500;
