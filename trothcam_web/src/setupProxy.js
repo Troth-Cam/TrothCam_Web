@@ -10,9 +10,9 @@ module.exports = function(app) {
 app.use(
    createProxyMiddleware("/api",{
       target: 'https://trothly.com',
-      pathRewrite: {
-        '^/api':''
-      },
+      //pathRewrite: {
+      //  '^/api':''
+      //},
       changeOrigin: true,
     })
   );
