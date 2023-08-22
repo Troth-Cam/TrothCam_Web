@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import PhotoBoard from './PhotoBoard';
 import DetailBorard from './DetailBoard';
@@ -6,6 +6,9 @@ import ReloadIcon from "./img/reload_icon.svg";
 import CopyIcon from "./img/copy_icon.png";
 import axios from 'axios';
 import {CopyToClipboard} from 'react-copy-to-clipboard'
+import {useLocation} from "react-router-dom";
+import SearchBox from './header/SearchBox';
+
 const UserToken = styled.div`
 display: inline;
 color: #5980EF;
@@ -60,10 +63,10 @@ const ListImg = styled.img`
 `;
 const PhotoBoardContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr); // Four items in a row
-  // gap: 0px; // Gap between items
+  grid-template-columns: repeat(1, 4fr); // Four items in a row
+  gap: 0px; // Gap between items
   margin: 0 auto; // Center the grid
-  max-width: 820px; // Maximum width for the grid (adjust as needed)
+  max-width: 840px; // Maximum width for the grid (adjust as needed)
 `;
 const productFetch=() =>{
 
@@ -74,21 +77,66 @@ const reloadBtn = () =>{
 }
 const Detail_others = () =>{
     const currentURL = window.location.href;
-
+    const [photoList,setPhotoList] = useState([]);
     const [isTabButton1Clicked, setIsTabButton1Clicked] = useState(true);
     const [isTabButton2Clicked, setIsTabButton2Clicked] = useState(false);
 
-    const photoList = [
-        {"Name": "이름", "price": "17000", "owner": "시니"},
-        {"Name": "이름2", "price": "17000", "owner": "시니현"},
-        {"Name": "이름", "price": "17000", "owner": "시니현"},
-        {"Name": "이름", "price": "17000", "owner": "시니현"},
-      ];
+    const location = useLocation();
+    const otherToken = location.state.userId;
+
+    useEffect(()=>{
+  
+      const accessToken = localStorage.getItem("accessToken");
+      console.log(`토큰${accessToken}`);
+      axios.get('/api/products',  {
+        params:{
+          "webToken": otherToken,
+          "public": "Y"
+        },
+      headers: {
+          "Authorization": `Bearer ${accessToken}`
+        }
+      })
+        .then((response) =>{
+          console.log(response)
+          setPhotoList(response.data.result);
+
+          // console.log(response.data.result);
+          setPhotoList(response.data.result);
+          console.log(photoList);
+        })
+        .catch((err) =>{
+          console.log(err);
+        });
+    }, []);
+
+
 
     const clickTabBtn1 = () => { 
       setIsTabButton1Clicked(true);
       setIsTabButton2Clicked(false);
-      //axios.post()
+      const accessToken = localStorage.getItem("accessToken");
+      console.log(`토큰${accessToken}`);
+      axios.get('/api/products',  {
+        params:{
+          "webToken": otherToken,
+          "public": "Y"
+        },
+      headers: {
+          "Authorization": `Bearer ${accessToken}`
+        }
+      })
+        .then((response) =>{
+          console.log(response)
+          setPhotoList(response.data.result);
+
+          // console.log(response.data.result);
+          setPhotoList(response.data.result);
+          console.log(photoList);
+        })
+        .catch((err) =>{
+          console.log(err);
+        });
 
       };
       const clickTabBtn2 = () => {
@@ -98,8 +146,8 @@ const Detail_others = () =>{
       };
     return(
         <>
-         {/* <SearchBar /> */}
-        <UserToken>qwbekhbjweghrk23</UserToken>
+      <SearchBox/>
+        <UserToken>{otherToken.slice(0,16)}...</UserToken>
         <BtnDiv>
         <Btn onClick={reloadBtn} style={{ borderBottomLeftRadius: "5px", borderTopLeftRadius:"5px"}}><BtnImg src={ReloadIcon}/></Btn>
         <CopyToClipboard text={currentURL}>

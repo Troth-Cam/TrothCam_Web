@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const ItemDiv = styled.div`
     border-bottom: solid 1px #BCBDC1;
@@ -57,8 +58,16 @@ font-family: Inter;
 color: #000000;
 `;
 
+
 const RankItem = (props) => {
-    
+
+  const navigate = useNavigate();
+  const moveToDetailOthers = () =>{
+    if(localStorage.getItem("accessToken")){
+    navigate("/detail_others", { state: { userId: props.item.ownerToken} });
+    }
+  }    
+  
    // console.log(props.item);
     //console.log(props.item.Name);
     //console.log(props.item.price);
@@ -71,7 +80,7 @@ const RankItem = (props) => {
         <div style={{width: "266px"}}>
           <NameText> {props.item.title}</NameText>
           <PriceText>{props.item.price}KRW</PriceText>
-          <OwnerText>{props.item.ownerName}</OwnerText>
+          <OwnerText onClick={moveToDetailOthers}>{props.item.ownerToken.slice(0,11)}</OwnerText>
         </div>
       </ItemDiv>
     );
