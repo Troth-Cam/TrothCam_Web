@@ -187,30 +187,23 @@ const handleRankClick = () => {
   const [photoList, setPhotoList] = useState([]);
 
   const [pageTop, setPageTop] = useState(0);
-  const [pageLatest, YsetPageLatest] = useState(0);
- // const rankList = [
- //   { Name: "이름1", price: "17,000", owner: "dsdsddsdsadsads" },
-   // { Name: "이름2", price: "17000", owner: "dsdsddsdsadsads" },
-  //  { Name: "이름3", price: "17000", owner: "dsdsddsdsadsads" },
- //   { Name: "이름4", price: "17000", owner: "dsdsddsdsadsads" },
- //   { Name: "이름5", price: "17000", owner: "dsdsddsdsadsads" },
- //   { Name: "이름6", price: "17000", owner: "dsdsddsdsadsads" },
- //   { Name: "이름7", price: "17000", owner: "dsdsddsdsadsads" },
-  //  { Name: "이름8", price: "17000", owner: "dsdsddsdsadsads" },
-// ];
+  const [pageLatest, setPageLatest] = useState(0);
+
 const productFetch = () =>{
   console.log("fetch함수 실행")
-  //setVisibility(true);
     if(isTopButtonClick2){
-      clickTopButton2();
-    
       console.log("clickTop")
+      callTopPagingApi();
     }
     else{
-      clickLatestButton2();
+      console.log("clickLatest")
       
     }
 };
+const callTopPagingApi = () =>{
+  console.log("topAPi")
+  
+}
 
 
 
@@ -307,11 +300,6 @@ useEffect(() => {
          setPhotoList(response.data.result.getProductRankResDto);
          console.log("top버튼 로그인 했을 때")
           console.log(response.data.result);
-          if(response.data.result.totalPages - 1 > pageTop){
-            setPageTop(pageTop => pageTop + 1);
-            console.log("sdsd");
-            //console.log(`길이 ${response.data.result.getProductRankResDto.length}`);
-          } 
           })
         .catch((err) =>{
           console.log(err);
@@ -323,11 +311,6 @@ useEffect(() => {
          setPhotoList(response.data.result.getProductRankResDto);
          console.log("top버튼 로그인 안!!!!!!!! 했을 때")
         console.log(response.data.result);
-        if(response.data.result.totalPages - 1 > pageLatest){
-          setPageTop(pageLatest => pageLatest + 1);
-          console.log("sdsd");
-          //console.log(`길이 ${response.data.result.getProductRankResDto.length}`);
-        } 
         })
       .catch((err) =>{
         console.log(err);
@@ -339,6 +322,8 @@ useEffect(() => {
 
   const clickLatestButton2 = () =>{
     //latest버튼 눌렀을 때 
+    console.log(`안뇽 ${isLatestButtonClick2}`);
+    console.log(`안뇽 ${pageLatest}`);
     if(!isLatestButtonClick2){
       setIsTopButtonClicked2(!isTopButtonClick2);
       setIsLatestButtonClicked2(!isLatestButtonClick2);
@@ -351,11 +336,6 @@ useEffect(() => {
           setPhotoList(response.data.result.getProductRankResDto);
           console.log("latest버튼 로그인 했을 떄 ");
           console.log(response.data.result);
-          if(response.data.result.getProductRankResDto.length >= 7){
-            //setPageLatest(pageLatest => pageLatest + 1);
-            console.log("sdsd");
-            //console.log(`길이 ${response.data.result.getProductRankResDto.length}`);
-          } 
         })
         .catch((err) =>{
           console.log(err);
@@ -368,11 +348,6 @@ useEffect(() => {
           setPhotoList(response.data.result.getProductRankResDto);
           console.log("latest버튼 로그인 안했을 때 ");
           console.log(response.data.result);
-          if(response.data.result.getProductRankResDto.length >= 7){
-           // setPageLatest(pageLatest => pageLatest + 1);
-            console.log("sdsd");
-            //console.log(`길이 ${response.data.result.getProductRankResDto.length}`);
-          } 
         })
         .catch((err) =>{
           console.log(err);
