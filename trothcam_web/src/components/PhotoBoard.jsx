@@ -21,7 +21,7 @@ const PhotoBoard = (props) => {
      {props.photoList && Object.values(props.photoList).map((item, index) => (
         <PhotoItem key={index} itemId={index} item={item} />
       ))}
-      <text ref={ref}>sdsd </text>
+      <text ref={ref} style={{color:'white'}}>sdsd </text>
     </div>
   );
 };
