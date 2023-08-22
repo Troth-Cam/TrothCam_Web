@@ -14,7 +14,6 @@ const PhotoBoard = (props) => {
       console.log(inView, '무한 스크롤 요청 🎃')
       props.productFetch();
     }
-    console.log(props.photoList);
   }, [inView]);
 
   return (
@@ -22,7 +21,7 @@ const PhotoBoard = (props) => {
      {props.photoList && Object.values(props.photoList).map((item, index) => (
         <PhotoItem key={index} itemId={index} item={item} />
       ))}
-      <text ref={ref}> </text>
+      <text ref={ref}>sdsd </text>
     </div>
   );
 };

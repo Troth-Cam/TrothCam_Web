@@ -93,11 +93,11 @@ const PhotoItem = (props) => {
         // const stateData = location.state.productId;
         // console.log(stateData);
     }
-    const handleClick = (e) => {
+/*    const handleClick = (e) => {
         e.stopPropagation(); // 이벤트 버블링 차단
         if(!isLiked){
             console.log(props.item.productId);
-            axios.post('/api/like-product', {"productId": props.item.productId}, {
+            axios.post(`/api/like-product/${props.item.productId}` , {}, {
               headers: {
                   "Authorization": `Bearer ${accessToken}`
                 }
@@ -106,11 +106,11 @@ const PhotoItem = (props) => {
                 console.log(response.data.message);
               })
               .catch((err)=>{
-                console.log(err.data);
+                console.log(err);
               });
         }
         else{
-            axios.delete('/api/like-product', {"productId": props.item.productId}, {
+            axios.delete(`/api/like-product/${props.item.productId}`, {
                 headers: {
                     "Authorization": `Bearer ${accessToken}`
                   }
@@ -124,6 +124,7 @@ const PhotoItem = (props) => {
         }
         setIsLiked(!isLiked);
     };
+    */
     return (
     
         <PhotoItemDiv onClick={clickProduct}>
@@ -131,7 +132,7 @@ const PhotoItem = (props) => {
             <TextDiv>
                 <LineDiv1>
                     <NameDiv>{props.item.title}</NameDiv>
-                    <IconImg onClick={handleClick} src={isLiked ? HeartIcon : EmptyHeartIcon} alt="Heart Icon" />
+                    <IconImg src={isLiked ? HeartIcon : EmptyHeartIcon} alt="Heart Icon" />
                 </LineDiv1>
                 <GrayDiv1>{props.item.ownerToken.slice(0,11)}</GrayDiv1>
                 <LineDiv2>
