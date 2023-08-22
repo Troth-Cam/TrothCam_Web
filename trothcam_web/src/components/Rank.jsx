@@ -18,7 +18,6 @@ const Rank = () => {
       .then((response) => {
         const responseData = response.data;
         const topCostRankData = responseData.result;
-        console.log("Top Cost 응답 데이터:", topCostRankData);
 
         setRankData(topCostRankData);
       })
@@ -36,7 +35,6 @@ const Rank = () => {
       .then((response) => {
         const responseData = response.data;
         const latestPurchasedRankData = responseData.result;
-        console.log("Latest Purchased 응답 데이터:", latestPurchasedRankData);
 
         setRankData(latestPurchasedRankData);
       })
@@ -66,15 +64,15 @@ const Rank = () => {
         <Divider />
         <RankListContainer>
           <RankListText marginRight="6%">순위</RankListText>
-          <RankListText marginRight="20%">이름</RankListText>
+          <RankListText marginRight="24%">이름</RankListText>
           <RankListText marginRight="6%">태그</RankListText>
-          <RankListText marginRight="6%">소유자</RankListText>
+          <RankListText marginRight="8%">소유자</RankListText>
           <RankListText marginRight="12%">원작자</RankListText>
           <RankListText>가격</RankListText>
         </RankListContainer>
         <Divider />
-        {rankData.map((post) => (
-          <Post key={post.id} post={post} />
+        {rankData.map((post, index) => (
+          <Post key={post.id} post={post} index={index + 1} />
         ))}
       </RankContainer>
       <Footer></Footer>
@@ -82,7 +80,7 @@ const Rank = () => {
   );
 };
 
-const Post = ({ post }) => {
+const Post = ({ post, index }) => {
   const navigate = useNavigate();
 
   const truncateText = (text, maxLength) => {
@@ -108,11 +106,11 @@ const Post = ({ post }) => {
 
   return (
     <PostContainer>
-      <PostInfoId>{post.id}</PostInfoId>
+      <PostInfoId>{index}</PostInfoId>
       <ImageWrapper>
         <PostImage src={rankImage} alt={post.imageUrl} />
       </ImageWrapper>
-      <PostInfo>{post.ownerName}</PostInfo>
+      <PostInfoName>{post.ownerName}</PostInfoName>
       <PostInfo>{post.tags}</PostInfo>
       <PostInfoPerson onClick={handleOwnerButtonClick}>
         {truncateText(post.ownerToken, 8)}
@@ -174,7 +172,7 @@ const RankListText = styled.div`
   font-weight: 500;
   margin-top: 2rem;
   &:not(:last-child) {
-    margin-right: ${({ marginRight }) => marginRight || "3%"};
+    margin-right: ${({ marginRight }) => marginRight || "4%"};
   }
 `;
 
@@ -199,19 +197,29 @@ const PostInfo = styled.div`
   font-family: Inter;
   font-size: 2rem;
   font-weight: 500;
+  margin-left: 2%;
 `;
 const PostInfoPerson = styled.div`
   color: #5980ef;
   font-family: Inter;
   font-size: 1.7rem;
   font-weight: 500;
+  margin-left: 3%;
+`;
+const PostInfoName = styled.div`
+  width: 6.5rem;
+  color: #000;
+  font-family: Inter;
+  font-size: 2rem;
+  font-weight: 500;
+  margin-left: 5%;
 `;
 
 const ImageWrapper = styled.div`
   width: 7.3rem;
   height: 7.6rem;
-  margin-left: -2%;
-  margin-right: -5%;
+  margin-left: 2%;
+  margin-right: -3rem;
 `;
 
 const PostImage = styled.img`
