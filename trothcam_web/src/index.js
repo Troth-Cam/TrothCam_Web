@@ -19,8 +19,6 @@ import DetailMe from "./components/Detail_me";
 import SearchView from "./components/SearchView";
 import Rank from "./components/Rank";
 
-import SearchView from "./components/SearchView";
-import Rank from "./components/Rank";
 import ProductDetail_logedin from "./components/ProductDetail_logedin";
 
 const router = createBrowserRouter([

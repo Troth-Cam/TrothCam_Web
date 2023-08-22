@@ -170,6 +170,8 @@ width: 100%
 `;
 
 const Main = () => {
+  const [totalTopPage, setTotalTopPage] = useState(0);
+  const [totalLatestPage, setTotalLatestPage] = useState(0);
   const navigate = useNavigate();
 
 const handleRankClick = () => {
@@ -179,10 +181,10 @@ const handleRankClick = () => {
 
   const accessToken = localStorage.getItem("accessToken");
   
-  const [isTopButtonClick1, setIsTopButtonClicked1] = useState(true);
-  const [isLatestButtonClick1, setIsLatestButtonClicked1] = useState(false);
-  const [isTopButtonClick2, setIsTopButtonClicked2] = useState(true);
-  const [isLatestButtonClick2, setIsLatestButtonClicked2] = useState(false);
+  const [isTopButtonClick1, setIsTopButtonClicked1] = useState(false);
+  const [isLatestButtonClick1, setIsLatestButtonClicked1] = useState(true);
+  const [isTopButtonClick2, setIsTopButtonClicked2] = useState(false);
+  const [isLatestButtonClick2, setIsLatestButtonClicked2] = useState(true);
   const [rankList, setRankList] = useState([]);
   const [photoList, setPhotoList] = useState([]);
 
@@ -190,64 +192,111 @@ const handleRankClick = () => {
   const [pageLatest, setPageLatest] = useState(0);
 
 const productFetch = () =>{
-  console.log("fetch함수 실행")
-    if(isTopButtonClick2){
-      console.log("clickTop")
+  setTimeout(() => {
+    if (isTopButtonClick2) {
+      console.log("clickTop");
       callTopPagingApi();
+    } else {
+      console.log("clickLatest");
+      callLatestPagingApi();
     }
-    else{
-      console.log("clickLatest")
-      
-    }
+  }, 500); 
 };
+
 const callTopPagingApi = () =>{
   console.log("topAPi")
+  console.log(`${totalTopPage} - 1 > ${pageTop}`);
+
+  if(pageTop == 0){
+    setPageTop(1);
+    console.log(`0이면 1로 바꿔줌${pageLatest}`);
+ }
+
+  if(totalTopPage > pageTop && pageTop >= 0){
+    setPageTop(pageTop => pageTop + 1);
+    if(accessToken){
+      axios.get(`/api/${localStorage.getItem("id")}/product-ranking/top/${pageTop}`,{headers: {
+        "Authorization": `Bearer ${accessToken}`}
+      })
+      .then((response)=>{
+       setPhotoList(response.data.result.getProductRankResDto);
+       console.log("top버튼 로그인 했을 때")
+        console.log(response.data.result);
+        
+        })
+      .catch((err) =>{
+        console.log(err);
+      });
+    }
+      else{
+      api.get(`/api/product-ranking/top/${pageTop}`)
+        .then((response)=>{
+        setPhotoList(response.data.result.getProductRankResDto);
+        console.log("top버튼 로그인 안!!!!!!!! 했을 때")
+        console.log(response.data.result);
+        setTotalTopPage(response.data.result.totalPages);
+        })
+      .catch((err) =>{
+        console.log(err);
+      });
+    }
+  }
+  else if(totalTopPage ==  pageTop || pageTop >= 0){
+    setPageTop(pageTop => pageTop - 1);
+  }
+}
+
+
+const callLatestPagingApi = () => {
+  console.log("LatestAPi")
   
+  console.log(`${totalLatestPage} - 1 >= ${pageLatest}`);
+ // setPageLatest(pageLatest => pageLatest + 1);
+  console.log(`${totalLatestPage} - 1 >= ${pageLatest}`);
+
+  //페이지가 0이고(1로 안넘어가서 해줌, 한페이지 이상일 떄)
+  if(pageLatest == 0 && totalLatestPage != 1){
+    if(accessToken){
+      axios.get(`/api/${localStorage.getItem("id")}/product-ranking/latest/1`, {
+        headers: { "Authorization": `Bearer ${accessToken}` }
+      })
+      .then((response) => {
+        setPhotoList(response.data.result.getProductRankResDto);
+        console.log("latest버튼 로그인 했을 때 ");
+        console.log(response.data.result);
+        setPageLatest(pageLatest => pageLatest + 1);
+        console.log(`페이지 ${pageLatest}`);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
+    else{
+      axios.get(`/api/product-ranking/latest/1`, {
+        headers: { "Authorization": `Bearer ${accessToken}` }
+      })
+      .then((response) => {
+        setPhotoList(response.data.result.getProductRankResDto);
+        console.log("latest버튼 로그인 했을 때 ");
+        console.log(response.data.result);
+        setPageLatest(pageLatest => pageLatest + 1);
+        console.log(`페이지 ${pageLatest}`);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
+  }
+  else{ 
+
+  }
 }
 
 
 
 useEffect(() => {
-  const accessToken = localStorage.getItem("accessToken");
-  const url = `https://trothly.com/api/${localStorage.getItem("id")}/product-ranking/top/0`
-  api.get('/api/product-ranking/top')
-    .then((response)=>{
-      setRankList(response.data.result);
-      // console.log(`top data ${response.data.result}`);
-    })
-    .catch((err) =>{
-      // console.log(e);
-    });
-
-    //로그인했으면
-    if(localStorage.getItem("accessToken")){
-
-      axios.get(`/api/${localStorage.getItem("id")}/product-ranking/top/${pageTop}`,{headers: {
-        "Authorization": `Bearer ${accessToken}`}
-      })
-      .then((response)=>{
-        console.log("top 로그임했을때-초기값");
-        console.log(response.data.result);
-        setPhotoList(response.data.result.getProductRankResDto);
-      })
-      .catch((err) =>{
-        console.log(accessToken)
-        console.log("로그인 했을 떄 불러오기 실패");
-        console.log(err);
-      });
-    }
-    else{
-      api.get('/api/product-ranking/top/0')
-      .then((response)=>{
-        console.log(",top 로그임 안!!!!!!!! 했을때-초기값");
-        setPhotoList(response.data.result.getProductRankResDto);
-
-        // setPageTop((pageTop=>pageTop + 1))
-      })
-      .catch((err) =>{
-        console.log(err);
-      });
-  }
+  clickTopButton1();
+  clickTopButton2();
 }, []);
 
   
@@ -287,6 +336,8 @@ useEffect(() => {
   }
 
   const clickTopButton2 = () => {
+    const accessToken = localStorage.getItem("accessToken");
+    console.log(isTopButtonClick2)
     if(!isTopButtonClick2){
       setIsTopButtonClicked2(!isTopButtonClick2);
       setIsLatestButtonClicked2(!isLatestButtonClick2);
@@ -300,6 +351,7 @@ useEffect(() => {
          setPhotoList(response.data.result.getProductRankResDto);
          console.log("top버튼 로그인 했을 때")
           console.log(response.data.result);
+          setTotalTopPage(response.data.result.totalPages);
           })
         .catch((err) =>{
           console.log(err);
@@ -311,6 +363,7 @@ useEffect(() => {
          setPhotoList(response.data.result.getProductRankResDto);
          console.log("top버튼 로그인 안!!!!!!!! 했을 때")
         console.log(response.data.result);
+        setTotalTopPage(response.data.result.totalPages);
         })
       .catch((err) =>{
         console.log(err);
@@ -319,11 +372,9 @@ useEffect(() => {
 
     }
   };
-
   const clickLatestButton2 = () =>{
     //latest버튼 눌렀을 때 
-    console.log(`안뇽 ${isLatestButtonClick2}`);
-    console.log(`안뇽 ${pageLatest}`);
+
     if(!isLatestButtonClick2){
       setIsTopButtonClicked2(!isTopButtonClick2);
       setIsLatestButtonClicked2(!isLatestButtonClick2);
@@ -336,6 +387,7 @@ useEffect(() => {
           setPhotoList(response.data.result.getProductRankResDto);
           console.log("latest버튼 로그인 했을 떄 ");
           console.log(response.data.result);
+          setTotalLatestPage(response.data.result.totalPages);
         })
         .catch((err) =>{
           console.log(err);
@@ -348,6 +400,7 @@ useEffect(() => {
           setPhotoList(response.data.result.getProductRankResDto);
           console.log("latest버튼 로그인 안했을 때 ");
           console.log(response.data.result);
+          setTotalLatestPage(response.data.result.totalPages);
         })
         .catch((err) =>{
           console.log(err);
