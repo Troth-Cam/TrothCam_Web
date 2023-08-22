@@ -21,23 +21,27 @@ import axios from 'axios';
 const ProductDetail = () => {
     //이전 페이지에서 productid 가져오기
     //let productId=null;
-    //const location = useLocation();
-    //const stateData = location.state.id;
+    const location = useLocation();
+    const stateData = location.state.id;
     //console.log(stateData);
-    const productId=1;
+    const productId=stateData;
+    console.log(productId);
     
     
     const [detail, setProductDetail] = useState({});
-    console.log("productDetail 페이지 확인");
+    
 
     useEffect(() => {
         // 서버에 요청하여 상품 정보를 가져오는 함수
         const fetchProductDetail = async () => {
             try {
-                const response = await axios.get('https://trothly.com/api/product-detail');
+                const response = await axios.get(`https://trothly.com/api/product-detail/${productId}`);
+
 
                 if (response.data.isSuccess) {
                     setProductDetail(response.data.result);
+                    console.log("데이터 가져옴");
+                    
                 } else {
                     console.error('Failed to fetch product details:', response.data.message);
                 }
@@ -58,9 +62,9 @@ const ProductDetail = () => {
 
     //시간 계산 - 최근 거래 일자 계산
      const now = new Date(); //현재시각
-    // const updatedAt = new Date(productDetail.result.updatedAt); //최근 거래 일자
-    // const diffMilliseconds = now - updatedAt; //차이 계산
-    // const diffDays = Math.floor(diffMilliseconds / (1000 * 60 * 60 * 24));
+    const updatedAt = new Date(detail.updatedAt); //최근 거래 일자
+    const diffMilliseconds = now - updatedAt; //차이 계산
+    const diffDays = Math.floor(diffMilliseconds / (1000 * 60 * 60 * 24));
 
 
     // 현재 시각 표현
@@ -98,8 +102,7 @@ const ProductDetail = () => {
           <ModalContent src={image} onClick={(e) => e.stopPropagation()} />
         </ModalBackdrop>
       );
-
-
+      
       return (
 
         <Container>
@@ -109,19 +112,17 @@ const ProductDetail = () => {
             <Col>
                 <Product>Product Detail</Product>
                 <TextContainer>
-                        <Title1>Smile</Title1>
-                        <Title2>#12345</Title2>
+                        <Title1>{detail.title}</Title1>
+                        <Title2>#{detail.tags}</Title2>
                             <HeartImg src={heartIcon} alt="heartIcon" />
                             
                 </TextContainer>
 
-                <InfoContainer>
-                            <DownloadImg src={DownloadIcon} alt="DownloadIcon"/>
-                            <Info1> 13 downloads</Info1>
+                <InfoContainer>          
                             <EyeImg src={eyeIcon} alt="eyeIcon"/>
-                            <Info2> 39 views</Info2>
+                            <Info2> {detail.views} views</Info2>
                             <BlackheartImg src={blackheartIcon} alt="blackheartIcon"/>
-                            <Info3> 5 likes</Info3>
+                            <Info3> {detail.likes} likes</Info3>
                             
                 </InfoContainer>
             </Col>
@@ -133,8 +134,14 @@ const ProductDetail = () => {
                     <ImgDiv>
                         <StyledImage src={smileImg} alt="smileImg" onClick={openModal}  />
                         {showModal && <Modal image={smileImg} onClose={closeModal} />}
-                        <Text1>소유자</Text1>
-                        <Text2>원작자</Text2>
+                        <InfoContainer1>
+                            <Text1>소유자 </Text1>
+                            <Text1token> {truncateText(detail.ownerToken, 15)}</Text1token>
+                        </InfoContainer1>
+                        <InfoContainer1>
+                            <Text2>원작자 </Text2>
+                            <Text2token> {truncateText(detail.authorshipToken, 15)}</Text2token>
+                        </InfoContainer1>
                     </ImgDiv>
                    
                     <Detail1>
@@ -142,7 +149,7 @@ const ProductDetail = () => {
                         <Pd1Text>상세정보</Pd1Text>
                         <Pd2 src={pd2} alt="pd2" />
                         <Pd2Text1>사진 설명</Pd2Text1>
-                        <Pd2Text2>ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsumipsum ipsum ipsum ipsumipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsumipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum </Pd2Text2>
+                        <Pd2Text2>{detail.description} </Pd2Text2>
                         <Pd3 src={pd3} alt="pd3" />
                         <Pd3Text1>촬영 렌즈</Pd3Text1>
                         <Pd3Text2>렌즈 정보 없음</Pd3Text2>
@@ -163,19 +170,19 @@ const ProductDetail = () => {
                 <Col2>
                   
                     <Detail2>
-                        <Day>최근 거래 3일전</Day>
+                        <Day>최근 거래 {diffDays}일전</Day>
                         <PayContainer>
                             <Pay1>판매가</Pay1>
-                            <Pay2>  30,000KRW</Pay2>
+                            <Pay2>   {detail.histories[0].price}KRW</Pay2>
                         </PayContainer>
                         <BuyButton>구매하기</BuyButton>
                     </Detail2>
 
                     <Detail3>
-                        <ChertImage src={chertImg} alt="chertImg"/>
+                    <ChertImage src={chertImg} alt="chertImg"/>
                         <BuyChert>거래내역</BuyChert>
-                        <LastBuy>마지막으로 <span style={{color: '#5980EF'}}>30,000KRW</span>에 거래되었어요.</LastBuy>
-                        <LastBuyDate>2023년 07월 27일 01:10:33 기준</LastBuyDate>
+                        <LastBuy>마지막으로 <span style={{color: '#5980EF'}}> {detail.histories[0].price}KRW</span>에 거래되었어요.</LastBuy>
+                        <LastBuyDate>{detail.histories[0].soldAt} </LastBuyDate>
                         <BuydetailContainer>
                             <BuyDetail>판매자</BuyDetail>
                             <BuyDetail>구매자</BuyDetail>
@@ -184,25 +191,33 @@ const ProductDetail = () => {
                         </BuydetailContainer>
                         <Line />
                         <BuydetailContainer>
-                            <BuyerDetail>klfasd...</BuyerDetail>
-                            <BuyerDetail>qwbek...</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">30000</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">23.8.5</BuyerDetail>
+                            <BuyerDetail1>{truncateText(detail.ownerToken,8)}</BuyerDetail1>
+                            <BuyerDetail1>{truncateText(detail.authorshipToken, 8)}</BuyerDetail1>
+                            <BuyerDetail2 marginLeft="0px">{detail.histories[0].price}</BuyerDetail2>
+                            <BuyerDetail2 marginLeft="0px">23.8.5</BuyerDetail2>
                         </BuydetailContainer>
                        
                         <BuydetailContainer>
-                            <BuyerDetail>klfasd...</BuyerDetail>
-                            <BuyerDetail>qwbek...</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">30000</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">23.8.5</BuyerDetail>
+                        <BuyerDetail1>{truncateText(detail.ownerToken,8)}</BuyerDetail1>
+                            <BuyerDetail1>{truncateText(detail.authorshipToken, 8)}</BuyerDetail1>
+                            <BuyerDetail2 marginLeft="0px">{detail.histories[1].price}</BuyerDetail2>
+                            <BuyerDetail2 marginLeft="0px">23.8.5</BuyerDetail2>
                         </BuydetailContainer>
                         
                         <BuydetailContainer>
-                            <BuyerDetail>klfasd...</BuyerDetail>
-                            <BuyerDetail>qwbek...</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">30000</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">23.8.5</BuyerDetail>
+                            <BuyerDetail1>{truncateText(detail.ownerToken,8)}</BuyerDetail1>
+                            <BuyerDetail1>{truncateText(detail.authorshipToken, 8)}</BuyerDetail1>
+                            <BuyerDetail2 marginLeft="0px">{detail.histories[2].price}</BuyerDetail2>
+                            <BuyerDetail2 marginLeft="0px">23.8.5</BuyerDetail2>
                         </BuydetailContainer>
+
+                        <BuydetailContainer>
+                            <BuyerDetail1>{truncateText(detail.ownerToken,8)}</BuyerDetail1>
+                            <BuyerDetail1>{truncateText(detail.authorshipToken, 8)}</BuyerDetail1>
+                            <BuyerDetail2 marginLeft="0px">{detail.histories[3].price}</BuyerDetail2>
+                            <BuyerDetail2 marginLeft="0px">23.8.5</BuyerDetail2>
+                        </BuydetailContainer>
+
 
 
                     </Detail3>
@@ -293,7 +308,7 @@ const Title2 = styled.div`
     width: 177px;
     height: 41px;
     margin-top:8%;
-    margin-left:10%;
+    margin-left:30%;
     font-family: Inter;
     font-size: 40px;
     font-weight: 400;
@@ -333,28 +348,12 @@ const InfoContainer = styled.div`
       }
 
 `;
-const DownloadImg= styled.img`
-    width:30px;
-    height:30px;
-    margin-left:70px;
-`;
 
-const Info1= styled.div`
-    margin-top:0px;
-    margin-left:10px;
-    font-family: Inter;
-    font-size: 20px;
-    font-weight: 400;
-    line-height: 24px;
-    letter-spacing: 0em;
-    text-align: left;
-    color:#000000;
-`;
 
 const EyeImg= styled.img`
     width:30px;
     height:28px;
-    margin-left:45px;
+    margin-left:-30%;
 `;
 
 const Info2= styled.div`
@@ -487,35 +486,75 @@ const ModalContent = styled.img`
   max-height: 90%;
 `;
 
+
+
+const InfoContainer1 = styled.div`
+    display: flex;
+    flex-direction: row;
+    text-align: left;  
+   // margin-left:-30%;
+    @media (max-width: 980px) {
+        //margin-left:-30%;
+       
+      }
+
+`;
 const Text1 = styled.div`
-    width: 123px;
-    height: 30px;
+    width: 56px;
+    height: 24px;
     margin-top:20px;
     margin-left:20px;
     font-family: Inter;
-    font-size: 25px;
+    font-size: 20px;
     font-weight: 400;
     line-height: 30px;
     letter-spacing: 0em;
     text-align: left;
     color: #000000;
+`;
+
+const Text1token = styled.div`
+  
+    margin-top:20px;
+    margin-left:20px;
+    font-family: Inter;
+    font-size: 23px;
+    font-weight: 400;
+    line-height: 30px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #5980EF;
 `;
 
 const Text2 = styled.div`
-    width: 69px;
-    height: 30px;
+    width: 56px;
+    height: 24px;
     margin-top:11px;
     margin-left:20px;
     font-family: Inter;
-    font-size: 25px;
+    font-size: 20px;
     font-weight: 400;
     line-height: 30px;
     letter-spacing: 0em;
     text-align: left;
     color: #000000;
-    
 
 `;
+
+const Text2token = styled.div`
+  
+    margin-top:20px;
+    margin-left:20px;
+    font-family: Inter;
+    font-size: 23px;
+    font-weight: 400;
+    line-height: 30px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #5980EF;
+`;
+
+
 
 
 
@@ -891,10 +930,26 @@ const Line = styled.hr`
 
 `;
 
-const BuyerDetail=styled.div`
+const BuyerDetail1=styled.div`
     margin-top:20px;
-    margin-left: ${(props) => props.marginLeft || '20px'};
-    padding-left:30px;
+    margin-left: ${(props) => props.marginLeft || '16px'};
+    padding-left:16px;
+    font-family: Inter;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 30px;
+    letter-spacing: 0em;
+    text-align: left;
+    color:#5980EF;
+
+`;
+
+
+const BuyerDetail2=styled.div`
+    width:78px;
+    margin-top:20px;
+    margin-left: ${(props) => props.marginLeft || '16px'};
+    padding-left:16px;
     font-family: Inter;
     font-size: 15px;
     font-weight: 500;
