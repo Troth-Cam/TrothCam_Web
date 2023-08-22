@@ -25,13 +25,19 @@ const Login = () => {
         const responseData = response.data;
         if (responseData.isSuccess) {
           // 로그인 성공 시 토큰을 저장하고 다음 페이지로 이동
-          const accessToken = responseData.result.accessToken;
-          const refreshToken = responseData.result.refreshToken;
-          const webToken = responseData.result.webToken;
-          localStorage.setItem("accessToken", accessToken);
-          localStorage.setItem("refreshToken", refreshToken);
-          localStorage.setItem("id", id);
-          localStorage.setItem("webToken", webToken);
+          if (keepLogin) {
+            const accessToken = responseData.result.accessToken;
+            const refreshToken = responseData.result.refreshToken;
+            const webToken = responseData.result.webToken;
+            localStorage.setItem("accessToken", accessToken);
+            localStorage.setItem("refreshToken", refreshToken);
+            localStorage.setItem("id", id);
+            localStorage.setItem("webToken", webToken);
+          } else {
+            const accessToken = responseData.result.accessToken;
+            localStorage.setItem("accessToken", accessToken);
+            localStorage.setItem("id", id);
+          }
           navigate("/");
         } else {
           alert("잘못된 아이디 혹은 비밀번호입니다.");
@@ -42,6 +48,14 @@ const Login = () => {
         alert("서버와 통신 중 오류가 발생했습니다.");
       });
   };
+
+  window.addEventListener("beforeunload", () => {
+    // 로그인 유지를 체크하지 않은 경우 토큰 만료 처리
+    if (!keepLogin) {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+    }
+  });
 
   return (
     <LoginContainer>
