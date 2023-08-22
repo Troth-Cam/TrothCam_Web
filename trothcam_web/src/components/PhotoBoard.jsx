@@ -19,7 +19,7 @@ const PhotoBoard = (props) => {
   return (
     <div>
      {props.photoList && Object.values(props.photoList).map((item, index) => (
-        <PhotoItem key={index} itemId={index} item={item} />
+        <PhotoItem key={index} itemId={index} item={item} productState = {props.productState}/>
       ))}
       <text ref={ref} style={{color:'white'}}>sdsd </text>
     </div>

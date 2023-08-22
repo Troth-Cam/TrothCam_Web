@@ -227,13 +227,13 @@ const Detail_me = () =>{
          {(isTabButton1Clicked || isTabButton3Clicked)}
          {isTabButton1Clicked && (
                 <PhotoBoardContainer>
-                    <PhotoBoard photoList={photoList} productFetch={productFetch}/>
+                    <PhotoBoard photoList={photoList} productFetch={productFetch} productState={"public"}/>
                 </PhotoBoardContainer>
             )}
         {isTabButton2Clicked && <DetailBorard />}
         {isTabButton3Clicked && (
                 <PhotoBoardContainer>
-                    <PhotoBoard photoList={photoList} productFetch={productFetch} />
+                    <PhotoBoard photoList={photoList} productFetch={productFetch} productState={"private"}/>
 
                 </PhotoBoardContainer>
             )}

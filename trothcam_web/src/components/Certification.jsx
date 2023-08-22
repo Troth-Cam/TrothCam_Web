@@ -1,14 +1,13 @@
 import styled from "styled-components";
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import SearchBox from "./header/SearchBox";
 import Footer from './Footer';
-import Valid from './Valid';
-import Unvalid from './Unvalid';
 import smileImg from './img/smileImg.svg';
 import heartIcon from './img/icon_heart.png';
 import PersonIcon from './img/person_icon.png';
 import DownloadIcon from './img/download_icon.png';
 import blackheartIcon from './img/blackheart_icon.png';
+import redheartIcon from './img/icon_heart.png';
 import eyeIcon from './img/eye_icon.png';
 import chertImg from './img/chert.png';
 import pd1 from './img/pd1.png';
@@ -18,15 +17,80 @@ import pd4 from './img/pd4.png';
 import pd5 from './img/pd5.png';
 import pd6 from './img/pd6.png';
 import { useLocation } from 'react-router-dom';
-
-
+import axios from 'axios';
 
 const Certification = () => {
+
     //이전 페이지에서 productid 가져오기
     const location = useLocation();
     const stateData = location.state.id;
     console.log(stateData);
+    const productId=stateData;
     
+    
+    const [Detail, setProductDetail] = useState({});
+    const webId=localStorage.getItem("id");
+    const accessToken = localStorage.getItem("accessToken");
+    console.log(accessToken);
+
+
+    useEffect(() => {
+      
+        const fetchProductDetail = async () => {
+            
+            try {
+                const response = await axios.get(`/api/${webId}/product-detail/${productId}`, 
+                
+                {headers: {"Authorization" : `Bearer ${accessToken}`}});
+    
+                if (response.data) {
+                    setProductDetail(response.data.result);
+                    console.log("데이터 받기");
+                } else {
+                    console.error('Failed to fetch product details.');
+                }
+            } catch (error) {
+                //console.error('Error fetching product details:', error);
+            }
+        };
+    
+        fetchProductDetail();
+    }, []);
+   
+
+    // 데이터가 로드되기 전에는 로딩 메시지를 표시
+    // if (!productDetail) {
+    //     return <div>Loading...</div>;
+    // }
+
+
+    //시간 계산 - 최근 거래 일자 계산
+     const now = new Date(); //현재시각
+    // const updatedAt = new Date(productDetail.result.updatedAt); //최근 거래 일자
+    // const diffMilliseconds = now - updatedAt; //차이 계산
+    // const diffDays = Math.floor(diffMilliseconds / (1000 * 60 * 60 * 24));
+
+
+    // 현재 시각 표현
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // 월은 0에서 시작하므로 1을 더해야 합니다.
+    const date = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+
+    const formattedDate = `${year}년 ${month}월 ${date}일 ${hours}:${minutes}:${seconds} 기준`;
+
+
+    // 토큰 15자 이상
+    function truncateText(text, length) {
+        return text.length > length
+            ? text.substring(0, length) + '...'
+            : text;
+    }
+
+
+    //이미지 클릭시 모달 기능
     const [showModal, setShowModal] = useState(false);
 
     const openModal = () => {
@@ -43,22 +107,42 @@ const Certification = () => {
         </ModalBackdrop>
       );
 
-    const [showValid, setShowValid] = useState(true);
 
-    const handleButtonClick = () => {
-        setShowValid(!showValid);
-    };
+    //좋아요 포시
+    const [isLiked, setIsLiked] = useState(false);
 
-
-    return (
+    const handleLikeToggle = async () => {
+        //const accessToken = localStorage.getItem("accessToken");
+        const apiUrl = `/api/like-product/${productId}`; 
+        
+    
+        try {
+          if (isLiked) {
+            // 좋아요가 되어있는 상태면 좋아요 취소 요청을 보냅니다.
+            await axios.delete(apiUrl,{headers: {"Authorization" : `Bearer ${accessToken}`}});
+            console.log("좋아요 취소");
+          } else {
+            // 좋아요가 안 되어있는 상태면 좋아요 요청을 보냅니다.
+            await axios.post(apiUrl, {headers: {"Authorization" : `Bearer ${accessToken}`}});
+            console.log("좋아요 누름!");
+          }
+          setIsLiked(!isLiked); // 좋아요 상태 토글
+        } catch (error) {
+          console.error("Error toggling like:", error);
+        }
+      };
+  
+      return (
         <Container>
-            <SearchBox></SearchBox>
+            <div>
+                <SearchBox></SearchBox>
+            </div>
             <Col>
                 <Product>Product Detail</Product>
                 <TextContainer>
-                        <Title1>Smile</Title1>
+                        <Title1>{Detail.title} </Title1>
                         <Title2>#12345</Title2>
-                            <HeartImg src={heartIcon} alt="heartIcon" />
+                            <HeartImg src={isLiked ? redheartIcon : blackheartIcon} onClick={handleLikeToggle} style={{ cursor: "pointer" }} alt="blackheartIcon" />
                             
                 </TextContainer>
 
@@ -72,6 +156,8 @@ const Certification = () => {
                             
                 </InfoContainer>
             </Col>
+            
+
             <SubContainer>
                     
                 <Col1>
@@ -106,10 +192,14 @@ const Certification = () => {
 
 
                 <Col2>
-                    
+                  
                     <Detail2>
-                        {showValid ? <Valid onButtonClick={handleButtonClick} /> : <Unvalid />}
-       
+                        <Day>최근 거래 3일전</Day>
+                        <PayContainer>
+                            <Pay1>판매가</Pay1>
+                            <Pay2>  30,000KRW</Pay2>
+                        </PayContainer>
+                        <BuyButton>구매하기</BuyButton>
                     </Detail2>
 
                     <Detail3>
@@ -125,24 +215,24 @@ const Certification = () => {
                         </BuydetailContainer>
                         <Line />
                         <BuydetailContainer>
-                            <BuyerDetail>온브</BuyerDetail>
-                            <BuyerDetail>블루</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">30,000KRW</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">2시간전</BuyerDetail>
+                            <BuyerDetail>klfasd...</BuyerDetail>
+                            <BuyerDetail>qwbek...</BuyerDetail>
+                            <BuyerDetail marginLeft="0px">30000</BuyerDetail>
+                            <BuyerDetail marginLeft="0px">23.8.5</BuyerDetail>
                         </BuydetailContainer>
                        
                         <BuydetailContainer>
-                            <BuyerDetail>온브</BuyerDetail>
-                            <BuyerDetail>블루</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">30,000KRW</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">10시간전</BuyerDetail>
+                            <BuyerDetail>klfasd...</BuyerDetail>
+                            <BuyerDetail>qwbek...</BuyerDetail>
+                            <BuyerDetail marginLeft="0px">30000</BuyerDetail>
+                            <BuyerDetail marginLeft="0px">23.8.5</BuyerDetail>
                         </BuydetailContainer>
                         
                         <BuydetailContainer>
-                            <BuyerDetail>온브</BuyerDetail>
-                            <BuyerDetail>블루</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">30,000KRW</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">1일전</BuyerDetail>
+                            <BuyerDetail>klfasd...</BuyerDetail>
+                            <BuyerDetail>qwbek...</BuyerDetail>
+                            <BuyerDetail marginLeft="0px">30000</BuyerDetail>
+                            <BuyerDetail marginLeft="0px">23.8.5</BuyerDetail>
                         </BuydetailContainer>
 
 
@@ -161,12 +251,11 @@ const Certification = () => {
   
 export default Certification;
 
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-
+  //align-items:center;
   
 `;
 
@@ -175,13 +264,17 @@ const Col = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  
   align-items:center;
   margin-left:-3%;
   text-align: left;    
 
+  
 `;
 
+
 const Product = styled.div`
+ 
     width: 234px;
     height: 40px;
     margin-top:20px;
@@ -206,8 +299,9 @@ const TextContainer = styled.div`
     margin-left:-27%;
     @media (max-width: 980px) {
         margin-left:-22%;
-    
-    }
+       
+      }
+   
 
 `;
 const Title1 = styled.div`
@@ -225,7 +319,6 @@ const Title1 = styled.div`
     color: #222222;
 
 `;
-
 const Title2 = styled.div`
   
     width: 177px;
@@ -242,7 +335,6 @@ const Title2 = styled.div`
     color: #222222;
 
 `;
-
 const HeartImg = styled.img`
     width: 41.63045120239258px;
     height: 49.58951950073242px;
@@ -250,13 +342,13 @@ const HeartImg = styled.img`
 
     @media (max-width: 1400px) {
         margin-left:180%;
-    
-    }
+       
+      }
 
     @media (max-width: 980px) {
         margin-left:60%;
-    
-    }
+       
+      }
 `;
 
 
@@ -268,8 +360,8 @@ const InfoContainer = styled.div`
     margin-left:-22%;
     @media (max-width: 980px) {
         margin-left:-10%;
-    
-    }
+       
+      }
 
 `;
 const DownloadImg= styled.img`
@@ -329,17 +421,18 @@ const Info3= styled.div`
 
 
 const SubContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items:center;
-  
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items:center;
+  //margin-left:-4%;
 
-    @media (max-width: 1400px) {
+  @media (max-width: 1400px) {
     flex-direction: row;
     flex-wrap: wrap;
-    
-    }
+   
+  }
+  
 `;
 
 const FooterContainer = styled.footer`
@@ -354,33 +447,33 @@ const FooterContainer = styled.footer`
 
 
 const Col1 = styled.div`
-    display: flex;
-    flex-direction: column;
-
-    @media (max-width: 750px) {
+  display: flex;
+  flex-direction: column;
+  
+  @media (max-width: 750px) {
     justify-content: center;
     align-items: center;
     margin-top:0px;
     margin-left:0%;
-    }
+  }
 
 `;
 
 const Col2 = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    margin-top:40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top:-285px;
+ 
 
-
-    @media (max-width:780px) {
+  @media (max-width:780px) {
     justify-content: center;
     align-items: center;
     margin-top:2%;
     margin-right:6%
-    
-    }
+   
+  }
 `;
 
 const ImgDiv = styled.div`
@@ -460,13 +553,13 @@ const Text2 = styled.div`
 const Detail1 = styled.div`
     display: flex;
     flex-direction: column;
-    width: 382px;
-    height: 616px;
-    margin-top:5%;
-
-    border-radius: 10px;
-    linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5));
-    border: 1px solid #9FA0A3;
+  width: 382px;
+  height: 616px;
+  margin-top:5%;
+ 
+  border-radius: 10px;
+  linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5));
+  border: 1px solid #9FA0A3;
 `;
 
 
@@ -650,35 +743,100 @@ const Pd6Text = styled.div`
 const Detail2 = styled.div`
     display: flex;
     flex-direction: column;
+    
+    width: 379px;
+    height: 218px;
+    
+    margin-left:10%;
+   
+    border-radius: 10px;
+    border: 1px;
 
+    linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5));
+    border: 1px solid #9FA0A3;
 
-    @media (max-width:680px) {
-        //justify-content: center;
-        //align-items: center;
-       
+  
+`;
+
+const Day = styled.div`
+    width: 182px;
+    height: 23px;
+    margin-top:8%;
+    margin-left:6%;
+    font-family: Inter;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: left;
+    color:#A6A6A6;
+
+`;
+const PayContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+`;
+
+const Pay1 = styled.div`
+    width: 55px;
+    height: 24px;
+    margin-top:15%;
+    margin-left:6%;
+    font-family: Inter;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0em;
+    text-align: left;
+    color:#000000
+
+`;
+
+const Pay2 = styled.div`
+    width: 287px;
+    height: 49px;
+    margin-top:10%;
+    margin-left:5%;
+    font-family: Inter;
+    font-size: 45px;
+    font-weight: 400;
+    line-height: 54px;
+    letter-spacing: 0em;
+    text-align: left;
+    color:#000000
+
+`;
+
+const BuyButton = styled.button`
+    width: 342px;
+    height: 43px;
+    margin-top:3%;
+    margin-left:6%;
+    border-radius: 10px;
+    background: #5980EF;
+    font-family: Inter;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: center;
+    color:#ffffff;
+    border:none;
 
     
 `;
 
 
-
 const Detail3 = styled.div`
     width: 379px;
     height: 593px;
-    margin-top:10px;
-    
+    margin-top:15px;
     margin-left:10%;
     border-radius: 10px;
     border: 1px;
     linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5));
     border: 1px solid #9FA0A3;
 
-    @media (max-width:680px) {
-        justify-content: center;
-        align-items: center;
-        margin-top:20px;
-    }
-      
 `;
 
 const ChertImage= styled.img`
@@ -744,7 +902,7 @@ const BuydetailContainer=styled.div`
 
 const BuyDetail=styled.div`
     margin-top:20px;
-    margin-left:40px;
+    margin-left:43px;
     font-family: Inter;
     font-size: 20px;
     font-weight: 500;

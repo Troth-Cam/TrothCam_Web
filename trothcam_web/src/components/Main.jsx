@@ -559,7 +559,7 @@ useEffect(() => {
 
       <Container>
         <ScrollMenu>
-          <PhotoBoard photoList={photoList} productFetch={productFetch}/>
+          <PhotoBoard photoList={photoList} productFetch={productFetch} productState={"default"} />
         </ScrollMenu>
       </Container>
       <div style={{marginTop:"378px"}}/>
