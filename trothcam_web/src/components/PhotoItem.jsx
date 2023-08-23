@@ -4,6 +4,7 @@ import HeartIcon from "./img/heart_icon.png";
 import EmptyHeartIcon from "./img/emptyHeart_icon.png";
 import api from "../apis/axios";
 import ProductDetail from "./ProductDetail";
+import SmileImg from "./img/smileImg.svg";
 
 //import { VisibilityContext } from "react-horizontal-scrolling-menu";
 import { useNavigate } from "react-router-dom";
@@ -18,10 +19,10 @@ const PhotoItemDiv = styled.div`
 const PhotoDiv = styled.div`
   width: 164px;
   height: 169px;
-  border: 1px solid red;
   margin-left: auto;
   margin-right: auto;
   margin-top: 11px;
+  background-image: url(${(props) => props.src});
 `;
 const TextDiv = styled.div`
   width: 164px;
@@ -84,65 +85,70 @@ const PhotoItem = (props) => {
     if (!localStorage.getItem("accessToken")) {
       navigate("/productdetail", { state: { id: props.item.productId } });
     } else {
-      navigate("/Certification", { state: { id: props.item.productId } });
+      //로그인 했으면
+      console.log("=================================");
+      console.log(props.productState);
+
+      if (props.productState == "public") {
+        navigate("/unvalidCertification", {
+          state: { id: props.item.productId },
+        });
+      } else if (props.productState == "private") {
+        navigate("/validCertification", {
+          state: { id: props.item.productId },
+        });
+      } else {
+        navigate("/Certification", { state: { id: props.item.productId } });
+      }
     }
     // const location = useLocation();
     // const stateData = location.state.productId;
     // console.log(stateData);
   };
-  const handleClick = (e) => {
-    e.stopPropagation(); // 이벤트 버블링 차단
-    if (isLiked) {
-      console.log(true);
-      api
-        .post(
-          "api/like-product",
-          { prodictId: props.item.productId },
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        )
-        .then((response) => {
-          console.log(response.data.message);
-        })
-        .catch((err) => {
-          console.log(err.data.message);
-        });
-    } else {
-      api
-        .delete(
-          "api/like-product",
-          { prodictId: props.item.productId },
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-    setIsLiked(!isLiked);
-  };
+  /*    const handleClick = (e) => {
+        e.stopPropagation(); // 이벤트 버블링 차단
+        if(!isLiked){
+            console.log(props.item.productId);
+            axios.post(`/api/like-product/${props.item.productId}` , {}, {
+              headers: {
+                  "Authorization": `Bearer ${accessToken}`
+                }
+              })
+              .then((response) => {
+                console.log(response.data.message);
+              })
+              .catch((err)=>{
+                console.log(err);
+              });
+        }
+        else{
+            axios.delete(`/api/like-product/${props.item.productId}`, {
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`
+                  }
+                })
+                .then((response) => {
+                  console.log(response);
+                })
+                .catch((err)=>{
+                  console.log(err);
+                });
+        }
+        setIsLiked(!isLiked);
+    };
+    */
   return (
     <PhotoItemDiv onClick={clickProduct}>
-      <PhotoDiv />
+      <PhotoDiv src={SmileImg} />
       <TextDiv>
         <LineDiv1>
           <NameDiv>{props.item.title}</NameDiv>
           <IconImg
-            onClick={handleClick}
             src={isLiked ? HeartIcon : EmptyHeartIcon}
             alt="Heart Icon"
           />
         </LineDiv1>
-        <GrayDiv1>{props.item.ownerToken}</GrayDiv1>
+        <GrayDiv1>{props.item.ownerToken.slice(0, 11)}</GrayDiv1>
         <LineDiv2>
           <GrayDiv2>{props.item.soldAt.slice(0, 10)}</GrayDiv2>
           <PriceDiv>{props.item.price}KRW</PriceDiv>

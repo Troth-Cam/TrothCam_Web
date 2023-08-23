@@ -1,14 +1,13 @@
 import styled from "styled-components";
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import SearchBox from "./header/SearchBox";
 import Footer from './Footer';
-import Valid from './Valid';
-import Unvalid from './Unvalid';
 import smileImg from './img/smileImg.svg';
 import heartIcon from './img/icon_heart.png';
 import PersonIcon from './img/person_icon.png';
 import DownloadIcon from './img/download_icon.png';
 import blackheartIcon from './img/blackheart_icon.png';
+import redheartIcon from './img/icon_heart.png';
 import eyeIcon from './img/eye_icon.png';
 import chertImg from './img/chert.png';
 import pd1 from './img/pd1.png';
@@ -18,15 +17,85 @@ import pd4 from './img/pd4.png';
 import pd5 from './img/pd5.png';
 import pd6 from './img/pd6.png';
 import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+
 
 
 
 const Certification = () => {
+
+    
     //이전 페이지에서 productid 가져오기
     const location = useLocation();
     const stateData = location.state.id;
     console.log(stateData);
+    const productId=stateData;
     
+    
+    const [detail, setProductDetail] = useState({});
+    const webId=localStorage.getItem("id");
+    const accessToken = localStorage.getItem("accessToken");
+    console.log(accessToken);
+
+
+    useEffect(() => {
+      
+        const fetchProductDetail = async () => {
+            
+            try {
+                const response = await axios.get(`/api/${webId}/product-detail/${productId}`, 
+                
+                {headers: {"Authorization" : `Bearer ${accessToken}`}});
+    
+                if (response.data) {
+                    setProductDetail(response.data.result);
+                    console.log("데이터 받기");
+                } else {
+                    console.error('Failed to fetch product details.');
+                }
+            } catch (error) {
+                //console.error('Error fetching product details:', error);
+            }
+        };
+    
+        fetchProductDetail();
+    }, []);
+   
+
+   
+     //시간 계산 - 최근 거래 일자 계산
+     const now = new Date(); //현재시각
+     const updatedAt = detail.histories && detail.histories.length > 0 
+             ? new Date(detail.histories[0].soldAt)
+             : null;
+     const diffMilliseconds = now - updatedAt; //차이 계산
+     const diffDays = Math.floor(diffMilliseconds / (1000 * 60 * 60 * 24));
+
+
+
+    // 현재 시각 표현
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // 월은 0에서 시작하므로 1을 더해야 합니다.
+    const date = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+
+    const formattedDate = `${year}년 ${month}월 ${date}일 ${hours}:${minutes}:${seconds} 기준`;
+
+
+    //토큰 길이 검사
+    function truncateText(text, length) {
+        // text가 유효하지 않으면 바로 빈 문자열 반환
+        if (!text || typeof text !== 'string') {
+          return '';
+        }
+      
+        return text.length > length ? text.substring(0, length) + '...' : text;
+      }
+
+
+    //이미지 클릭시 모달 기능
     const [showModal, setShowModal] = useState(false);
 
     const openModal = () => {
@@ -43,51 +112,102 @@ const Certification = () => {
         </ModalBackdrop>
       );
 
-    const [showValid, setShowValid] = useState(true);
 
-    const handleButtonClick = () => {
-        setShowValid(!showValid);
+    //좋아요 누르기
+    const HeartImg = ({ src }) => {
+        const accessToken = localStorage.getItem("accessToken");
+        const webId=localStorage.getItem("id");
+        
+        const handleLikeToggle = async () => {
+            const apiUrl = `/api/like-product/${productId}`;
+            const headers = {
+                "Authorization": `Bearer ${accessToken}`
+            };
+    
+            try {
+                let response;
+    
+                if (detail.liked) {
+                    response = await axios.delete(apiUrl, { headers });
+                } else {
+                    response = await axios.post(apiUrl, { headers });
+                }
+    
+                // 다시 서버로부터 상품의 상세 정보를 가져와 detail을 갱신합니다.
+                const updatedResponse = await axios.get(`/api/${webId}/product-detail/${productId}`, 
+                { headers: {"Authorization" : `Bearer ${accessToken}`}});
+    
+                if (updatedResponse.data) {
+                    setProductDetail(updatedResponse.data.result);
+                } else {
+                    console.error('Failed to fetch updated product details.');
+                }
+            } catch (error) {
+                //console.error("Error toggling like:", error);
+            }
+        };
+    
+        return (
+            <img 
+                src={src}
+                onClick={handleLikeToggle}
+                style={{ cursor: "pointer" }}
+                alt={detail.liked ? "Liked heart icon" : "Unliked heart icon"}
+            />
+        );
     };
-
-
-    return (
+    
+  
+      return (
         <Container>
-            <SearchBox></SearchBox>
+            <div>
+                <SearchBox></SearchBox>
+            </div>
             <Col>
                 <Product>Product Detail</Product>
                 <TextContainer>
-                        <Title1>Smile</Title1>
-                        <Title2>#12345</Title2>
-                            <HeartImg src={heartIcon} alt="heartIcon" />
+                        <Title1>{detail.title} </Title1>
+                        <Title2>#{detail.tags}</Title2>
+                           
+                            <HeartImg src={detail.liked ? redheartIcon : blackheartIcon}/>
                             
-                </TextContainer>
+                            
+        
+               </TextContainer>
 
                 <InfoContainer>
-                            <DownloadImg src={DownloadIcon} alt="DownloadIcon"/>
-                            <Info1> 13 downloads</Info1>
                             <EyeImg src={eyeIcon} alt="eyeIcon"/>
-                            <Info2> 39 views</Info2>
+                            <Info2> {detail.views}  views</Info2>
                             <BlackheartImg src={blackheartIcon} alt="blackheartIcon"/>
-                            <Info3> 5 likes</Info3>
+                            <Info3> {detail.likes}  likes</Info3>
                             
                 </InfoContainer>
             </Col>
+            
+
             <SubContainer>
                     
                 <Col1>
                     <ImgDiv>
                         <StyledImage src={smileImg} alt="smileImg" onClick={openModal}  />
                         {showModal && <Modal image={smileImg} onClose={closeModal} />}
-                        <Text1>소유자</Text1>
-                        <Text2>원작자</Text2>
+                        <InfoContainer1>
+                            <Text1>소유자 </Text1>
+                            <Text1token> {truncateText(detail.ownerToken, 15)}</Text1token>
+                        </InfoContainer1>
+                        <InfoContainer1>
+                            <Text2>원작자 </Text2>
+                            <Text2token> {truncateText(detail.authorshipToken, 15)}</Text2token>
+                        </InfoContainer1>
                     </ImgDiv>
+                    
                    
                     <Detail1>
                         <Pd1 src={pd1} alt="pd1" />
                         <Pd1Text>상세정보</Pd1Text>
                         <Pd2 src={pd2} alt="pd2" />
                         <Pd2Text1>사진 설명</Pd2Text1>
-                        <Pd2Text2>ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsumipsum ipsum ipsum ipsumipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsumipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum </Pd2Text2>
+                        <Pd2Text2>{detail.description}</Pd2Text2>
                         <Pd3 src={pd3} alt="pd3" />
                         <Pd3Text1>촬영 렌즈</Pd3Text1>
                         <Pd3Text2>렌즈 정보 없음</Pd3Text2>
@@ -106,17 +226,42 @@ const Certification = () => {
 
 
                 <Col2>
-                    
+                  
                     <Detail2>
-                        {showValid ? <Valid onButtonClick={handleButtonClick} /> : <Unvalid />}
-       
+                        <Day>최근 거래 3일전</Day>
+                        <PayContainer>
+                            <Pay1>판매가</Pay1>
+                            <Pay2>{
+                                (detail.histories && detail.histories.length > 0)
+                                ? `${detail.histories[0].price}KRW`
+                                : 'Loading...'
+                            }
+                            </Pay2>
+                        </PayContainer>
+                        <BuyButton>구매하기</BuyButton>
                     </Detail2>
 
                     <Detail3>
                         <ChertImage src={chertImg} alt="chertImg"/>
                         <BuyChert>거래내역</BuyChert>
-                        <LastBuy>마지막으로 <span style={{color: '#5980EF'}}>30,000KRW</span>에 거래되었어요.</LastBuy>
-                        <LastBuyDate>2023년 07월 27일 01:10:33 기준</LastBuyDate>
+                        {
+                            detail.histories && detail.histories.length > 0 ? (
+                                <LastBuy>
+                                마지막으로 <span style={{color: '#5980EF'}}> {detail.histories[0].price}KRW</span>에 거래되었어요.
+                                </LastBuy>
+                            ) : (<LastBuy>데이터 로딩 중...</LastBuy>)
+                        }
+                        {
+                            detail.histories && detail.histories.length > 0 ? (
+                                <LastBuyDate>
+                                {detail.histories[0].soldAt}
+                                </LastBuyDate>
+                            ) : (
+                                <LastBuyDate>
+                                날짜 로딩 중...
+                                </LastBuyDate>
+                            )
+                        }
                         <BuydetailContainer>
                             <BuyDetail>판매자</BuyDetail>
                             <BuyDetail>구매자</BuyDetail>
@@ -125,25 +270,41 @@ const Certification = () => {
                         </BuydetailContainer>
                         <Line />
                         <BuydetailContainer>
-                            <BuyerDetail>온브</BuyerDetail>
-                            <BuyerDetail>블루</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">30,000KRW</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">2시간전</BuyerDetail>
+                            <BuyerDetail1>{truncateText(detail.ownerToken,8)}</BuyerDetail1>
+                            <BuyerDetail1>{truncateText(detail.authorshipToken, 8)}</BuyerDetail1>
+                            {detail.histories && detail.histories.length > 0 ? (
+                                <BuyerDetail2 marginLeft="0px">{detail.histories[0].price}</BuyerDetail2>) 
+                                :(<BuyerDetail2 marginLeft="0px">데이터 로딩 중...</BuyerDetail2>)}  
+                            <BuyerDetail2 marginLeft="0px">23.8.5</BuyerDetail2>
                         </BuydetailContainer>
                        
                         <BuydetailContainer>
-                            <BuyerDetail>온브</BuyerDetail>
-                            <BuyerDetail>블루</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">30,000KRW</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">10시간전</BuyerDetail>
+                            <BuyerDetail1>{truncateText(detail.ownerToken,8)}</BuyerDetail1>
+                            <BuyerDetail1>{truncateText(detail.authorshipToken, 8)}</BuyerDetail1>
+                            {detail.histories && detail.histories.length > 0 ? (
+                                <BuyerDetail2 marginLeft="0px">{detail.histories[1].price}</BuyerDetail2>) 
+                                :(<BuyerDetail2 marginLeft="0px">데이터 로딩 중...</BuyerDetail2>)}  
+                            <BuyerDetail2 marginLeft="0px">23.8.5</BuyerDetail2>
                         </BuydetailContainer>
                         
                         <BuydetailContainer>
-                            <BuyerDetail>온브</BuyerDetail>
-                            <BuyerDetail>블루</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">30,000KRW</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">1일전</BuyerDetail>
+                            <BuyerDetail1>{truncateText(detail.ownerToken,8)}</BuyerDetail1>
+                            <BuyerDetail1>{truncateText(detail.authorshipToken, 8)}</BuyerDetail1>
+                            {detail.histories && detail.histories.length > 0 ? (
+                                <BuyerDetail2 marginLeft="0px">{detail.histories[2].price}</BuyerDetail2>) 
+                                :(<BuyerDetail2 marginLeft="0px">데이터 로딩 중...</BuyerDetail2>)}  
+                            <BuyerDetail2 marginLeft="0px">23.8.5</BuyerDetail2>
                         </BuydetailContainer>
+
+                        <BuydetailContainer>
+                            <BuyerDetail1>{truncateText(detail.ownerToken,8)}</BuyerDetail1>
+                            <BuyerDetail1>{truncateText(detail.authorshipToken, 8)}</BuyerDetail1>
+                            {detail.histories && detail.histories.length > 0 ? (
+                                <BuyerDetail2 marginLeft="0px">{detail.histories[3].price}</BuyerDetail2>) 
+                                :(<BuyerDetail2 marginLeft="0px">데이터 로딩 중...</BuyerDetail2>)}  
+                            <BuyerDetail2 marginLeft="0px">23.8.5</BuyerDetail2>
+                        </BuydetailContainer>
+
 
 
                     </Detail3>
@@ -161,12 +322,11 @@ const Certification = () => {
   
 export default Certification;
 
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-
+  //align-items:center;
   
 `;
 
@@ -175,13 +335,17 @@ const Col = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  
   align-items:center;
   margin-left:-3%;
   text-align: left;    
 
+  
 `;
 
+
 const Product = styled.div`
+ 
     width: 234px;
     height: 40px;
     margin-top:20px;
@@ -206,8 +370,9 @@ const TextContainer = styled.div`
     margin-left:-27%;
     @media (max-width: 980px) {
         margin-left:-22%;
-    
-    }
+       
+      }
+   
 
 `;
 const Title1 = styled.div`
@@ -225,7 +390,6 @@ const Title1 = styled.div`
     color: #222222;
 
 `;
-
 const Title2 = styled.div`
   
     width: 177px;
@@ -250,13 +414,13 @@ const HeartImg = styled.img`
 
     @media (max-width: 1400px) {
         margin-left:180%;
-    
-    }
+       
+      }
 
     @media (max-width: 980px) {
         margin-left:60%;
-    
-    }
+       
+      }
 `;
 
 
@@ -268,8 +432,8 @@ const InfoContainer = styled.div`
     margin-left:-22%;
     @media (max-width: 980px) {
         margin-left:-10%;
-    
-    }
+       
+      }
 
 `;
 const DownloadImg= styled.img`
@@ -329,17 +493,18 @@ const Info3= styled.div`
 
 
 const SubContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items:center;
-  
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items:center;
+  //margin-left:-4%;
 
-    @media (max-width: 1400px) {
+  @media (max-width: 1400px) {
     flex-direction: row;
     flex-wrap: wrap;
-    
-    }
+   
+  }
+  
 `;
 
 const FooterContainer = styled.footer`
@@ -354,33 +519,33 @@ const FooterContainer = styled.footer`
 
 
 const Col1 = styled.div`
-    display: flex;
-    flex-direction: column;
-
-    @media (max-width: 750px) {
+  display: flex;
+  flex-direction: column;
+  
+  @media (max-width: 750px) {
     justify-content: center;
     align-items: center;
     margin-top:0px;
     margin-left:0%;
-    }
+  }
 
 `;
 
 const Col2 = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    margin-top:40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top:-285px;
+ 
 
-
-    @media (max-width:780px) {
+  @media (max-width:780px) {
     justify-content: center;
     align-items: center;
     margin-top:2%;
     margin-right:6%
-    
-    }
+   
+  }
 `;
 
 const ImgDiv = styled.div`
@@ -425,48 +590,89 @@ const ModalContent = styled.img`
   max-height: 90%;
 `;
 
+
+const InfoContainer1 = styled.div`
+    display: flex;
+    flex-direction: row;
+    text-align: left;  
+   // margin-left:-30%;
+    @media (max-width: 980px) {
+        //margin-left:-30%;
+       
+      }
+
+`;
 const Text1 = styled.div`
-    width: 123px;
-    height: 30px;
+    width: 56px;
+    height: 24px;
     margin-top:20px;
     margin-left:20px;
     font-family: Inter;
-    font-size: 25px;
+    font-size: 20px;
     font-weight: 400;
     line-height: 30px;
     letter-spacing: 0em;
     text-align: left;
     color: #000000;
+`;
+
+const Text1token = styled.div`
+  
+    margin-top:20px;
+    margin-left:20px;
+    font-family: Inter;
+    font-size: 23px;
+    font-weight: 400;
+    line-height: 30px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #5980EF;
 `;
 
 const Text2 = styled.div`
-    width: 69px;
-    height: 30px;
+    width: 56px;
+    height: 24px;
     margin-top:11px;
     margin-left:20px;
     font-family: Inter;
-    font-size: 25px;
+    font-size: 20px;
     font-weight: 400;
     line-height: 30px;
     letter-spacing: 0em;
     text-align: left;
     color: #000000;
-    
 
 `;
+
+const Text2token = styled.div`
+  
+    margin-top:20px;
+    margin-left:20px;
+    font-family: Inter;
+    font-size: 23px;
+    font-weight: 400;
+    line-height: 30px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #5980EF;
+`;
+
+
+
+
 
 
 
 const Detail1 = styled.div`
     display: flex;
     flex-direction: column;
-    width: 382px;
-    height: 616px;
-    margin-top:5%;
-
-    border-radius: 10px;
-    linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5));
-    border: 1px solid #9FA0A3;
+  width: 382px;
+  height: 616px;
+  margin-top:5%;
+ 
+  border-radius: 10px;
+  linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5));
+  border: 1px solid #9FA0A3;
 `;
 
 
@@ -650,35 +856,100 @@ const Pd6Text = styled.div`
 const Detail2 = styled.div`
     display: flex;
     flex-direction: column;
+    
+    width: 379px;
+    height: 218px;
+    
+    margin-left:10%;
+   
+    border-radius: 10px;
+    border: 1px;
 
+    linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5));
+    border: 1px solid #9FA0A3;
 
-    @media (max-width:680px) {
-        //justify-content: center;
-        //align-items: center;
-       
+  
+`;
+
+const Day = styled.div`
+    width: 182px;
+    height: 23px;
+    margin-top:8%;
+    margin-left:6%;
+    font-family: Inter;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: left;
+    color:#A6A6A6;
+
+`;
+const PayContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+`;
+
+const Pay1 = styled.div`
+    width: 55px;
+    height: 24px;
+    margin-top:15%;
+    margin-left:6%;
+    font-family: Inter;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0em;
+    text-align: left;
+    color:#000000
+
+`;
+
+const Pay2 = styled.div`
+    width: 287px;
+    height: 49px;
+    margin-top:10%;
+    margin-left:5%;
+    font-family: Inter;
+    font-size: 45px;
+    font-weight: 400;
+    line-height: 54px;
+    letter-spacing: 0em;
+    text-align: left;
+    color:#000000
+
+`;
+
+const BuyButton = styled.button`
+    width: 342px;
+    height: 43px;
+    margin-top:3%;
+    margin-left:6%;
+    border-radius: 10px;
+    background: #5980EF;
+    font-family: Inter;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: center;
+    color:#ffffff;
+    border:none;
 
     
 `;
 
 
-
 const Detail3 = styled.div`
     width: 379px;
     height: 593px;
-    margin-top:10px;
-    
+    margin-top:15px;
     margin-left:10%;
     border-radius: 10px;
     border: 1px;
     linear-gradient(0deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5));
     border: 1px solid #9FA0A3;
 
-    @media (max-width:680px) {
-        justify-content: center;
-        align-items: center;
-        margin-top:20px;
-    }
-      
 `;
 
 const ChertImage= styled.img`
@@ -744,7 +1015,7 @@ const BuydetailContainer=styled.div`
 
 const BuyDetail=styled.div`
     margin-top:20px;
-    margin-left:40px;
+    margin-left:43px;
     font-family: Inter;
     font-size: 20px;
     font-weight: 500;
@@ -768,6 +1039,35 @@ const BuyerDetail=styled.div`
     margin-top:20px;
     margin-left: ${(props) => props.marginLeft || '20px'};
     padding-left:30px;
+    font-family: Inter;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 30px;
+    letter-spacing: 0em;
+    text-align: left;
+
+`;
+
+const BuyerDetail1=styled.div`
+    margin-top:20px;
+    margin-left: ${(props) => props.marginLeft || '16px'};
+    padding-left:16px;
+    font-family: Inter;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 30px;
+    letter-spacing: 0em;
+    text-align: left;
+    color:#5980EF;
+
+`;
+
+
+const BuyerDetail2=styled.div`
+    width:78px;
+    margin-top:20px;
+    margin-left: ${(props) => props.marginLeft || '16px'};
+    padding-left:16px;
     font-family: Inter;
     font-size: 15px;
     font-weight: 500;

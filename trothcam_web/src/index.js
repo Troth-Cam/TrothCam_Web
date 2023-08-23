@@ -18,6 +18,8 @@ import DetailOthers from "./components/Detail_others";
 import DetailMe from "./components/Detail_me";
 import SearchView from "./components/SearchView";
 import Rank from "./components/Rank";
+import UnvalidCertification from "./components/UnvalidCertification"
+import ValidCertification from "./components/ValidCertification"
 
 import ProductDetail_logedin from "./components/ProductDetail_logedin";
 
@@ -40,7 +42,8 @@ const router = createBrowserRouter([
       { path: "/detail_me", element: <DetailMe /> },
       { path: "/search_view", element: <SearchView /> },
       { path: "/rank", element: <Rank /> },
-
+      { path: "/unvalidCertification", element: <UnvalidCertification />},
+      { path: "/validCertification", element: <ValidCertification />},
     ],
   },
 ]);
