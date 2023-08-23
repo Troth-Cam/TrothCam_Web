@@ -118,7 +118,7 @@ const Certification = () => {
         const accessToken = localStorage.getItem("accessToken");
         const webId=localStorage.getItem("id");
         
-    const handleLikeToggle = async () => {
+        const handleLikeToggle = async () => {
             const apiUrl = `/api/like-product/${productId}`;
             const headers = {
                 "Authorization": `Bearer ${accessToken}`
@@ -151,7 +151,11 @@ const Certification = () => {
             <img 
                 src={src}
                 onClick={handleLikeToggle}
-                style={{ cursor: "pointer" }}
+                style={{ cursor: "pointer" ,
+                width: '50px',  // 이미지의 너비 지정
+                height: '50px', // 이미지의 높이 지정
+                marginLeft: '500%'
+            }}
                 alt={detail.liked ? "Liked heart icon" : "Unliked heart icon"}
             />
         );
@@ -165,7 +169,7 @@ const Certification = () => {
         if (detail && detail.price) { 
             try {
                
-                const response = await axios.post(`/api/history/transaction/${productId}/${price}`, 
+                const response = await axios.post(`/api/history/transaction/${productId}/${price}`, {},
                 {
                     headers: {"Authorization" : `Bearer ${accessToken}`}
                 });
@@ -192,9 +196,9 @@ const Certification = () => {
                 <TextContainer>
                         <Title1>{detail.title} </Title1>
                         <Title2>#{detail.tags}</Title2>
-                           
+                        <HeartDiv>
                             <HeartImg src={detail.liked ? redheartIcon : blackheartIcon}/>
-                            
+                        </HeartDiv>
                             
         
                </TextContainer>
@@ -430,6 +434,16 @@ const Title2 = styled.div`
     color: #222222;
 
 `;
+
+const HeartDiv=styled.div`
+      width:10px;
+      height:0px;
+
+`
+
+
+
+
 
 const HeartImg = styled.img`
     width: 41.63045120239258px;

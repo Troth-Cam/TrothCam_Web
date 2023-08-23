@@ -27,16 +27,35 @@ const UnvalidCertification = () => {
     const productId=stateData;
     console.log(stateData);
 
-    const url = `https://trothly.com/api/products/${productId}/convert-to-private`
     const accessToken = localStorage.getItem("accessToken");
 
     const navigate = useNavigate();
 
     // 버튼 [ 누르면 비공개, 페이지 이동]
-    const [serverResponse, setServerResponse] = useState(null);
+    //const [serverResponse, setServerResponse] = useState(null);
+
+    // const handleButtonClick = () => {
+    //     axios.patch(`api/products/${productId}/convert-to-private`, {
+    //         headers: {
+    //             "Authorization": `Bearer ${accessToken}`
+    //         }
+    //     })
+    //     .then(response => {
+    //         console.log('Response:', response.data);
+    //         //navigate("/ValidCertification", { state: { productId: productId } });
+    //         alert("비공개로 전환하였습니다");
+    //     })
+    //     .catch(error => {
+    //         console.error('Error sending PATCH request:', error);
+    //     });
+    //   };
+
+    // 버튼 [ 누르면 비공개, 페이지 이동]
+    const url = `/api/products/${productId}/convert-to-private`
+    //const [serverResponse, setServerResponse] = useState(null);
 
     const handleButtonClick = () => {
-        axios.patch(url, {
+        axios.patch(url, {}, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -45,16 +64,15 @@ const UnvalidCertification = () => {
             console.log('Response:', response.data);
     
             // Store the response data in the state
-            setServerResponse(response.data); // json객체 저장
+            //setServerResponse(response.data); // json객체 저장
     
-            navigate("/ValidCertification", { state: { productId: productId } });
+            //navigate("/ValidCertification", { state: { productId: productId } });
+            navigate("/Detail_me");
         })
         .catch(error => {
             console.error('Error sending PATCH request:', error);
         });
-      };
-
-
+    };
 
 
 
@@ -72,7 +90,7 @@ const UnvalidCertification = () => {
     const hours = String(now.getHours()).padStart(2, '0');
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const seconds = String(now.getSeconds()).padStart(2, '0');
-    const [product, setProduct] = useState({});
+    //const [product, setProduct] = useState({});
     const formattedDate = `${year}년 ${month}월 ${date}일 ${hours}:${minutes}:${seconds} 기준`;
 
 
@@ -102,22 +120,82 @@ const UnvalidCertification = () => {
         </ModalBackdrop>
       );
 
-    useEffect(()=>{
-        // const stateData = location.state.id;
-        // console.log(stateData);
-        // const productId = location.state.id;
-        console.log(localStorage.getItem("accessToken"));
+    // useEffect(()=>{
+    //     // const stateData = location.state.id;
+    //     // console.log(stateData);
+    //     // const productId = location.state.id;
+    //     console.log(localStorage.getItem("accessToken"));
+
+      
+    //     axios.get(`/api/products/public/${productId}`, { headers: { "Authorization": `Bearer ${localStorage.getItem("accessToken")}` }})
+    //         .then((response) =>{
+    //             if(response.data){
+    //                 setProduct(response.data.result);
+    //                 //console.log(response);
+    //             }
+                
+    //         })
+    //         .catch((err) => {
+
+    //         });
+    // },[]);
+   
+    const [detail, setProductDetail] = useState({
+        productInfo: {
+          productId: "",
+          title: "",
+          tags: "",
+          views: "",
+          likeCount: "",
+          liked: "",
+        },
+        imageInfo: {
+          imageId: "",
+          url: "",
+          ownerWebToken: "",
+          authorshipWebToken: "",
+          description: "",
+          lens: "",
+          location: "",
+          resolution: "",
+          size: "",
+        },
+        historyInfoList: [
+          {
+            historyId: "",
+            sellerWebToken: "",
+            buyerWebToken: "",
+            price: "",
+            soldAt: "",
+          },
+        ],
+      });
+    
+    useEffect(() => {
+      
+        const fetchProductDetail = async () => {
+            
+            try {
+                const response = await axios.get(`/api/products/public/${productId}`, 
+                
+                {headers: {"Authorization" : `Bearer ${accessToken}`}});
+                //console.log(accessToken);
+    
+                if (response.data) {
+                    setProductDetail(response.data.result);
+                    console.log(response.data);
+                } else {
+                    console.error('Failed to fetch product details.');
+                }
+            } catch (error) {
+                //console.error('Error fetching product details:', error);
+            }
+        };
+    
+        fetchProductDetail();
+    }, []);
 
 
-        axios.get(`/api/products/public/${productId}`, { headers: { "Authorization": `Bearer ${localStorage.getItem("accessToken")}` }})
-            .then((response) =>{
-                setProduct(response.data.result);
-                console.log(response);
-            })
-            .catch((err) => {
-
-            });
-    },[]);
 
     return (
         <Container>
@@ -127,17 +205,17 @@ const UnvalidCertification = () => {
             <Col>
                 <Product>Product Detail</Product>
                 <TextContainer>
-                        <Title1>hi</Title1>
-                        <Title2>#12345</Title2>
+                        <Title1>{detail.productInfo.title}</Title1>
+                        <Title2>#{detail.productInfo.tags}</Title2>
                             <HeartImg src={blackheartIcon} alt="heartIcon" />
                             
                 </TextContainer>
 
                 <InfoContainer>
                         <EyeImg src={eyeIcon} alt="eyeIcon"/>
-                        <Info2>  views</Info2>
+                        <Info2>  {detail.productInfo.views} views</Info2>
                         <BlackheartImg src={blackheartIcon} alt="blackheartIcon"/>
-                        <Info3>  likes</Info3>
+                        <Info3>  {detail.productInfo.likeCount} likes</Info3>
                             
                 </InfoContainer>
             </Col>
@@ -151,11 +229,11 @@ const UnvalidCertification = () => {
                         {showModal && <Modal image={smileImg} onClose={closeModal} />}
                         <InfoContainer1>
                             <Text1>소유자 </Text1>
-                            {/* <Text1token> {truncateText(productDetail.result.ownerToken, 15)}</Text1token> */}
+                            <Text1token> {truncateText(detail.imageInfo.ownerWebToken, 15)}</Text1token>
                         </InfoContainer1>
                         <InfoContainer1>
                             <Text2>원작자 </Text2>
-                            {/* <Text2token> {truncateText(productDetail.result.authorshipToken, 15)}</Text2token> */}
+                            <Text2token> {truncateText(detail.imageInfo.authorshipWebToken, 15)}</Text2token>
                         </InfoContainer1>
                     </ImgDiv>
                    
@@ -164,7 +242,7 @@ const UnvalidCertification = () => {
                         <Pd1Text>상세정보</Pd1Text>
                         <Pd2 src={pd2} alt="pd2" />
                         <Pd2Text1>사진 설명</Pd2Text1>
-                        <Pd2Text2>ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsumipsum ipsum ipsum ipsumipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsumipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum </Pd2Text2>
+                        <Pd2Text2>{detail.imageInfo.description}</Pd2Text2>
                         <Pd3 src={pd3} alt="pd3" />
                         <Pd3Text1>촬영 렌즈</Pd3Text1>
                         <Pd3Text2>렌즈 정보 없음</Pd3Text2>
@@ -190,7 +268,7 @@ const UnvalidCertification = () => {
                         <Day>최근 거래 3일전</Day>
                         <PayContainer>
                             <Pay1>판매가</Pay1>
-                            <Pay2>  30,000KRW</Pay2>
+                            <Pay2> KRW</Pay2>
                         </PayContainer>
                         <BuyButton onClick={handleButtonClick}>비공개하기 (판매 취소하기)</BuyButton>
 
@@ -200,8 +278,28 @@ const UnvalidCertification = () => {
                     <Detail3>
                         <ChertImage src={chertImg} alt="chertImg"/>
                         <BuyChert>거래내역</BuyChert>
-                        {/* <LastBuy>마지막으로 <span style={{color: '#5980EF'}}> {productDetail.result.histories[0].price}KRW</span>에 거래되었어요.</LastBuy> */}
-                        <LastBuyDate>{formattedDate} </LastBuyDate>
+                        {
+                        detail.histories && detail.histories.length > 0 ? (
+                            <LastBuy>
+                            마지막으로 <span style={{color: '#5980EF'}}> {detail.historyInfoList[0].price}KRW</span>에 거래되었어요.
+                            </LastBuy>
+                        ) : (
+                            <LastBuy>
+                            데이터 로딩 중...
+                            </LastBuy>
+                        )
+                        }
+                        {
+                        detail.historyInfoList && detail.historyInfoList.length > 0 ? (
+                            <LastBuyDate>
+                            {detail.historyInfoList[0].soldAt}
+                            </LastBuyDate>
+                        ) : (
+                            <LastBuyDate>
+                            날짜 로딩 중...
+                            </LastBuyDate>
+                        )
+                        }
                         <BuydetailContainer>
                             <BuyDetail>판매자</BuyDetail>
                             <BuyDetail>구매자</BuyDetail>
