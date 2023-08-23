@@ -22,13 +22,44 @@ import axios from 'axios';
 
 const UnvalidCertification = () => {
    
-    const location = useLocation();
-    const stateData = location.state.id;
-    const productId=stateData;
-    console.log(stateData);
+     //이전 페이지에서 productid 가져오기
+     const location = useLocation();
+     const stateData = location.state.id;
+     console.log(stateData);
+     const productId=stateData;
+     
+     
+     const [detail, setProductDetail] = useState({});
+     const webId=localStorage.getItem("id");
+     const accessToken = localStorage.getItem("accessToken");
+     console.log(accessToken);
+    
+     useEffect(() => {
+      
+        const fetchProductDetail = async () => {
+            
+            try {
+                const response = await axios.get(`/api/products/private/${productId}`, 
+                
+                {headers: {"Authorization" : `Bearer ${accessToken}`}});
+    
+                if (response.data) {
+                    setProductDetail(response.data.result);
+                    console.log("데이터 받기");
+                } else {
+                    console.error('Failed to fetch product details.');
+                }
+            } catch (error) {
+                //console.error('Error fetching product details:', error);
+            }
+        };
+    
+        fetchProductDetail();
+    }, []);
 
-    const url = "https://trothly.com/api/products/${productId}/convert-to-private"
-    const accessToken = localStorage.getItem("accessToken");
+
+
+
 
     const navigate = useNavigate();
 
@@ -36,9 +67,9 @@ const UnvalidCertification = () => {
     const [serverResponse, setServerResponse] = useState(null);
 
     const handleButtonClick = () => {
-        axios.patch(url, {
+        axios.patch(`api/products/private/${productId}`, {
             headers: {
-                'Authorization': `Bearer ${accessToken}`
+                "Authorization": `Bearer ${accessToken}`
             }
         })
         .then(response => {
