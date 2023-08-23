@@ -183,9 +183,19 @@ const ProductDetail = () => {
                         <Day>최근 거래 {diffDays}일전</Day>
                         <PayContainer>
                             <Pay1>판매가</Pay1>
-                            {/* <Pay2>   {detail.histories[0].price}KRW</Pay2> */}
+                            <Pay2>   {detail.price}KRW</Pay2>
+                            {/* {
+                            detail.histories && detail.histories.length > 0 ? (
+                                
+                                <Pay2>   {detail.histories[0].price}KRW</Pay2>
+                            ) : (
+                                <Pay2>
+                                데이터 로딩 중...
+                                </Pay2>
+                            )
+                            } */}
                         </PayContainer>
-                        <BuyButton>구매하기</BuyButton>
+                        <BuyButton >구매하기</BuyButton>
                     </Detail2>
 
                     <Detail3>

@@ -118,7 +118,7 @@ const Certification = () => {
         const accessToken = localStorage.getItem("accessToken");
         const webId=localStorage.getItem("id");
         
-        const handleLikeToggle = async () => {
+    const handleLikeToggle = async () => {
             const apiUrl = `/api/like-product/${productId}`;
             const headers = {
                 "Authorization": `Bearer ${accessToken}`
@@ -156,6 +156,30 @@ const Certification = () => {
             />
         );
     };
+    
+    const price = detail.price;
+    console.log(price);
+
+    //구매하기 버튼
+    const handleBuyButtonClick = async () => {
+        if (detail && detail.price) { 
+            try {
+               
+                const response = await axios.post(`/api/history/transaction/${productId}/${price}`, 
+                {
+                    headers: {"Authorization" : `Bearer ${accessToken}`}
+                });
+        
+                //console.log(response.data);
+            } catch (error) {
+                //console.error("Error during the purchase:", error);
+            }
+        } else {
+            //console.error("Price detail is missing.");
+        }
+    };
+    
+
     
   
       return (
@@ -238,7 +262,7 @@ const Certification = () => {
                             }
                             </Pay2>
                         </PayContainer>
-                        <BuyButton>구매하기</BuyButton>
+                        <BuyButton onClick={handleBuyButtonClick}>구매하기</BuyButton>
                     </Detail2>
 
                     <Detail3>
