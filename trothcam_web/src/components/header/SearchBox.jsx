@@ -29,7 +29,8 @@ const SearchBox = () => {
 
   const handleSearch = (event) => {
     if (event.key === "Enter") {
-      navigate(`/search?query=${encodeURIComponent(searchQuery)}`); //search 페이지로 이동
+      //navigate(`/search?query=${encodeURIComponent(searchQuery)}`); //search 페이지로 이동
+      navigate("/search");
     }
   };
 

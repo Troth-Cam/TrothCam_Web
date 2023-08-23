@@ -33,10 +33,14 @@ const Login = () => {
             localStorage.setItem("refreshToken", refreshToken);
             localStorage.setItem("id", id);
             localStorage.setItem("webToken", webToken);
+            localStorage.setItem("keepLogin", true);
           } else {
             const accessToken = responseData.result.accessToken;
+            const webToken = responseData.result.webToken;
             localStorage.setItem("accessToken", accessToken);
             localStorage.setItem("id", id);
+            localStorage.setItem("webToken", webToken);
+            localStorage.setItem("keepLogin", false);
           }
           navigate("/");
         } else {
@@ -59,7 +63,9 @@ const Login = () => {
 
   return (
     <LoginContainer>
-      <SearchBox />
+      <SearchBoxContainer>
+        <SearchBox />
+      </SearchBoxContainer>
       <LoginContent>
         <LogoContainer>
           <StyledLogo />
@@ -105,6 +111,10 @@ const Login = () => {
 
 export default Login;
 
+const SearchBoxContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 const LoginContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -116,14 +126,6 @@ const LoginContent = styled.div`
   align-items: center;
   margin-top: 10rem;
 `;
-
-// const LoginText = styled.div`
-//   color: #222;
-//   font-family: Inter;
-//   font-size: 6rem;
-//   font-weight: 400;
-//   margin-top: 2rem;
-// `;
 
 const LogoContainer = styled.div`
   display: flex;

@@ -95,12 +95,10 @@ const Post = ({ post, index }) => {
   };
 
   const handleOwnerButtonClick = () => {
-    console.log(post.ownerToken);
     navigate("/detail_others", { state: { userId: post.ownerToken } });
   };
 
   const handleAuthorButtonClick = () => {
-    console.log(post.authorshipToken);
     navigate("/detail_others", { state: { userId: post.authorshipToken } });
   };
 
