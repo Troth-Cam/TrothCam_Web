@@ -101,7 +101,7 @@ const ValidCertification = () => {
 
   //판매하기 버튼 유효성
 
-  const [InputPrice, setPrice] = useState(""); // 가격 상태
+  const [InputPrice, setPrice] = useState(0); // 가격 상태
   const [isValid, setIsValid] = useState(false); // 버튼 유효성 상태
 
   // 입력 값이 변경될 때마다 호출되는 핸들러
@@ -128,7 +128,7 @@ const ValidCertification = () => {
     if (isValid) {
       const data = {
         price: InputPrice,
-        description: "happy",
+        description: inputText,
       };
 
       axios
