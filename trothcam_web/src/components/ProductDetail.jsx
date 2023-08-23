@@ -79,11 +79,21 @@ const ProductDetail = () => {
 
 
     // 토큰 15자 이상
-    function truncateText(text, length) {
-        return text.length > length
-            ? text.substring(0, length) + '...'
-            : text;
-    }
+    // function truncateText(text, length) {
+    //     return text.length > length
+    //         ? text.substring(0, length) + '...'
+    //         : text;
+    // }
+    const truncateText = (text, maxLength) => {
+        if (typeof text !== "string") {
+          return "";
+        }
+    
+        if (text.length >= maxLength) {
+          return text.substring(0, maxLength - 3) + "...";
+        }
+        return text;
+      };
 
 
     //이미지 클릭시 모달 기능
@@ -136,11 +146,11 @@ const ProductDetail = () => {
                         {showModal && <Modal image={smileImg} onClose={closeModal} />}
                         <InfoContainer1>
                             <Text1>소유자 </Text1>
-                            <Text1token> {truncateText(detail.ownerToken, 15)}</Text1token>
+                            <Text1token> {detail.ownerToken ? truncateText(detail.ownerToken, 15) : 'Loading...'}</Text1token>
                         </InfoContainer1>
                         <InfoContainer1>
                             <Text2>원작자 </Text2>
-                            <Text2token> {truncateText(detail.authorshipToken, 15)}</Text2token>
+                            <Text2token> {detail.ownerToken ? truncateText(detail.authorshipToken, 15) : 'Loading...'}</Text2token>
                         </InfoContainer1>
                     </ImgDiv>
                    
@@ -173,7 +183,7 @@ const ProductDetail = () => {
                         <Day>최근 거래 {diffDays}일전</Day>
                         <PayContainer>
                             <Pay1>판매가</Pay1>
-                            <Pay2>   {detail.histories[0].price}KRW</Pay2>
+                            {/* <Pay2>   {detail.histories[0].price}KRW</Pay2> */}
                         </PayContainer>
                         <BuyButton>구매하기</BuyButton>
                     </Detail2>
@@ -181,8 +191,29 @@ const ProductDetail = () => {
                     <Detail3>
                     <ChertImage src={chertImg} alt="chertImg"/>
                         <BuyChert>거래내역</BuyChert>
-                        <LastBuy>마지막으로 <span style={{color: '#5980EF'}}> {detail.histories[0].price}KRW</span>에 거래되었어요.</LastBuy>
-                        <LastBuyDate>{detail.histories[0].soldAt} </LastBuyDate>
+                        {
+                        detail.histories && detail.histories.length > 0 ? (
+                            <LastBuy>
+                            마지막으로 <span style={{color: '#5980EF'}}> {detail.histories[0].price}KRW</span>에 거래되었어요.
+                            </LastBuy>
+                        ) : (
+                            <LastBuy>
+                            데이터 로딩 중...
+                            </LastBuy>
+                        )
+                        }
+                        {
+                        detail.histories && detail.histories.length > 0 ? (
+                            <LastBuyDate>
+                            {detail.histories[0].soldAt}
+                            </LastBuyDate>
+                        ) : (
+                            <LastBuyDate>
+                            날짜 로딩 중...
+                            </LastBuyDate>
+                        )
+                        }
+                      
                         <BuydetailContainer>
                             <BuyDetail>판매자</BuyDetail>
                             <BuyDetail>구매자</BuyDetail>
@@ -193,28 +224,52 @@ const ProductDetail = () => {
                         <BuydetailContainer>
                             <BuyerDetail1>{truncateText(detail.ownerToken,8)}</BuyerDetail1>
                             <BuyerDetail1>{truncateText(detail.authorshipToken, 8)}</BuyerDetail1>
-                            <BuyerDetail2 marginLeft="0px">{detail.histories[0].price}</BuyerDetail2>
+                            {
+                                detail.histories && detail.histories.length > 0 ? (
+                                    <BuyerDetail2 marginLeft="0px">{detail.histories[0].price}</BuyerDetail2>
+                                ) : (
+                                    <BuyerDetail2 marginLeft="0px">데이터 로딩 중...</BuyerDetail2>
+                                )
+                                }
                             <BuyerDetail2 marginLeft="0px">23.8.5</BuyerDetail2>
                         </BuydetailContainer>
                        
                         <BuydetailContainer>
                         <BuyerDetail1>{truncateText(detail.ownerToken,8)}</BuyerDetail1>
                             <BuyerDetail1>{truncateText(detail.authorshipToken, 8)}</BuyerDetail1>
-                            <BuyerDetail2 marginLeft="0px">{detail.histories[1].price}</BuyerDetail2>
+                            {
+                            detail.histories && detail.histories.length > 0 ? (
+                                <BuyerDetail2 marginLeft="0px">{detail.histories[1].price}</BuyerDetail2>
+                            ) : (
+                                <BuyerDetail2 marginLeft="0px">데이터 로딩 중...</BuyerDetail2>
+                            )
+                            }
                             <BuyerDetail2 marginLeft="0px">23.8.5</BuyerDetail2>
                         </BuydetailContainer>
                         
                         <BuydetailContainer>
                             <BuyerDetail1>{truncateText(detail.ownerToken,8)}</BuyerDetail1>
                             <BuyerDetail1>{truncateText(detail.authorshipToken, 8)}</BuyerDetail1>
-                            <BuyerDetail2 marginLeft="0px">{detail.histories[2].price}</BuyerDetail2>
+                            {
+                                detail.histories && detail.histories.length > 0 ? (
+                                    <BuyerDetail2 marginLeft="0px">{detail.histories[2].price}</BuyerDetail2>
+                                ) : (
+                                    <BuyerDetail2 marginLeft="0px">데이터 로딩 중...</BuyerDetail2>
+                                )
+                                }
                             <BuyerDetail2 marginLeft="0px">23.8.5</BuyerDetail2>
                         </BuydetailContainer>
 
                         <BuydetailContainer>
                             <BuyerDetail1>{truncateText(detail.ownerToken,8)}</BuyerDetail1>
                             <BuyerDetail1>{truncateText(detail.authorshipToken, 8)}</BuyerDetail1>
-                            <BuyerDetail2 marginLeft="0px">{detail.histories[3].price}</BuyerDetail2>
+                            {
+                            detail.histories && detail.histories.length > 0 ? (
+                                <BuyerDetail2 marginLeft="0px">{detail.histories[3].price}</BuyerDetail2>
+                            ) : (
+                                <BuyerDetail2 marginLeft="0px">데이터 로딩 중...</BuyerDetail2>
+                            )
+                            }
                             <BuyerDetail2 marginLeft="0px">23.8.5</BuyerDetail2>
                         </BuydetailContainer>
 
