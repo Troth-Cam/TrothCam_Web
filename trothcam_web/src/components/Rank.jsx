@@ -109,7 +109,7 @@ const Post = ({ post, index }) => {
         <PostImage src={rankImage} alt={post.imageUrl} />
       </ImageWrapper>
       <PostInfoName>{post.ownerName}</PostInfoName>
-      <PostInfo>{post.tags}</PostInfo>
+      <PostInfo>#{post.tags}</PostInfo>
       <PostInfoPerson onClick={handleOwnerButtonClick}>
         {truncateText(post.ownerToken, 8)}
       </PostInfoPerson>
