@@ -95,7 +95,7 @@ const PhotoItem = (props) => {
                 navigate("/unvalidCertification", { state: { id: props.item.productId} });
             }
             else if(props.productState == "private"){
-              //  navigate("/validCertification", { state: { id: props.item.productId} });
+                navigate("/validCertification", { state: { id: props.item.productId} });
             }
             else{
                 navigate("/Certification", { state: { id: props.item.productId} });
