@@ -83,8 +83,127 @@ const ProductDetail = () => {
   //이미지 클릭시 모달 기능
   const [showModal, setShowModal] = useState(false);
 
-  const openModal = () => {
-    setShowModal(true);
+
+
+                <Col2>
+                  
+                    <Detail2>
+                        <Day>최근 거래 {diffDays}일전</Day>
+                        <PayContainer>
+                            <Pay1>판매가</Pay1>
+                            <Pay2>   {detail.price}KRW</Pay2>
+                            {/* {
+                            detail.histories && detail.histories.length > 0 ? (
+                                
+                                <Pay2>   {detail.histories[0].price}KRW</Pay2>
+                            ) : (
+                                <Pay2>
+                                데이터 로딩 중...
+                                </Pay2>
+                            )
+                            } */}
+                        </PayContainer>
+                        <BuyButton >구매하기</BuyButton>
+                    </Detail2>
+
+                    <Detail3>
+                    <ChertImage src={chertImg} alt="chertImg"/>
+                        <BuyChert>거래내역</BuyChert>
+                        {
+                        detail.histories && detail.histories.length > 0 ? (
+                            <LastBuy>
+                            마지막으로 <span style={{color: '#5980EF'}}> {detail.histories[0].price}KRW</span>에 거래되었어요.
+                            </LastBuy>
+                        ) : (
+                            <LastBuy>
+                            데이터 로딩 중...
+                            </LastBuy>
+                        )
+                        }
+                        {
+                        detail.histories && detail.histories.length > 0 ? (
+                            <LastBuyDate>
+                            {detail.histories[0].soldAt}
+                            </LastBuyDate>
+                        ) : (
+                            <LastBuyDate>
+                            날짜 로딩 중...
+                            </LastBuyDate>
+                        )
+                        }
+                      
+                        <BuydetailContainer>
+                            <BuyDetail>판매자</BuyDetail>
+                            <BuyDetail>구매자</BuyDetail>
+                            <BuyDetail>가격</BuyDetail>
+                            <BuyDetail marginLeft="80px">시간</BuyDetail>
+                        </BuydetailContainer>
+                        <Line />
+                        <BuydetailContainer>
+                            <BuyerDetail1>{truncateText(detail.ownerToken,8)}</BuyerDetail1>
+                            <BuyerDetail1>{truncateText(detail.authorshipToken, 8)}</BuyerDetail1>
+                            {
+                                detail.histories && detail.histories.length > 0 ? (
+                                    <BuyerDetail2 marginLeft="0px">{detail.histories[0].price}</BuyerDetail2>
+                                ) : (
+                                    <BuyerDetail2 marginLeft="0px">데이터 로딩 중...</BuyerDetail2>
+                                )
+                                }
+                            <BuyerDetail2 marginLeft="0px">23.8.5</BuyerDetail2>
+                        </BuydetailContainer>
+                       
+                        <BuydetailContainer>
+                        <BuyerDetail1>{truncateText(detail.ownerToken,8)}</BuyerDetail1>
+                            <BuyerDetail1>{truncateText(detail.authorshipToken, 8)}</BuyerDetail1>
+                            {
+                            detail.histories && detail.histories.length > 0 ? (
+                                <BuyerDetail2 marginLeft="0px">{detail.histories[1].price}</BuyerDetail2>
+                            ) : (
+                                <BuyerDetail2 marginLeft="0px">데이터 로딩 중...</BuyerDetail2>
+                            )
+                            }
+                            <BuyerDetail2 marginLeft="0px">23.8.5</BuyerDetail2>
+                        </BuydetailContainer>
+                        
+                        <BuydetailContainer>
+                            <BuyerDetail1>{truncateText(detail.ownerToken,8)}</BuyerDetail1>
+                            <BuyerDetail1>{truncateText(detail.authorshipToken, 8)}</BuyerDetail1>
+                            {
+                                detail.histories && detail.histories.length > 0 ? (
+                                    <BuyerDetail2 marginLeft="0px">{detail.histories[2].price}</BuyerDetail2>
+                                ) : (
+                                    <BuyerDetail2 marginLeft="0px">데이터 로딩 중...</BuyerDetail2>
+                                )
+                                }
+                            <BuyerDetail2 marginLeft="0px">23.8.5</BuyerDetail2>
+                        </BuydetailContainer>
+
+                        <BuydetailContainer>
+                            <BuyerDetail1>{truncateText(detail.ownerToken,8)}</BuyerDetail1>
+                            <BuyerDetail1>{truncateText(detail.authorshipToken, 8)}</BuyerDetail1>
+                            {
+                            detail.histories && detail.histories.length > 0 ? (
+                                <BuyerDetail2 marginLeft="0px">{detail.histories[3].price}</BuyerDetail2>
+                            ) : (
+                                <BuyerDetail2 marginLeft="0px">데이터 로딩 중...</BuyerDetail2>
+                            )
+                            }
+                            <BuyerDetail2 marginLeft="0px">23.8.5</BuyerDetail2>
+                        </BuydetailContainer>
+
+
+
+                    </Detail3>
+                </Col2>
+            </SubContainer>
+
+            <FooterContainer>
+                <Footer />
+            </FooterContainer>
+        
+        </Container>
+     
+    );
   };
 
   const closeModal = () => {
@@ -236,7 +355,6 @@ const ProductDetail = () => {
       </FooterContainer>
     </Container>
   );
-};
 
 export default ProductDetail;
 

@@ -16,8 +16,8 @@ import pd4 from './img/pd4.png';
 import pd5 from './img/pd5.png';
 import pd6 from './img/pd6.png';
 import infoImg from './img/infoIcon.png';
-import { useNavigate } from "react-router-dom";
-import { useLocation } from 'react-router-dom';
+import { useNavigate,useLocation } from "react-router-dom";
+
 import axios from 'axios';
 
 const UnvalidCertification = () => {
@@ -27,7 +27,7 @@ const UnvalidCertification = () => {
     const productId=stateData;
     console.log(stateData);
 
-    const url = "https://trothly.com/api/products/${productId}/convert-to-private"
+    const url = `https://trothly.com/api/products/${productId}/convert-to-private`
     const accessToken = localStorage.getItem("accessToken");
 
     const navigate = useNavigate();
@@ -72,7 +72,7 @@ const UnvalidCertification = () => {
     const hours = String(now.getHours()).padStart(2, '0');
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const seconds = String(now.getSeconds()).padStart(2, '0');
-
+    const [product, setProduct] = useState({});
     const formattedDate = `${year}년 ${month}월 ${date}일 ${hours}:${minutes}:${seconds} 기준`;
 
 
@@ -102,6 +102,22 @@ const UnvalidCertification = () => {
         </ModalBackdrop>
       );
 
+    useEffect(()=>{
+        // const stateData = location.state.id;
+        // console.log(stateData);
+        // const productId = location.state.id;
+        console.log(localStorage.getItem("accessToken"));
+
+
+        axios.get(`/api/products/public/${productId}`, { headers: { "Authorization": `Bearer ${localStorage.getItem("accessToken")}` }})
+            .then((response) =>{
+                setProduct(response.data.result);
+                console.log(response);
+            })
+            .catch((err) => {
+
+            });
+    },[]);
 
     return (
         <Container>
