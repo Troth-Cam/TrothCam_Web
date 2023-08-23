@@ -19,8 +19,12 @@ import pd6 from './img/pd6.png';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 
+
+
+
 const Certification = () => {
 
+    
     //이전 페이지에서 productid 가져오기
     const location = useLocation();
     const stateData = location.state.id;
@@ -28,7 +32,7 @@ const Certification = () => {
     const productId=stateData;
     
     
-    const [Detail, setProductDetail] = useState({});
+    const [detail, setProductDetail] = useState({});
     const webId=localStorage.getItem("id");
     const accessToken = localStorage.getItem("accessToken");
     console.log(accessToken);
@@ -58,17 +62,15 @@ const Certification = () => {
     }, []);
    
 
-    // 데이터가 로드되기 전에는 로딩 메시지를 표시
-    // if (!productDetail) {
-    //     return <div>Loading...</div>;
-    // }
-
-
-    //시간 계산 - 최근 거래 일자 계산
+   
+     //시간 계산 - 최근 거래 일자 계산
      const now = new Date(); //현재시각
-    // const updatedAt = new Date(productDetail.result.updatedAt); //최근 거래 일자
-    // const diffMilliseconds = now - updatedAt; //차이 계산
-    // const diffDays = Math.floor(diffMilliseconds / (1000 * 60 * 60 * 24));
+     const updatedAt = detail.histories && detail.histories.length > 0 
+             ? new Date(detail.histories[0].soldAt)
+             : null;
+     const diffMilliseconds = now - updatedAt; //차이 계산
+     const diffDays = Math.floor(diffMilliseconds / (1000 * 60 * 60 * 24));
+
 
 
     // 현재 시각 표현
@@ -82,12 +84,15 @@ const Certification = () => {
     const formattedDate = `${year}년 ${month}월 ${date}일 ${hours}:${minutes}:${seconds} 기준`;
 
 
-    // 토큰 15자 이상
+    //토큰 길이 검사
     function truncateText(text, length) {
-        return text.length > length
-            ? text.substring(0, length) + '...'
-            : text;
-    }
+        // text가 유효하지 않으면 바로 빈 문자열 반환
+        if (!text || typeof text !== 'string') {
+          return '';
+        }
+      
+        return text.length > length ? text.substring(0, length) + '...' : text;
+      }
 
 
     //이미지 클릭시 모달 기능
@@ -108,29 +113,50 @@ const Certification = () => {
       );
 
 
-    //좋아요 포시
-    const [isLiked, setIsLiked] = useState(false);
-
-    const handleLikeToggle = async () => {
-        //const accessToken = localStorage.getItem("accessToken");
-        const apiUrl = `/api/like-product/${productId}`; 
+    //좋아요 누르기
+    const HeartImg = ({ src }) => {
+        const accessToken = localStorage.getItem("accessToken");
+        const webId=localStorage.getItem("id");
         
+        const handleLikeToggle = async () => {
+            const apiUrl = `/api/like-product/${productId}`;
+            const headers = {
+                "Authorization": `Bearer ${accessToken}`
+            };
     
-        try {
-          if (isLiked) {
-            // 좋아요가 되어있는 상태면 좋아요 취소 요청을 보냅니다.
-            await axios.delete(apiUrl,{headers: {"Authorization" : `Bearer ${accessToken}`}});
-            console.log("좋아요 취소");
-          } else {
-            // 좋아요가 안 되어있는 상태면 좋아요 요청을 보냅니다.
-            await axios.post(apiUrl, {headers: {"Authorization" : `Bearer ${accessToken}`}});
-            console.log("좋아요 누름!");
-          }
-          setIsLiked(!isLiked); // 좋아요 상태 토글
-        } catch (error) {
-          console.error("Error toggling like:", error);
-        }
-      };
+            try {
+                let response;
+    
+                if (detail.liked) {
+                    response = await axios.delete(apiUrl, { headers });
+                } else {
+                    response = await axios.post(apiUrl, { headers });
+                }
+    
+                // 다시 서버로부터 상품의 상세 정보를 가져와 detail을 갱신합니다.
+                const updatedResponse = await axios.get(`/api/${webId}/product-detail/${productId}`, 
+                { headers: {"Authorization" : `Bearer ${accessToken}`}});
+    
+                if (updatedResponse.data) {
+                    setProductDetail(updatedResponse.data.result);
+                } else {
+                    console.error('Failed to fetch updated product details.');
+                }
+            } catch (error) {
+                //console.error("Error toggling like:", error);
+            }
+        };
+    
+        return (
+            <img 
+                src={src}
+                onClick={handleLikeToggle}
+                style={{ cursor: "pointer" }}
+                alt={detail.liked ? "Liked heart icon" : "Unliked heart icon"}
+            />
+        );
+    };
+    
   
       return (
         <Container>
@@ -140,19 +166,20 @@ const Certification = () => {
             <Col>
                 <Product>Product Detail</Product>
                 <TextContainer>
-                        <Title1>{Detail.title} </Title1>
-                        <Title2>#12345</Title2>
-                            <HeartImg src={isLiked ? redheartIcon : blackheartIcon} onClick={handleLikeToggle} style={{ cursor: "pointer" }} alt="blackheartIcon" />
+                        <Title1>{detail.title} </Title1>
+                        <Title2>#{detail.tags}</Title2>
+                           
+                            <HeartImg src={detail.liked ? redheartIcon : blackheartIcon}/>
                             
-                </TextContainer>
+                            
+        
+               </TextContainer>
 
                 <InfoContainer>
-                            <DownloadImg src={DownloadIcon} alt="DownloadIcon"/>
-                            <Info1> 13 downloads</Info1>
                             <EyeImg src={eyeIcon} alt="eyeIcon"/>
-                            <Info2> 39 views</Info2>
+                            <Info2> {detail.views}  views</Info2>
                             <BlackheartImg src={blackheartIcon} alt="blackheartIcon"/>
-                            <Info3> 5 likes</Info3>
+                            <Info3> {detail.likes}  likes</Info3>
                             
                 </InfoContainer>
             </Col>
@@ -164,16 +191,23 @@ const Certification = () => {
                     <ImgDiv>
                         <StyledImage src={smileImg} alt="smileImg" onClick={openModal}  />
                         {showModal && <Modal image={smileImg} onClose={closeModal} />}
-                        <Text1>소유자</Text1>
-                        <Text2>원작자</Text2>
+                        <InfoContainer1>
+                            <Text1>소유자 </Text1>
+                            <Text1token> {truncateText(detail.ownerToken, 15)}</Text1token>
+                        </InfoContainer1>
+                        <InfoContainer1>
+                            <Text2>원작자 </Text2>
+                            <Text2token> {truncateText(detail.authorshipToken, 15)}</Text2token>
+                        </InfoContainer1>
                     </ImgDiv>
+                    
                    
                     <Detail1>
                         <Pd1 src={pd1} alt="pd1" />
                         <Pd1Text>상세정보</Pd1Text>
                         <Pd2 src={pd2} alt="pd2" />
                         <Pd2Text1>사진 설명</Pd2Text1>
-                        <Pd2Text2>ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsumipsum ipsum ipsum ipsumipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsumipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum </Pd2Text2>
+                        <Pd2Text2>{detail.description}</Pd2Text2>
                         <Pd3 src={pd3} alt="pd3" />
                         <Pd3Text1>촬영 렌즈</Pd3Text1>
                         <Pd3Text2>렌즈 정보 없음</Pd3Text2>
@@ -197,7 +231,12 @@ const Certification = () => {
                         <Day>최근 거래 3일전</Day>
                         <PayContainer>
                             <Pay1>판매가</Pay1>
-                            <Pay2>  30,000KRW</Pay2>
+                            <Pay2>{
+                                (detail.histories && detail.histories.length > 0)
+                                ? `${detail.histories[0].price}KRW`
+                                : 'Loading...'
+                            }
+                            </Pay2>
                         </PayContainer>
                         <BuyButton>구매하기</BuyButton>
                     </Detail2>
@@ -205,8 +244,24 @@ const Certification = () => {
                     <Detail3>
                         <ChertImage src={chertImg} alt="chertImg"/>
                         <BuyChert>거래내역</BuyChert>
-                        <LastBuy>마지막으로 <span style={{color: '#5980EF'}}>30,000KRW</span>에 거래되었어요.</LastBuy>
-                        <LastBuyDate>2023년 07월 27일 01:10:33 기준</LastBuyDate>
+                        {
+                            detail.histories && detail.histories.length > 0 ? (
+                                <LastBuy>
+                                마지막으로 <span style={{color: '#5980EF'}}> {detail.histories[0].price}KRW</span>에 거래되었어요.
+                                </LastBuy>
+                            ) : (<LastBuy>데이터 로딩 중...</LastBuy>)
+                        }
+                        {
+                            detail.histories && detail.histories.length > 0 ? (
+                                <LastBuyDate>
+                                {detail.histories[0].soldAt}
+                                </LastBuyDate>
+                            ) : (
+                                <LastBuyDate>
+                                날짜 로딩 중...
+                                </LastBuyDate>
+                            )
+                        }
                         <BuydetailContainer>
                             <BuyDetail>판매자</BuyDetail>
                             <BuyDetail>구매자</BuyDetail>
@@ -215,25 +270,41 @@ const Certification = () => {
                         </BuydetailContainer>
                         <Line />
                         <BuydetailContainer>
-                            <BuyerDetail>klfasd...</BuyerDetail>
-                            <BuyerDetail>qwbek...</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">30000</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">23.8.5</BuyerDetail>
+                            <BuyerDetail1>{truncateText(detail.ownerToken,8)}</BuyerDetail1>
+                            <BuyerDetail1>{truncateText(detail.authorshipToken, 8)}</BuyerDetail1>
+                            {detail.histories && detail.histories.length > 0 ? (
+                                <BuyerDetail2 marginLeft="0px">{detail.histories[0].price}</BuyerDetail2>) 
+                                :(<BuyerDetail2 marginLeft="0px">데이터 로딩 중...</BuyerDetail2>)}  
+                            <BuyerDetail2 marginLeft="0px">23.8.5</BuyerDetail2>
                         </BuydetailContainer>
                        
                         <BuydetailContainer>
-                            <BuyerDetail>klfasd...</BuyerDetail>
-                            <BuyerDetail>qwbek...</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">30000</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">23.8.5</BuyerDetail>
+                            <BuyerDetail1>{truncateText(detail.ownerToken,8)}</BuyerDetail1>
+                            <BuyerDetail1>{truncateText(detail.authorshipToken, 8)}</BuyerDetail1>
+                            {detail.histories && detail.histories.length > 0 ? (
+                                <BuyerDetail2 marginLeft="0px">{detail.histories[1].price}</BuyerDetail2>) 
+                                :(<BuyerDetail2 marginLeft="0px">데이터 로딩 중...</BuyerDetail2>)}  
+                            <BuyerDetail2 marginLeft="0px">23.8.5</BuyerDetail2>
                         </BuydetailContainer>
                         
                         <BuydetailContainer>
-                            <BuyerDetail>klfasd...</BuyerDetail>
-                            <BuyerDetail>qwbek...</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">30000</BuyerDetail>
-                            <BuyerDetail marginLeft="0px">23.8.5</BuyerDetail>
+                            <BuyerDetail1>{truncateText(detail.ownerToken,8)}</BuyerDetail1>
+                            <BuyerDetail1>{truncateText(detail.authorshipToken, 8)}</BuyerDetail1>
+                            {detail.histories && detail.histories.length > 0 ? (
+                                <BuyerDetail2 marginLeft="0px">{detail.histories[2].price}</BuyerDetail2>) 
+                                :(<BuyerDetail2 marginLeft="0px">데이터 로딩 중...</BuyerDetail2>)}  
+                            <BuyerDetail2 marginLeft="0px">23.8.5</BuyerDetail2>
                         </BuydetailContainer>
+
+                        <BuydetailContainer>
+                            <BuyerDetail1>{truncateText(detail.ownerToken,8)}</BuyerDetail1>
+                            <BuyerDetail1>{truncateText(detail.authorshipToken, 8)}</BuyerDetail1>
+                            {detail.histories && detail.histories.length > 0 ? (
+                                <BuyerDetail2 marginLeft="0px">{detail.histories[3].price}</BuyerDetail2>) 
+                                :(<BuyerDetail2 marginLeft="0px">데이터 로딩 중...</BuyerDetail2>)}  
+                            <BuyerDetail2 marginLeft="0px">23.8.5</BuyerDetail2>
+                        </BuydetailContainer>
+
 
 
                     </Detail3>
@@ -335,6 +406,7 @@ const Title2 = styled.div`
     color: #222222;
 
 `;
+
 const HeartImg = styled.img`
     width: 41.63045120239258px;
     height: 49.58951950073242px;
@@ -518,35 +590,76 @@ const ModalContent = styled.img`
   max-height: 90%;
 `;
 
+
+const InfoContainer1 = styled.div`
+    display: flex;
+    flex-direction: row;
+    text-align: left;  
+   // margin-left:-30%;
+    @media (max-width: 980px) {
+        //margin-left:-30%;
+       
+      }
+
+`;
 const Text1 = styled.div`
-    width: 123px;
-    height: 30px;
+    width: 56px;
+    height: 24px;
     margin-top:20px;
     margin-left:20px;
     font-family: Inter;
-    font-size: 25px;
+    font-size: 20px;
     font-weight: 400;
     line-height: 30px;
     letter-spacing: 0em;
     text-align: left;
     color: #000000;
+`;
+
+const Text1token = styled.div`
+  
+    margin-top:20px;
+    margin-left:20px;
+    font-family: Inter;
+    font-size: 23px;
+    font-weight: 400;
+    line-height: 30px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #5980EF;
 `;
 
 const Text2 = styled.div`
-    width: 69px;
-    height: 30px;
+    width: 56px;
+    height: 24px;
     margin-top:11px;
     margin-left:20px;
     font-family: Inter;
-    font-size: 25px;
+    font-size: 20px;
     font-weight: 400;
     line-height: 30px;
     letter-spacing: 0em;
     text-align: left;
     color: #000000;
-    
 
 `;
+
+const Text2token = styled.div`
+  
+    margin-top:20px;
+    margin-left:20px;
+    font-family: Inter;
+    font-size: 23px;
+    font-weight: 400;
+    line-height: 30px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #5980EF;
+`;
+
+
+
+
 
 
 
@@ -926,6 +1039,35 @@ const BuyerDetail=styled.div`
     margin-top:20px;
     margin-left: ${(props) => props.marginLeft || '20px'};
     padding-left:30px;
+    font-family: Inter;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 30px;
+    letter-spacing: 0em;
+    text-align: left;
+
+`;
+
+const BuyerDetail1=styled.div`
+    margin-top:20px;
+    margin-left: ${(props) => props.marginLeft || '16px'};
+    padding-left:16px;
+    font-family: Inter;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 30px;
+    letter-spacing: 0em;
+    text-align: left;
+    color:#5980EF;
+
+`;
+
+
+const BuyerDetail2=styled.div`
+    width:78px;
+    margin-top:20px;
+    margin-left: ${(props) => props.marginLeft || '16px'};
+    padding-left:16px;
     font-family: Inter;
     font-size: 15px;
     font-weight: 500;

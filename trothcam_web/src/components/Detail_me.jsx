@@ -177,7 +177,13 @@ const Detail_me = () =>{
           });
       };
       const reloadBtn = () =>{
-        window.location.reload();
+        if(localStorage.getItem("keepLogin")){
+          window.location.reload();
+        }
+        else{
+          alert('다시 로그인해주세요');
+          navigate('/login');
+        }
       }
 
       useEffect(()=>{

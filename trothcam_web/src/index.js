@@ -43,6 +43,7 @@ const router = createBrowserRouter([
       { path: "/search_view", element: <SearchView /> },
       { path: "/rank", element: <Rank /> },
       { path: "/unvalidCertification", element: <UnvalidCertification />},
+      { path: "/validCertification", element: <ValidCertification />},
     ],
   },
 ]);

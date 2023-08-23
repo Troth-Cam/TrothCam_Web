@@ -302,7 +302,9 @@ const callLatestPagingApi = () => {
   }
   else if(pageLatest == totalLatestPage - 1){
     console.log(`pageLatest  하나 작음${pageLatest}`)
+    setPageLatest(pageLatest => pageLatest - 1); /// 이게 적용이 안됨
     setPageLatest(0);
+    console.log(`pageLatest  0으로 만듦${pageLatest}`)
   }
   else if(pageLatest == 0 && totalLatestPage != 1){
     if(accessToken){
