@@ -169,7 +169,7 @@ const Certification = () => {
         if (detail && detail.price) { 
             try {
                
-                const response = await axios.post(`/api/history/transaction/${productId}/${price}`, {},
+                const response = await axios.post(`/api/history/transaction/${productId}/${price}`, 
                 {
                     headers: {"Authorization" : `Bearer ${accessToken}`}
                 });
