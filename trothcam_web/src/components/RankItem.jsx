@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import Picture from "./img/picture.png"
 
 const ItemDiv = styled.div`
     border-bottom: solid 1px #BCBDC1;
@@ -14,10 +15,10 @@ const ItemDiv = styled.div`
     width: 379.9px;
     font-family: Inter;
 `; 
-const ImgDiv = styled.div`
+const ImgDiv = styled.img`
   margin-left: 33px;
   width: 52px;
-  background-color: red;
+  //background-color: red;
   height: 50px;
   border-radius: 10px;
 `;
@@ -75,7 +76,7 @@ const RankItem = (props) => {
     return (
       <ItemDiv>
         <RankText>{props.index+ 1}</RankText>
-        <ImgDiv>
+        <ImgDiv src={Picture}>
         </ImgDiv>
         <div style={{width: "266px"}}>
           <NameText> {props.item.title}</NameText>
