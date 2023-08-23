@@ -4,7 +4,7 @@ import HeartIcon from "./img/heart_icon.png";
 import EmptyHeartIcon from "./img/emptyHeart_icon.png";
 import api from "../apis/axios";
 import ProductDetail from "./ProductDetail";
-import SmileImg from "./img/smileImg.svg";
+import CardPhoto from "./img/CardPhoto.png";
 
 //import { VisibilityContext } from "react-horizontal-scrolling-menu";
 import { useNavigate } from "react-router-dom";
@@ -139,7 +139,7 @@ const PhotoItem = (props) => {
     */
   return (
     <PhotoItemDiv onClick={clickProduct}>
-      <PhotoDiv src={SmileImg} />
+      <PhotoDiv src={CardPhoto} />
       <TextDiv>
         <LineDiv1>
           <NameDiv>{props.item.title}</NameDiv>
