@@ -4,6 +4,7 @@ import HeartIcon from "./img/heart_icon.png";
 import EmptyHeartIcon from "./img/emptyHeart_icon.png";
 import api from "../apis/axios";
 import ProductDetail from './ProductDetail';
+import SmileImg from "./img/smileImg.svg"
 
 //import { VisibilityContext } from "react-horizontal-scrolling-menu";
 import { useNavigate } from "react-router-dom";
@@ -19,10 +20,10 @@ const PhotoItemDiv = styled.div`
 const PhotoDiv = styled.div`
     width: 164px;
     height: 169px;
-    border: 1px solid red;
     margin-left: auto;
     margin-right: auto;
     margin-top: 11px;
+    background-image: url(${props => props.src});
 `;
 const TextDiv = styled.div`
     width: 164px;
@@ -139,7 +140,7 @@ const PhotoItem = (props) => {
     return (
     
         <PhotoItemDiv onClick={clickProduct}>
-            <PhotoDiv />
+            <PhotoDiv src={SmileImg}/>
             <TextDiv>
                 <LineDiv1>
                     <NameDiv>{props.item.title}</NameDiv>

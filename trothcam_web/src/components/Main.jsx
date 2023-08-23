@@ -200,7 +200,14 @@ const productFetch = () =>{
       console.log("clickLatest");
       callLatestPagingApi();
     }
-  }, 500); 
+
+    const scrollContainer = document.getElementById("scroll-container");
+    console.log(`페이지 수 ${pageLatest} 토탈 페이지 ${totalLatestPage}`)
+    if (scrollContainer ) {
+      scrollContainer.scrollLeft = 0;
+    }
+
+  }, 1000); 
 };
 
 const callTopPagingApi = () =>{
@@ -209,6 +216,9 @@ const callTopPagingApi = () =>{
 
   //페이지가 0이고(1로 안넘어가서 해줌, 한페이지 이상일 떄)
   if(pageTop == totalTopPage){
+    setPageTop(0);
+  }
+  else if(pageTop == totalTopPage - 1){
     setPageTop(0);
   }
   else if(pageTop == 0 && totalTopPage != 1){
@@ -286,7 +296,12 @@ const callLatestPagingApi = () => {
   
 
   //페이지가 0이고(1로 안넘어가서 해줌, 한페이지 이상일 떄)
-  if(pageLatest == totalLatestPage){
+  if(pageLatest == totalLatestPage ){
+    console.log(`pageLatest 같음${pageLatest}`)
+    setPageLatest(0);
+  }
+  else if(pageLatest == totalLatestPage - 1){
+    console.log(`pageLatest  하나 작음${pageLatest}`)
     setPageLatest(0);
   }
   else if(pageLatest == 0 && totalLatestPage != 1){
@@ -557,7 +572,7 @@ useEffect(() => {
           </TextDiv>      
       </ButtonContainer>
 
-      <Container>
+      <Container id="scroll-container">
         <ScrollMenu>
           <PhotoBoard photoList={photoList} productFetch={productFetch} productState={"default"} />
         </ScrollMenu>
