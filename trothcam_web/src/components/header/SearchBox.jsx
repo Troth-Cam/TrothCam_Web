@@ -38,11 +38,14 @@ const SearchBox = () => {
     setSearchQuery(event.target.value);
   };
 
+  const backToMain = () => {
+    navigate("/");
+  }
   return (
     <>
       <SearchBoxContainer>
         <LogoLayout>
-          <Logo />
+          <Logo onClick={backToMain}/>
         </LogoLayout>
         <SearchBoxLayout>
           <SearchBoxInput
