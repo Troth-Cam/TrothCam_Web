@@ -16,7 +16,6 @@ import pd4 from './img/pd4.png';
 import pd5 from './img/pd5.png';
 import pd6 from './img/pd6.png';
 import { useLocation } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const ProductDetail = () => {
@@ -115,15 +114,6 @@ const ProductDetail = () => {
           <ModalContent src={image} onClick={(e) => e.stopPropagation()} />
         </ModalBackdrop>
       );
-
-    //토큰 클릭시 페이지 이동
-    const navigate = useNavigate();
-
-    const handleTokenClick = (tokenValue) => {
-        // '/detail_other' 경로로 이동하면서 해당 token 값을 쿼리 파라미터로 넘깁니다.
-        navigate(`/Detail_others?token=${tokenValue}`);
-    }
-
       
       return (
 
@@ -158,11 +148,11 @@ const ProductDetail = () => {
                         {showModal && <Modal image={smileImg} onClose={closeModal} />}
                         <InfoContainer1>
                             <Text1>소유자 </Text1>
-                            <Text1token onClick={() => handleTokenClick(detail.ownerToken)}> {truncateText(detail.ownerToken, 15)}</Text1token>
+                            <Text1token> {truncateText(detail.ownerToken, 15)}</Text1token>
                         </InfoContainer1>
                         <InfoContainer1>
                             <Text2>원작자 </Text2>
-                            <Text2token onClick={() => handleTokenClick(detail.authorshipToken)}> {truncateText(detail.authorshipToken, 15)}</Text2token>
+                            <Text2token> {truncateText(detail.authorshipToken, 15)}</Text2token>
                         </InfoContainer1>
                     </ImgDiv>
                    
